@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two-Step Task</title>
+    <style>
+        /* Add some CSS styling here */
+        .option {
+            width: 180px;
+            height: 150px;
+            display: inline-block;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        // Preload images
+        // const images = ['optionA.jpg', 'optionB.jpg', 'optionX.jpg', 'optionY.jpg', 'optionZ.jpg', 'optionW.jpg'];
+        // function preloadImages(images) {
+        //     for (let i = 0; i < images.length; i++) {
+        //         new Image().src = images[i];
+        //     }
+        // }
+        // preloadImages(images);
+    </script>
+</head>
+<body>
+    <h1>Two-Step Task</h1>
+    <div id="task-top">
+        <p>Round <span id="roundNumber">1</span></p>
+        <p id="stage">Stage 1: Choose between these two options</p>
+    </div>
+    <!-- <div id="task">
+        <img src="optionA.jpg" alt="Option A" onclick="chooseOption('A')" style="cursor: pointer;">
+        <img src="optionB.jpg" alt="Option B" onclick="chooseOption('B')" style="cursor: pointer;">
+    </div> -->
+    <div id="task">
+        <div class="option" style="background-color: blue" onclick="chooseOption('A')"></div>
+        <div class="option" style="background-color: red" onclick="chooseOption('B')"></div>
+    </div>
+    <div id="task-bottom">
+        <p id="result"></p>
+        <p>Points: <span id="pointCounter">0</span></p>
+    </div>
+    <script src="experiment.ts"></script>
+</body>
+</html>
