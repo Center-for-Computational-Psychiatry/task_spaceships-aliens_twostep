@@ -14,26 +14,26 @@ function chooseOption(option: string): void {
         } else {
             outcome = Math.random() < 0.8 ? 'B' : 'A';
         }
-        document.getElementById('stage').innerText = "Stage 2: Choose between these two options";
+        document.getElementById('stage')!.innerText = "Stage 2: Choose between these two options";
         // Displaying images for stage 2
         if (outcome === 'A') {
+            document.getElementById('task')!.innerHTML = `
+            <img src="img/Stage2-alien-red-A.png" alt="Option A" onclick="chooseOption('X')" style="cursor: pointer;">
+            <img src="img/Stage2-alien-red-B.png" alt="Option B" onclick="chooseOption('Y')" style="cursor: pointer;">
+            `;    
             // document.getElementById('task').innerHTML = `
-            // <img src="optionX.jpg" alt="Option X" onclick="chooseOption('X')" style="cursor: pointer;">
-            // <img src="optionY.jpg" alt="Option Y" onclick="chooseOption('Y')" style="cursor: pointer;">
-            // `;    
-            document.getElementById('task').innerHTML = `
-            <div class="option" style="background-color: orange" onclick="chooseOption('X')"></div>
-            <div class="option" style="background-color: yellow" onclick="chooseOption('Y')"></div>
-            `;
-        } else {
-            // document.getElementById('task').innerHTML = `
-            // <img src="optionX.jpg" alt="Option Z" onclick="chooseOption('Z')" style="cursor: pointer;">
-            // <img src="optionY.jpg" alt="Option W" onclick="chooseOption('W')" style="cursor: pointer;">
+            // <div class="option" style="background-color: orange" onclick="chooseOption('X')"></div>
+            // <div class="option" style="background-color: yellow" onclick="chooseOption('Y')"></div>
             // `;
-            document.getElementById('task').innerHTML = `
-            <div class="option" style="background-color: purple" onclick="chooseOption('Z')"></div>
-            <div class="option" style="background-color: blue" onclick="chooseOption('W')"></div>
+        } else {
+            document.getElementById('task')!.innerHTML = `
+            <img src="img/Stage2-alien-purple-A.png" alt="Option A" onclick="chooseOption('Z')" style="cursor: pointer;">
+            <img src="img/Stage2-alien-purple-B.png" alt="Option B" onclick="chooseOption('W')" style="cursor: pointer;">
             `;
+            // document.getElementById('task').innerHTML = `
+            // <div class="option" style="background-color: purple" onclick="chooseOption('Z')"></div>
+            // <div class="option" style="background-color: blue" onclick="chooseOption('W')"></div>
+            // `;
         }
     } else { // Stage 2: Choosing between Option X, Y, Z, or W
         console.log("option: " + option)
@@ -55,24 +55,24 @@ function chooseOption(option: string): void {
                 reward = (outcome === 'Z') ? rewardB[0] : rewardB[1];
                 break;
         }    
-        document.getElementById('stage').innerText = "Stage 1: Choose between these two options";
-        // document.getElementById('task').innerHTML = `
-        // <img src="optionA.jpg" alt="Option A" onclick="chooseOption('A')" style="cursor: pointer;">
-        // <img src="optionB.jpg" alt="Option B" onclick="chooseOption('B')" style="cursor: pointer;">
-        // `;
-        document.getElementById('task').innerHTML = `
-        <div class="option" style="background-color: #ff0000" onclick="chooseOption('A')"></div>
-        <div class="option" style="background-color: #00ff00" onclick="chooseOption('B')"></div>
+        document.getElementById('stage')!.innerText = "Stage 1: Choose between these two options";
+        document.getElementById('task')!.innerHTML = `
+        <img src="img/Stage1-rocket-A.png" alt="Option A" onclick="chooseOption('A')" style="cursor: pointer;">
+        <img src="img/Stage1-rocket-B.png" alt="Option B" onclick="chooseOption('B')" style="cursor: pointer;">
         `;
+        // document.getElementById('task').innerHTML = `
+        // <div class="option" style="background-color: #ff0000" onclick="chooseOption('A')"></div>
+        // <div class="option" style="background-color: #00ff00" onclick="chooseOption('B')"></div>
+        // `;
         points += reward;
-        document.getElementById('pointCounter').innerText = points.toString();
+        document.getElementById('pointCounter')!.innerText = points.toString();
     }
 
-    document.getElementById('result').innerText = `You chose ${option}. Outcome: ${outcome}. Reward: ${reward}`;
+    document.getElementById('result')!.innerText = `You chose ${option}. Outcome: ${outcome}. Reward: ${reward}`;
     //document.getElementById('result').innerText = `You won a reward: ${reward}`; // this needs to be removed
     results.push({ round: round, choice: option, outcome: outcome, reward: reward });
     round++;
-    document.getElementById('roundNumber').innerText = round.toString();
+    document.getElementById('roundNumber')!.innerText = round.toString();
     if (round > totalRounds) {
         // End of the task, save results to CSV
         saveResultsToCSV(results);
@@ -85,7 +85,8 @@ function chooseOption(option: string): void {
 }
 
 function saveResultsToCSV(results: { round: number; choice: string; outcome: string; reward: number }[]): void {
-    let subjectId: string = getParameterByName('subject_id') || 'UnknownSubject';
+    let subjectId: string = getParameterByName('subject_id', window.location.href) || 'UnknownSubject';
+    // alternative: let subjectId: string = getParameterByName('subject_id', window.location.href) ?? 'UnknownSubject';
     let timestamp: string = new Date().toISOString().replace(/:/g, '-');
     let filename: string = `data/two_step_task_results_${subjectId}_${timestamp}.csv`;
     
@@ -105,7 +106,7 @@ function saveResultsToCSV(results: { round: number; choice: string; outcome: str
 }
 
 // Function to get URL parameter by name
-function getParameterByName(name, url) {
+function getParameterByName(name: string, url: string): string | null {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
     var regex: RegExp = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
