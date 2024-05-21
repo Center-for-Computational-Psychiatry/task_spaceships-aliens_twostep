@@ -1,11 +1,11 @@
-let round: number = 1;
-let totalRounds: number = 10;
-let results: { round: number; choice: string; outcome: string; reward: number }[] = [];
-let points: number = 0;
-let rewardA: number[] = [1, 2]; // Rewards for choosing Option X in different worlds (80% and 20%)
-let rewardB: number[] = [3, 4];  // Rewards for choosing Option Y in different worlds (80% and 20%)
+export let round: number = 1;
+export let totalRounds: number = 10;
+export let results: { round: number; choice: string; outcome: string; reward: number }[] = [];
+export let points: number = 0;
+export let rewardA: number[] = [1, 2]; // Rewards for choosing Option X in different worlds (80% and 20%)
+export let rewardB: number[] = [3, 4];  // Rewards for choosing Option Y in different worlds (80% and 20%)
 
-function chooseOption(option: string): void {
+export function chooseOption(option: string): void {
     let outcome: string = '';
     let reward: number = 0;
     if (round % 2 === 1) { // Stage 1: Choosing between Option A and Option B
@@ -84,7 +84,7 @@ function chooseOption(option: string): void {
     }
 }
 
-function saveResultsToCSV(results: { round: number; choice: string; outcome: string; reward: number }[]): void {
+export function saveResultsToCSV(results: { round: number; choice: string; outcome: string; reward: number }[]): void {
     let subjectId: string = getParameterByName('subject_id', window.location.href) || 'UnknownSubject';
     // alternative: let subjectId: string = getParameterByName('subject_id', window.location.href) ?? 'UnknownSubject';
     let timestamp: string = new Date().toISOString().replace(/:/g, '-');
@@ -106,7 +106,7 @@ function saveResultsToCSV(results: { round: number; choice: string; outcome: str
 }
 
 // Function to get URL parameter by name
-function getParameterByName(name: string, url: string): string | null {
+export function getParameterByName(name: string, url: string): string | null {
     if (!url) url = window.location.href;
     name = name.replace(/[\[\]]/g, "\\$&");
     var regex: RegExp = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
