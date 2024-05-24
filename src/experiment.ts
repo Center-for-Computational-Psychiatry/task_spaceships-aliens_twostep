@@ -117,3 +117,6 @@ export function getParameterByName(name: string, url: string): string | null {
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
+
+// Attach the chooseOption function to the window object
+(window as any).chooseOption = chooseOption;

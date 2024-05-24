@@ -108,3 +108,5 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 exports.getParameterByName = getParameterByName;
+// Attach the chooseOption function to the window object
+window.chooseOption = chooseOption;
