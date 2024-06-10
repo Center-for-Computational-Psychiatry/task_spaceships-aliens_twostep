@@ -1,6 +1,6 @@
 export let round: number = 1;
 export let totalRounds: number = 10;
-export let currentStage: number = 1;
+export let currentStage: string = "stage1";
 export let results: { round: number; choice: string; outcome: string; reward: number, rewardImage: string }[] = [];
 export let points: number = 0;
 
@@ -31,39 +31,28 @@ export function chooseOption(option: string): void {
     let reward: number = 0;
     let rewardImage: string = '';
 
-    if (round % 2 === 1) { // Stage 1: Option X or Y
+    if (currentStage === "stage1" ) { // Stage 1: Option X or Y
         if (option === 'X') {
             outcome = Math.random() < 1.0 ? 'X' : 'Y';
         } else {
             outcome = Math.random() < 1.0 ? 'Y' : 'X';
         }
-        // switch to stage 2 display, hide stage 1 display
+        currentStage = "stage2";
+        
+        // Show Stage 2 Options, hide stage 1 display
         document.getElementById('stage-2-options')!.style.display = "block";
-        // document.getElementById('stage-2-options')!.style.visibility = "visible";
         document.getElementById('stage-1-options')!.style.display = "none";
+
         // determine which set of options in stage 2 to display
         if (outcome === 'X') { 
             document.getElementById('planet-X-options')!.style.display = "block";
-            // document.getElementById('planet-X-options')!.style.visibility = "visible";
             document.getElementById('planet-Y-options')!.style.display = "none";
         } else { // Option Y
             document.getElementById('planet-Y-options')!.style.display = "block";
-            // document.getElementById('planet-Y-options')!.style.visibility = "visible";
             document.getElementById('planet-X-options')!.style.display = "none";
         };
-        // document.getElementById('stage')!.innerText = "You have arrived to an alien planet: Choose between these two alien traders";
-        // // Displaying images for stage 2
-        // if (outcome === 'X') { 
-        //     document.getElementById('task')!.innerHTML = `
-        //     <img src="img/Stage2-alien-red-A.png" alt="Option A" onclick="chooseOption('A')" style="cursor: pointer;">
-        //     <img src="img/Stage2-alien-red-B.png" alt="Option B" onclick="chooseOption('B')" style="cursor: pointer;">
-        //     `;
-        // } else { // Option Y
-        //     document.getElementById('task')!.innerHTML = `
-        //     <img src="img/Stage2-alien-purple-A.png" alt="Option C" onclick="chooseOption('C')" style="cursor: pointer;">
-        //     <img src="img/Stage2-alien-purple-B.png" alt="Option D" onclick="chooseOption('D')" style="cursor: pointer;">
-        //     `;
-        // }
+        
+
     } else { // Stage 2: Option A, B, C, or D
         console.log("option: " + option)
         // get stage2Options with only the user's choice at this step
@@ -89,37 +78,43 @@ export function chooseOption(option: string): void {
         } else {
             console.log("choiceConfig doesn't exist")
         }
-        // Show Stage 1 Displays
-        document.getElementById('stage-1-options')!.style.display = "block";
-        // document.getElementById('stage-1-options')!.style.visibility = "visible";
-        document.getElementById('stage-2-options')!.style.display = "none";
-        // document.getElementById('stage')!.innerText = "You are on Earth. To launch into space and find gems, choose your rocket ship!";
-        // document.getElementById('task')!.innerHTML = `
-        // <img src="img/Stage1-rocket-A.png" alt="Option X" onclick="chooseOption('X')" style="cursor: pointer;">
-        // <img src="img/Stage1-rocket-B.png" alt="Option Y" onclick="chooseOption('Y')" style="cursor: pointer;">
-        // `;
-    }
+        
+        // move to the next round
+        round++;
+        console.log("round: " + round)
+        
+        // check if at the end of game
+        if (round <= totalRounds) {
+            currentStage = "stage1";
+            // Show Stage 1 Displays
+            document.getElementById('stage-1-options')!.style.display = "block";
+            document.getElementById('stage-2-options')!.style.display = "none";
+        } else {
+            endTask();
+        }
 
-    document.getElementById('result')!.innerText = `You chose ${option}. Outcome: ${outcome}. Reward: ${reward}`;
+    }
+    // Choice Result Display (mostly for debugging)
+    // document.getElementById('result')!.innerText = `You chose ${option}. Outcome: ${outcome}. Reward: ${reward}`;
     //document.getElementById('result').innerText = `You won a reward: ${reward}`; // this needs to be removed
     results.push({ round: round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });
-    round++;
+
     document.getElementById('roundNumber')!.innerText = round.toString();
     
-    // When finished with all rounds
-    if (round > totalRounds) {
-        // End of the task, save results to CSV
-        saveResultsToCSV(results);
-        // wipe the game display elements and notify participant of end of study
-        document.getElementById('game-status')!.style.display = "block";
-        document.getElementById('stage-1-options')!.style.display = "none";
-        document.getElementById('stage-2-options')!.style.display = "none";
-        // this resets the round and points but not reflected in the display until 1-2 rounds later
-        round = 1;
-        results = [];
-        points = 0;
-        // alert("Task completed! Thank you for participating.");
-    }
+}
+
+export function endTask() {
+    // End of the task, save results to CSV
+    saveResultsToCSV(results);
+    // wipe the game display elements and notify participant of end of study
+    document.getElementById('game-status')!.style.display = "block";
+    document.getElementById('game-display')!.style.display = "none";
+    
+    // this resets the round and points but not reflected in the display until 1-2 rounds later
+    round = 1;
+    results = [];
+    points = 0;
+    // alert("Task completed! Thank you for participating.");
 }
 
 export function saveResultsToCSV(results: { round: number; choice: string; outcome: string; reward: number, rewardImage: string  }[]): void {

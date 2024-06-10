@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getParameterByName = exports.saveResultsToCSV = exports.chooseOption = exports.points = exports.results = exports.totalRounds = exports.round = void 0;
+exports.getParameterByName = exports.saveResultsToCSV = exports.endTask = exports.chooseOption = exports.points = exports.results = exports.currentStage = exports.totalRounds = exports.round = void 0;
 exports.round = 1;
 exports.totalRounds = 10;
+exports.currentStage = "stage1";
 exports.results = [];
 exports.points = 0;
 // variables for game setting 1
@@ -29,42 +30,27 @@ function chooseOption(option) {
     var outcome = '';
     var reward = 0;
     var rewardImage = '';
-    if (exports.round % 2 === 1) { // Stage 1: Option X or Y
+    if (exports.currentStage === "stage1") { // Stage 1: Option X or Y
         if (option === 'X') {
             outcome = Math.random() < 1.0 ? 'X' : 'Y';
         }
         else {
             outcome = Math.random() < 1.0 ? 'Y' : 'X';
         }
-        // switch to stage 2 display, hide stage 1 display
+        exports.currentStage = "stage2";
+        // Show Stage 2 Options, hide stage 1 display
         document.getElementById('stage-2-options').style.display = "block";
-        // document.getElementById('stage-2-options')!.style.visibility = "visible";
         document.getElementById('stage-1-options').style.display = "none";
         // determine which set of options in stage 2 to display
         if (outcome === 'X') {
             document.getElementById('planet-X-options').style.display = "block";
-            // document.getElementById('planet-X-options')!.style.visibility = "visible";
             document.getElementById('planet-Y-options').style.display = "none";
         }
         else { // Option Y
             document.getElementById('planet-Y-options').style.display = "block";
-            // document.getElementById('planet-Y-options')!.style.visibility = "visible";
             document.getElementById('planet-X-options').style.display = "none";
         }
         ;
-        // document.getElementById('stage')!.innerText = "You have arrived to an alien planet: Choose between these two alien traders";
-        // // Displaying images for stage 2
-        // if (outcome === 'X') { 
-        //     document.getElementById('task')!.innerHTML = `
-        //     <img src="img/Stage2-alien-red-A.png" alt="Option A" onclick="chooseOption('A')" style="cursor: pointer;">
-        //     <img src="img/Stage2-alien-red-B.png" alt="Option B" onclick="chooseOption('B')" style="cursor: pointer;">
-        //     `;
-        // } else { // Option Y
-        //     document.getElementById('task')!.innerHTML = `
-        //     <img src="img/Stage2-alien-purple-A.png" alt="Option C" onclick="chooseOption('C')" style="cursor: pointer;">
-        //     <img src="img/Stage2-alien-purple-B.png" alt="Option D" onclick="chooseOption('D')" style="cursor: pointer;">
-        //     `;
-        // }
     }
     else { // Stage 2: Option A, B, C, or D
         console.log("option: " + option);
@@ -91,36 +77,40 @@ function chooseOption(option) {
         else {
             console.log("choiceConfig doesn't exist");
         }
-        // Show Stage 1 Displays
-        document.getElementById('stage-1-options').style.display = "block";
-        // document.getElementById('stage-1-options')!.style.visibility = "visible";
-        document.getElementById('stage-2-options').style.display = "none";
-        // document.getElementById('stage')!.innerText = "You are on Earth. To launch into space and find gems, choose your rocket ship!";
-        // document.getElementById('task')!.innerHTML = `
-        // <img src="img/Stage1-rocket-A.png" alt="Option X" onclick="chooseOption('X')" style="cursor: pointer;">
-        // <img src="img/Stage1-rocket-B.png" alt="Option Y" onclick="chooseOption('Y')" style="cursor: pointer;">
-        // `;
+        // move to the next round
+        exports.round++;
+        console.log("round: " + exports.round);
+        // check if at the end of game
+        if (exports.round <= exports.totalRounds) {
+            exports.currentStage = "stage1";
+            // Show Stage 1 Displays
+            document.getElementById('stage-1-options').style.display = "block";
+            document.getElementById('stage-2-options').style.display = "none";
+        }
+        else {
+            endTask();
+        }
     }
-    document.getElementById('result').innerText = "You chose ".concat(option, ". Outcome: ").concat(outcome, ". Reward: ").concat(reward);
+    // Choice Result Display (mostly for debugging)
+    // document.getElementById('result')!.innerText = `You chose ${option}. Outcome: ${outcome}. Reward: ${reward}`;
     //document.getElementById('result').innerText = `You won a reward: ${reward}`; // this needs to be removed
     exports.results.push({ round: exports.round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });
-    exports.round++;
     document.getElementById('roundNumber').innerText = exports.round.toString();
-    if (exports.round > exports.totalRounds) {
-        // End of the task, save results to CSV
-        saveResultsToCSV(exports.results);
-        // wipe the game display elements and notify participant of end of study
-        document.getElementById('game-status').style.display = "block";
-        document.getElementById('game-display-1').style.visibility = "hidden";
-        document.getElementById('game-display-2').style.visibility = "hidden";
-        // this resets the round and points but not reflected in the display until 1-2 rounds later
-        exports.round = 1;
-        exports.results = [];
-        exports.points = 0;
-        // alert("Task completed! Thank you for participating.");
-    }
 }
 exports.chooseOption = chooseOption;
+function endTask() {
+    // End of the task, save results to CSV
+    saveResultsToCSV(exports.results);
+    // wipe the game display elements and notify participant of end of study
+    document.getElementById('game-status').style.display = "block";
+    document.getElementById('game-display').style.display = "none";
+    // this resets the round and points but not reflected in the display until 1-2 rounds later
+    exports.round = 1;
+    exports.results = [];
+    exports.points = 0;
+    // alert("Task completed! Thank you for participating.");
+}
+exports.endTask = endTask;
 function saveResultsToCSV(results) {
     var subjectId = getParameterByName('subject_id', window.location.href) || 'UnknownSubject';
     // alternative: let subjectId: string = getParameterByName('subject_id', window.location.href) ?? 'UnknownSubject';
