@@ -1,74 +1,103 @@
 export let round: number = 1;
 export let totalRounds: number = 10;
+export let currentStage: number = 1;
 export let results: { round: number; choice: string; outcome: string; reward: number, rewardImage: string }[] = [];
 export let points: number = 0;
 
-// export let rewardA: number[] = [1, 2]; // Rewards for choosing Option X in different worlds (80% and 20%)
-// export let rewardB: number[] = [3, 4];  // Rewards for choosing Option Y in different worlds (80% and 20%)
+// variables for game setting 1
+const REWARD_1 = { points: 100, image: "img/gem-emerald.png" };
+const REWARD_2 = { points: 0, image: "img/dust.png" };
+// // variables for game setting 2
+// const REWARD_1 = { points: 100, image: "img/gem-sapphire.png" };
+// const REWARD_2 = { points: 100, image: "img/gem-ruby.png" };
 
+// likelihoods for game setting 1
 const stage2Options = {
-    "X": { likelihoods: [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.1] },
-    "Y": { likelihoods: [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.1] },
-    "Z": { likelihoods: [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.1] },
-    "W": { likelihoods: [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0.1] },
+    "A": { likelihoods: [1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0] },
+    "B": { likelihoods: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0] },
+    "C": { likelihoods: [1.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0] },
+    "D": { likelihoods: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0] },
 }
-
-const GEM_REWARD = { points: 100, image: "img/gem-emerald.png" };
-const DUST_REWARD = { points: 100, image: "img/dust.png" };
-const GEM_A_REWARD = { points: 100, image: "img/gem-sapphire.png" };
-const GEM_B_REWARD = { points: 100, image: "img/gem-ruby.png" };
+// // likelihoods for game setting 2
+// const stage2Options = {
+//     "A": { likelihoods: [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7] },
+//     "B": { likelihoods: [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3] },
+//     "C": { likelihoods: [0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7] },
+//     "D": { likelihoods: [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3] },
+// }
 
 export function chooseOption(option: string): void {
     let outcome: string = '';
     let reward: number = 0;
     let rewardImage: string = '';
 
-    if (round % 2 === 1) { // Stage 1: Choosing Option A and Option B
-        if (option === 'A') {
-            outcome = Math.random() < 0.7 ? 'A' : 'B';
+    if (round % 2 === 1) { // Stage 1: Option X or Y
+        if (option === 'X') {
+            outcome = Math.random() < 1.0 ? 'X' : 'Y';
         } else {
-            outcome = Math.random() < 0.7 ? 'B' : 'A';
+            outcome = Math.random() < 1.0 ? 'Y' : 'X';
         }
-        document.getElementById('stage')!.innerText = "You have arrived to an alien planet: Choose between these two alien traders";
-        // Displaying images for stage 2
-        if (outcome === 'A') {
-            document.getElementById('task')!.innerHTML = `
-            <img src="img/Stage2-alien-red-A.png" alt="Option X" onclick="chooseOption('X')" style="cursor: pointer;">
-            <img src="img/Stage2-alien-red-B.png" alt="Option Y" onclick="chooseOption('Y')" style="cursor: pointer;">
-            `;
-        } else {
-            document.getElementById('task')!.innerHTML = `
-            <img src="img/Stage2-alien-purple-A.png" alt="Option Z" onclick="chooseOption('Z')" style="cursor: pointer;">
-            <img src="img/Stage2-alien-purple-B.png" alt="Option W" onclick="chooseOption('W')" style="cursor: pointer;">
-            `;
-        }
-    } else { // Stage 2: Choosing Option X, Y, Z, or W
+        // switch to stage 2 display, hide stage 1 display
+        document.getElementById('stage-2-options')!.style.display = "block";
+        // document.getElementById('stage-2-options')!.style.visibility = "visible";
+        document.getElementById('stage-1-options')!.style.display = "none";
+        // determine which set of options in stage 2 to display
+        if (outcome === 'X') { 
+            document.getElementById('planet-X-options')!.style.display = "block";
+            // document.getElementById('planet-X-options')!.style.visibility = "visible";
+            document.getElementById('planet-Y-options')!.style.display = "none";
+        } else { // Option Y
+            document.getElementById('planet-Y-options')!.style.display = "block";
+            // document.getElementById('planet-Y-options')!.style.visibility = "visible";
+            document.getElementById('planet-X-options')!.style.display = "none";
+        };
+        // document.getElementById('stage')!.innerText = "You have arrived to an alien planet: Choose between these two alien traders";
+        // // Displaying images for stage 2
+        // if (outcome === 'X') { 
+        //     document.getElementById('task')!.innerHTML = `
+        //     <img src="img/Stage2-alien-red-A.png" alt="Option A" onclick="chooseOption('A')" style="cursor: pointer;">
+        //     <img src="img/Stage2-alien-red-B.png" alt="Option B" onclick="chooseOption('B')" style="cursor: pointer;">
+        //     `;
+        // } else { // Option Y
+        //     document.getElementById('task')!.innerHTML = `
+        //     <img src="img/Stage2-alien-purple-A.png" alt="Option C" onclick="chooseOption('C')" style="cursor: pointer;">
+        //     <img src="img/Stage2-alien-purple-B.png" alt="Option D" onclick="chooseOption('D')" style="cursor: pointer;">
+        //     `;
+        // }
+    } else { // Stage 2: Option A, B, C, or D
         console.log("option: " + option)
+        // get stage2Options with only the user's choice at this step
+            // e.g. likelihoods: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0]
         const choiceConfig = stage2Options[option as keyof typeof stage2Options];
-        console.log("choiceConfig: " + choiceConfig)
+        console.log("choiceConfig.likelihoods: " + choiceConfig.likelihoods)
         if (choiceConfig) {
             const likelihoods = choiceConfig.likelihoods;
-            const currentLikelihood = likelihoods[Math.floor((round - 1) / 2)];
-
+            const currentLikelihood = likelihoods[round]; // pick the likelihood associated with this round
+            
             if (Math.random() < currentLikelihood) {
                 outcome = option;
-                reward = GEM_REWARD.points;
-                rewardImage = GEM_REWARD.image;
+                reward = REWARD_1.points;
+                rewardImage = REWARD_1.image;
             } else {
                 outcome = option;
-                reward = DUST_REWARD.points;
-                rewardImage = DUST_REWARD.image;
+                reward = REWARD_2.points;
+                rewardImage = REWARD_2.image;
             }
 
             points += reward;
             document.getElementById('pointCounter')!.innerText = points.toString();
+        } else {
+            console.log("choiceConfig doesn't exist")
         }
-        
-        document.getElementById('stage')!.innerText = "Stage 1: Choose between these two options";
-        document.getElementById('task')!.innerHTML = `
-        <img src="img/Stage1-rocket-A.png" alt="Option A" onclick="chooseOption('A')" style="cursor: pointer;">
-        <img src="img/Stage1-rocket-B.png" alt="Option B" onclick="chooseOption('B')" style="cursor: pointer;">
-        `;
+        // Show Stage 1 Displays
+        document.getElementById('stage-1-options')!.style.display = "block";
+        // document.getElementById('stage-1-options')!.style.visibility = "visible";
+        document.getElementById('stage-2-options')!.style.display = "none";
+        // document.getElementById('stage')!.innerText = "You are on Earth. To launch into space and find gems, choose your rocket ship!";
+        // document.getElementById('task')!.innerHTML = `
+        // <img src="img/Stage1-rocket-A.png" alt="Option X" onclick="chooseOption('X')" style="cursor: pointer;">
+        // <img src="img/Stage1-rocket-B.png" alt="Option Y" onclick="chooseOption('Y')" style="cursor: pointer;">
+        // `;
     }
 
     document.getElementById('result')!.innerText = `You chose ${option}. Outcome: ${outcome}. Reward: ${reward}`;
@@ -76,14 +105,20 @@ export function chooseOption(option: string): void {
     results.push({ round: round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });
     round++;
     document.getElementById('roundNumber')!.innerText = round.toString();
+    
+    // When finished with all rounds
     if (round > totalRounds) {
         // End of the task, save results to CSV
         saveResultsToCSV(results);
+        // wipe the game display elements and notify participant of end of study
+        document.getElementById('game-status')!.style.display = "block";
+        document.getElementById('stage-1-options')!.style.display = "none";
+        document.getElementById('stage-2-options')!.style.display = "none";
         // this resets the round and points but not reflected in the display until 1-2 rounds later
         round = 1;
         results = [];
         points = 0;
-        alert("Task completed! Thank you for participating.");
+        // alert("Task completed! Thank you for participating.");
     }
 }
 
