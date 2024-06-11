@@ -1,0 +1,60 @@
+.option {
+  width: 180px;
+  height: 150px;
+  display: inline-block;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+body {
+    /* background-color: aqua; */
+    /* background: aquamarine; */
+    background: pink;
+    text-align: center;
+}
+
+h1, h2, p {
+    font-family: Arial;
+}
+
+#game-status {
+  display: none;
+}
+
+#game-display {
+  /* text-align: center; */
+}
+
+#stage-1-options img {
+  width: 200px;
+  margin: 10px;
+}
+
+#stage-1-options img, 
+#stage-2-options img {
+  cursor: pointer;
+}
+
+#stage-2-options {
+  display: none;
+}
+
+.planet-img {
+  width: 900px;
+  height: auto;
+}
+
+.alien-img {
+  height: 200px;
+  margin: 30px;
+  
+}
+
+/* #task-bottom {
+  text-align: center;
+}
+
+#task-bottom h2,
+#task-bottom p {
+  margin: 5px 0;
+} */

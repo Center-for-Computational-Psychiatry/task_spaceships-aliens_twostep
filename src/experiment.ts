@@ -1,4 +1,5 @@
 export let round: number = 1;
+// export let totalRounds: number = 10; // for debugging
 export let totalRounds: number = 10;
 export let currentStage: string = "stage1";
 export let results: { round: number; choice: string; outcome: string; reward: number, rewardImage: string }[] = [];

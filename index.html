@@ -4,16 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Two-Step Task</title>
-    <style>
-        /* Add some CSS styling here */
-        .option {
-            width: 180px;
-            height: 150px;
-            display: inline-block;
-            margin-right: 10px;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
     <script>
         // Preload images
         // const images = ['optionA.jpg', 'optionB.jpg', 'optionX.jpg', 'optionY.jpg', 'optionZ.jpg', 'optionW.jpg'];
@@ -34,19 +25,21 @@
     <div id="game-display"">
         <div id="task-top"></div>
         <div id="stage-1-options">
-            <h1 id="stage">You are on Earth. To launch into space and find inter-galactic gems, choose which rocket ship to ride! Depending on which rocket you choose, you may enter Planet A or B...</h1>
-            <img src="img/Stage1-rocket-A.png" alt="Option X" onclick="chooseOption('X')" style="cursor: pointer;">
-            <img src="img/Stage1-rocket-B.png" alt="Option Y" onclick="chooseOption('Y')" style="cursor: pointer;">
+            <h1 id="stage">You are on Earth. To launch into space and find inter-galactic gems, choose which rocket ship to ride! Depending on which rocket you choose, you may enter one of two planets. Click on the rocket you choose to ride.</h1>
+            <img src="img/Stage1-rocket_A.png" alt="Option X" onclick="chooseOption('X')" style="cursor: pointer;">
+            <img src="img/Stage1-rocket_B.png" alt="Option Y" onclick="chooseOption('Y')" style="cursor: pointer;">
         </div>
         <div id="stage-2-options" style="display:none;">
-            <h1 id="stage">Yay! You have arrived to an alien planet. Choose between these two alien traders who carry gems. One or both of these traders may have a gem to offer you...</h1>
+            <h1 id="stage">Yay! You have arrived to one of the alien planets. Two alien traders stand before you. Click on one of them to go speak with them. Either one of these traders may have a gem to offer you...</h1>
             <div id="planet-X-options">
-                <img src="img/Stage2-alien-red-A.png" alt="Option A" onclick="chooseOption('A')" style="cursor: pointer;">
-                <img src="img/Stage2-alien-red-B.png" alt="Option B" onclick="chooseOption('B')" style="cursor: pointer;">
+                <img class="planet-img" src="img/planet_purple.png" alt="Planet X"><br>
+                <img class="alien-img" src="img/Stage2-alien-red-A.png" alt="Option A" onclick="chooseOption('A')" style="cursor: pointer;">
+                <img class="alien-img" src="img/Stage2-alien-red-B.png" alt="Option B" onclick="chooseOption('B')" style="cursor: pointer;">
             </div>
             <div id="planet-Y-options">
-                <img src="img/Stage2-alien-purple-A.png" alt="Option C" onclick="chooseOption('C')" style="cursor: pointer;">
-                <img src="img/Stage2-alien-purple-B.png" alt="Option D" onclick="chooseOption('D')" style="cursor: pointer;">
+                <img class="planet-img" src="img/planet_green.png" alt="Planet Y"><br>
+                <img class="alien-img" src="img/Stage2-alien-purple-A.png" alt="Option C" onclick="chooseOption('C')" style="cursor: pointer;">
+                <img class="alien-img" src="img/Stage2-alien-purple-B.png" alt="Option D" onclick="chooseOption('D')" style="cursor: pointer;">
             </div>
         </div>
         <!-- <div id="reward-stage">  -->
@@ -55,7 +48,7 @@
         <!-- </div> -->
         <div id="task-bottom">
             <h2>Points: <span id="pointCounter">0</span></h2>
-            <p>Round <span id="roundNumber">1</span></p>
+            <p>Round <span id="roundNumber">1</span>.</p>
             <!-- <p id="result"></p> -->
         </div>
     </div>

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getParameterByName = exports.saveResultsToCSV = exports.endTask = exports.chooseOption = exports.points = exports.results = exports.currentStage = exports.totalRounds = exports.round = void 0;
 exports.round = 1;
+// export let totalRounds: number = 10; // for debugging
 exports.totalRounds = 10;
 exports.currentStage = "stage1";
 exports.results = [];
