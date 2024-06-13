@@ -4,7 +4,7 @@ exports.getParameterByName = exports.saveResultsToCSV = exports.endTask = export
 exports.round = 1;
 // export let totalRounds: number = 10; // for debugging
 exports.totalRounds = 10;
-exports.currentStage = "stage1";
+exports.currentStage = "instructions"; // [instructions, stage1, stage2]
 exports.results = [];
 exports.points = 0;
 // variables for game setting 1
@@ -99,6 +99,38 @@ function chooseOption(option) {
     document.getElementById('roundNumber').innerText = exports.round.toString();
 }
 exports.chooseOption = chooseOption;
+// Event listener for instructions screen
+var handleKeydown = function (event) {
+    console.log("key event logged");
+    // if (event.target && (event.target as HTMLElement).id !== 'instructions-screen') return; // Ignore keydown events outside the instructions screen
+    if (exports.currentStage == "instructions") {
+        console.log("second key event logged");
+        document.getElementById('instructions-screen').style.display = 'none';
+        document.getElementById('game-display').style.display = 'block';
+        exports.currentStage = "stage1";
+    }
+    // Remove the event listener after continuing from the instructions screen
+    document.removeEventListener('keydown', handleKeydown);
+};
+document.addEventListener('keydown', handleKeydown);
+// Event listener for making key presses in Stage 1 and Stage 2
+document.addEventListener('keydown', function (event) {
+    var _a;
+    event.preventDefault(); // Prevent default scrolling behavior of arrow keys
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        var choice = void 0;
+        if (exports.currentStage === 'stage1') {
+            choice = event.key === 'ArrowLeft' ? 'X' : 'Y';
+        }
+        else {
+            choice = event.key === 'ArrowLeft' ? 'A' : 'B';
+            if (((_a = document.getElementById('planet-Y-options')) === null || _a === void 0 ? void 0 : _a.style.display) === 'block') {
+                choice = event.key === 'ArrowLeft' ? 'C' : 'D';
+            }
+        }
+        chooseOption(choice);
+    }
+});
 function endTask() {
     // End of the task, save results to CSV
     saveResultsToCSV(exports.results);

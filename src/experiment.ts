@@ -1,7 +1,7 @@
 export let round: number = 1;
 // export let totalRounds: number = 10; // for debugging
 export let totalRounds: number = 10;
-export let currentStage: string = "stage1";
+export let currentStage: string = "instructions"; // [instructions, stage1, stage2]
 export let results: { round: number; choice: string; outcome: string; reward: number, rewardImage: string }[] = [];
 export let points: number = 0;
 
@@ -103,6 +103,40 @@ export function chooseOption(option: string): void {
     document.getElementById('roundNumber')!.innerText = round.toString();
     
 }
+
+// Event listener for instructions screen
+const handleKeydown = function(event: KeyboardEvent) {
+    console.log("key event logged")
+    
+    // if (event.target && (event.target as HTMLElement).id !== 'instructions-screen') return; // Ignore keydown events outside the instructions screen
+    if (currentStage == "instructions") {    
+        console.log("second key event logged")
+        document.getElementById('instructions-screen')!.style.display = 'none';
+        document.getElementById('game-display')!.style.display = 'block';
+        currentStage = "stage1";
+    } 
+    // Remove the event listener after continuing from the instructions screen
+    document.removeEventListener('keydown', handleKeydown);
+}
+document.addEventListener('keydown', handleKeydown);
+
+// Event listener for making key presses in Stage 1 and Stage 2
+document.addEventListener('keydown', function(event) {
+    event.preventDefault(); // Prevent default scrolling behavior of arrow keys
+
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        let choice;
+        if (currentStage === 'stage1') {
+            choice = event.key === 'ArrowLeft' ? 'X' : 'Y';
+        } else {
+            choice = event.key === 'ArrowLeft' ? 'A' : 'B';
+            if (document.getElementById('planet-Y-options')?.style.display === 'block') {
+                choice = event.key === 'ArrowLeft' ? 'C' : 'D';
+            }
+        }
+        chooseOption(choice);
+    }
+});
 
 export function endTask() {
     // End of the task, save results to CSV

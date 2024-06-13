@@ -17,6 +17,10 @@ h1, h2, p {
     font-family: Arial;
 }
 
+p {
+    font-size: 24px;
+}
+
 #game-status {
   display: none;
 }
