@@ -51,7 +51,7 @@ p {
 
 .alien-container {
     position: absolute;
-    bottom: 20px; /* Adjust this value to move the aliens up or down */
+    bottom: 30px; /* Adjust to move the aliens up or down on the planet */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -65,6 +65,6 @@ p {
 
 .alien-img {
   height: 200px;
-  margin: 30px;
+  margin: 0 75px;
   
 }
