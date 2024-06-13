@@ -33,14 +33,29 @@ p {
 }
 
 #stage-1-options img {
-  width: 200px;
-  margin: 10px;
+  width: 300px;
+  height: auto;
+  margin-top: 10px;
+  margin-left: 50px;
+  margin-right: 50px;
 }
 
-
 .reward-img {
-    width: 200;
-    height: 200;
+    width: 200px;
+    height: 200px;
+}
+
+.planet-container {
+    position: relative;
+}
+
+.alien-container {
+    position: absolute;
+    bottom: 20px; /* Adjust this value to move the aliens up or down */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
 }
 
 .planet-img {
@@ -53,12 +68,3 @@ p {
   margin: 30px;
   
 }
-
-/* #task-bottom {
-  text-align: center;
-}
-
-#task-bottom h2,
-#task-bottom p {
-  margin: 5px 0;
-} */
