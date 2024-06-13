@@ -8,8 +8,8 @@ exports.currentStage = "instructions"; // [instructions, stage1, stage2]
 exports.results = [];
 exports.points = 0;
 // variables for game setting 1
-var REWARD_1 = { points: 100, image: "img/gem-emerald.png" };
-var REWARD_2 = { points: 0, image: "img/dust.png" };
+var REWARD_1 = { points: 100, image: "img/gem-emerald.png", message: "Yay! You found a gem of 100 points! You will now fly back to Earth..." };
+var REWARD_2 = { points: 0, image: "img/dust.png", message: "Aw, you found only some dust (no points)! You will now fly back to Earth..." };
 // // variables for game setting 2
 // const REWARD_1 = { points: 100, image: "img/gem-sapphire.png" };
 // const REWARD_2 = { points: 100, image: "img/gem-ruby.png" };
@@ -31,6 +31,7 @@ function chooseOption(option) {
     var outcome = '';
     var reward = 0;
     var rewardImage = '';
+    var rewardMessage = '';
     if (exports.currentStage === "stage1") { // Stage 1: Option X or Y
         if (option === 'X') {
             outcome = Math.random() < 1.0 ? 'X' : 'Y';
@@ -57,39 +58,55 @@ function chooseOption(option) {
         console.log("option: " + option);
         // get stage2Options with only the user's choice at this step
         // e.g. likelihoods: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0]
-        var choiceConfig = stage2Options[option];
-        console.log("choiceConfig.likelihoods: " + choiceConfig.likelihoods);
-        if (choiceConfig) {
-            var likelihoods = choiceConfig.likelihoods;
+        var userChoice = stage2Options[option];
+        console.log("choiceConfig.likelihoods: " + userChoice.likelihoods);
+        if (userChoice) {
+            var likelihoods = userChoice.likelihoods;
             var currentLikelihood = likelihoods[exports.round]; // pick the likelihood associated with this round
+            // select reward from user choice
             if (Math.random() < currentLikelihood) {
                 outcome = option;
                 reward = REWARD_1.points;
                 rewardImage = REWARD_1.image;
+                rewardMessage = REWARD_1.message;
             }
             else {
                 outcome = option;
                 reward = REWARD_2.points;
                 rewardImage = REWARD_2.image;
+                rewardMessage = REWARD_2.message;
             }
-            exports.points += reward;
-            document.getElementById('pointCounter').innerText = exports.points.toString();
+            // reward message and image displayed for 0.3 seconds
+            document.getElementById('stage-2-instructions').style.display = 'none';
+            document.getElementById('reward-message').innerText = rewardMessage;
+            document.getElementById('reward-message').style.display = 'block';
+            var rewardImgElement = document.getElementById('reward-img');
+            if (rewardImgElement instanceof HTMLImageElement) {
+                rewardImgElement.src = rewardImage;
+            }
+            // do this only after temporary reward display shows
+            setTimeout(function () {
+                exports.points += reward;
+                document.getElementById('pointCounter').innerText = exports.points.toString();
+                document.getElementById('reward-message').style.display = 'none';
+                document.getElementById('reward-img').style.display = 'none';
+                exports.round++;
+                console.log("round: " + exports.round);
+                // check if at the end of game
+                if (exports.round <= exports.totalRounds) {
+                    exports.currentStage = "stage1";
+                    // Show Stage 1 Displays
+                    document.getElementById('stage-1-options').style.display = "block";
+                    document.getElementById('stage-2-instructions').style.display = 'block';
+                    document.getElementById('stage-2-options').style.display = "none";
+                }
+                else {
+                    endTask();
+                }
+            }, 2000);
         }
         else {
             console.log("choiceConfig doesn't exist");
-        }
-        // move to the next round
-        exports.round++;
-        console.log("round: " + exports.round);
-        // check if at the end of game
-        if (exports.round <= exports.totalRounds) {
-            exports.currentStage = "stage1";
-            // Show Stage 1 Displays
-            document.getElementById('stage-1-options').style.display = "block";
-            document.getElementById('stage-2-options').style.display = "none";
-        }
-        else {
-            endTask();
         }
     }
     // Choice Result Display (mostly for debugging)
