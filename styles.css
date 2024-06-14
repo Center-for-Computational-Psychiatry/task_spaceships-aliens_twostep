@@ -29,7 +29,7 @@ p {
 }
 
 #game-display {
-  /* text-align: center; */
+  text-align: center;
 }
 
 #stage-1-options img {
@@ -40,9 +40,25 @@ p {
   margin-right: 50px;
 }
 
+/* #stage-2-options {
+    display: flex;
+    justify-content: center;
+    align-items: center; */
+/* } */
+
+#reward-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
 .reward-img {
-    width: 200px;
-    height: 200px;
+    height: 150px;
+    width: auto;
+    /* max-width: 200px;
+    max-height: auto;
+    object-fit: cover; */
 }
 
 .planet-container {
