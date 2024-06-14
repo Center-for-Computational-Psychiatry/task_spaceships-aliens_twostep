@@ -7,13 +7,20 @@
     <link rel="stylesheet" href="styles.css">
     <script>
         // Preload images
-        // const images = ['optionA.jpg', 'optionB.jpg', 'optionX.jpg', 'optionY.jpg', 'optionZ.jpg', 'optionW.jpg'];
-        // function preloadImages(images) {
-        //     for (let i = 0; i < images.length; i++) {
-        //         new Image().src = images[i];
-        //     }
-        // }
-        // preloadImages(images);
+        const images = [
+            'img/Stage1-rocket_A.png', 'img/Stage1-rocket_B.png', 
+            'img/planet_purple.png', 'img/planet_green.png', 
+            'img/Stage2-alien-green-A.png', 'img/Stage2-alien-green-B.png', 
+            'img/Stage2-alien-purple-A.png', 'img/Stage2-alien-purple-B.png', 
+            'img/gem-emerald.png', 'img/dirt.png'
+        ];
+
+        function preloadImages(images) {
+            for (let i = 0; i < images.length; i++) {
+                new Image().src = images[i];
+            }
+        }
+        preloadImages(images);
     </script>
 </head>
 <body>

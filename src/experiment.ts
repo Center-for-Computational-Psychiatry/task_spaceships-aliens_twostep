@@ -7,7 +7,7 @@ export let points: number = 0;
 
 // variables for game setting 1
 const REWARD_1 = { points: 100, image: "img/gem-emerald.png", message: "Yay! You found a gem of 100 points! You will now fly back to Earth..."};
-const REWARD_2 = { points: 0, image: "img/dust.png", message: "Aw, you found only some dust (no points)! You will now fly back to Earth..."};
+const REWARD_2 = { points: 0, image: "img/dirt.png", message: "Aw, you found only some dirt (no points)! You will now fly back to Earth..."};
 // // variables for game setting 2
 // const REWARD_1 = { points: 100, image: "img/gem-sapphire.png" };
 // const REWARD_2 = { points: 100, image: "img/gem-ruby.png" };
@@ -82,6 +82,7 @@ export function chooseOption(option: string): void {
             document.getElementById('reward-message')!.innerText = rewardMessage;
             document.getElementById('reward-message')!.style.display = 'block';
             const rewardImgElement = document.getElementById('reward-img')
+            rewardImgElement!.style.display = 'block';
             if (rewardImgElement instanceof HTMLImageElement) { rewardImgElement.src = rewardImage; }
             
             // do this only after temporary reward display shows
