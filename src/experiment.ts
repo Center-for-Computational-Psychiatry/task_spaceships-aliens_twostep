@@ -1,7 +1,7 @@
 export let round: number = 1;
 // export let totalRounds: number = 10; // for debugging
 export let totalRounds: number = 10;
-export let currentStage: string = "welcome"; // [welcome, instructions1, instructions2, instructions3, practice-stage1, practice-stage2, instructionsFinal, stage1, stage2]
+export let currentStage: string = "welcome"; // [welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, stage1, stage2]
 export let results: { round: number; choice: string; outcome: string; reward: number, rewardImage: string }[] = [];
 export let points: number = 0;
 let inputAllowed: boolean = true; // Flag to control input
@@ -36,19 +36,31 @@ export function chooseOption(option: string): void {
     let rewardImage: string = '';
     let rewardMessage: string = '';
 
-    if (currentStage === "stage1" ) { // Stage 1: Option X or Y
+    if (currentStage === "stage1" || currentStage === "practiceStage1" ) { // Stage 1: Option X or Y
         if (option === 'X') {
             outcome = Math.random() < 1.0 ? 'X' : 'Y';
-        } else {
+        } else { // option Y
             outcome = Math.random() < 1.0 ? 'Y' : 'X';
         }
-        currentStage = "stage2";
         
-        // Show Stage 2 Options, hide stage 1 display
+
+        if (currentStage === "stage1") { 
+            // Switch main stages
+            currentStage = "stage2"; 
+            // Show Stage 2 Options, hide stage 1 display
+            document.getElementById('stage-2-main-instructions')!.style.display = "block";    
+        } else { // currentStage === practiceStage1
+            // Switch practice stages
+            currentStage = "practiceStage2"; 
+            // Show Stage 2 Practice Options, hide stage 1 practice display
+            document.getElementById('stage-2-practice-instructions')!.style.display = "block";    
+        }
+        // Show Stage 2 Options, hide stage 1 display (same for main vs practice)
         document.getElementById('stage-2-options')!.style.display = "block";
         document.getElementById('stage-1-options')!.style.display = "none";
+        
 
-        // determine which set of options in stage 2 to display
+        // determine which Planet in Stage 2 to display
         if (outcome === 'X') { 
             document.getElementById('planet-X-options')!.style.display = "block";
             document.getElementById('planet-Y-options')!.style.display = "none";
@@ -57,12 +69,13 @@ export function chooseOption(option: string): void {
             document.getElementById('planet-X-options')!.style.display = "none";
         };
         
-    } else if (currentStage === "stage2" ) { // Stage 2: Option A, B, C, or D
+    } else if (currentStage === "stage2" || currentStage === "practiceStage2") { // Stage 2: Option A, B, C, or D
         console.log("option: " + option)
         // get stage2Options with only the user's choice at this step
             // e.g. likelihoods: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0]
         const userChoice = stage2Options[option as keyof typeof stage2Options];
         console.log("choiceConfig.likelihoods: " + userChoice.likelihoods)
+        
         if (userChoice) {
             const likelihoods = userChoice.likelihoods;
             const currentLikelihood = likelihoods[round]; // pick the likelihood associated with this round
@@ -83,7 +96,9 @@ export function chooseOption(option: string): void {
             inputAllowed = false;
 
             // reward message and image displayed for 0.3 seconds
-            document.getElementById('stage-2-instructions')!.style.display = 'none';
+            document.getElementById('stage-2-main-instructions')!.style.display = 'none';
+            document.getElementById('stage-2-practice-instructions')!.style.display = 'none';
+
             document.getElementById('reward-message')!.innerText = rewardMessage;
             document.getElementById('reward-message')!.style.display = 'block';
             document.getElementById(rewardImage)!.style.display = 'block';
@@ -99,11 +114,18 @@ export function chooseOption(option: string): void {
                 
                 // check if at the end of game
                 if (round <= totalRounds) {
-                    currentStage = "stage1";
-                    // Show Stage 1 Displays
-                    document.getElementById('stage-1-options')!.style.display = "block";
-                    document.getElementById('stage-2-instructions')!.style.display = 'block';
                     document.getElementById('stage-2-options')!.style.display = "none";
+                    document.getElementById('stage-1-options')!.style.display = "block";
+                    // Show Stage 1 Displays
+                    if (currentStage === "stage2") {
+                        currentStage = "stage1";
+                        document.getElementById('stage-1-main-instructions')!.style.display = "block";
+                        document.getElementById('stage-2-main-instructions')!.style.display = 'block';
+                    } else { // currentStage === "practiceStage2"
+                        currentStage = "practiceStage1";
+                        document.getElementById('stage-1-practice-instructions')!.style.display = "block";
+                        document.getElementById('stage-2-practice-instructions')!.style.display = 'block';
+                    }
                 } else {
                     endTask();
                 }
@@ -127,7 +149,6 @@ export function chooseOption(option: string): void {
     // Choice Result Display (mostly for debugging)
     // document.getElementById('result')!.innerText = `You chose ${option}. Outcome: ${outcome}. Reward: ${reward}`;
     //document.getElementById('result').innerText = `You won a reward: ${reward}`; // this needs to be removed
-        
 }
 
 // Event listener for instructions screen
@@ -150,8 +171,8 @@ const handleKeydown = function(event: KeyboardEvent) {
         currentStage = "instructions3";
     } else if (currentStage == "instructions3") {
         document.getElementById('instructions-screen-3')!.style.display = 'none';
-        document.getElementById('instructions-final')!.style.display = 'block';
-        currentStage = "practice-stage1";
+        document.getElementById('game-display')!.style.display = 'block';
+        currentStage = "practiceStage1";
         // Remove the event listener after continuing to the practice session
         document.removeEventListener('keydown', handleKeydown);
     }
@@ -164,10 +185,10 @@ document.addEventListener('keydown', function(event) {
     
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
         let choice;
-        if (currentStage === 'stage1') {
+        if (currentStage === 'stage1' || currentStage === 'practiceStage1') {
             choice = event.key === 'ArrowLeft' ? 'X' : 'Y';
             chooseOption(choice);
-        } else if (currentStage === 'stage2' ) {
+        } else if (currentStage === 'stage2' || currentStage === 'practiceStage2') {
             choice = event.key === 'ArrowLeft' ? 'A' : 'B';
             if (document.getElementById('planet-Y-options')?.style.display === 'block') {
                 choice = event.key === 'ArrowLeft' ? 'C' : 'D';

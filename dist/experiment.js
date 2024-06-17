@@ -4,7 +4,7 @@ exports.getParameterByName = exports.saveResultsToCSV = exports.endTask = export
 exports.round = 1;
 // export let totalRounds: number = 10; // for debugging
 exports.totalRounds = 10;
-exports.currentStage = "welcome"; // [welcome, instructions1, instructions2, instructions3, practice-stage1, practice-stage2, instructionsFinal, stage1, stage2]
+exports.currentStage = "welcome"; // [welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, stage1, stage2]
 exports.results = [];
 exports.points = 0;
 var inputAllowed = true; // Flag to control input
@@ -35,18 +35,29 @@ function chooseOption(option) {
     var reward = 0;
     var rewardImage = '';
     var rewardMessage = '';
-    if (exports.currentStage === "stage1") { // Stage 1: Option X or Y
+    if (exports.currentStage === "stage1" || exports.currentStage === "practiceStage1") { // Stage 1: Option X or Y
         if (option === 'X') {
             outcome = Math.random() < 1.0 ? 'X' : 'Y';
         }
-        else {
+        else { // option Y
             outcome = Math.random() < 1.0 ? 'Y' : 'X';
         }
-        exports.currentStage = "stage2";
-        // Show Stage 2 Options, hide stage 1 display
+        if (exports.currentStage === "stage1") {
+            // Switch main stages
+            exports.currentStage = "stage2";
+            // Show Stage 2 Options, hide stage 1 display
+            document.getElementById('stage-2-main-instructions').style.display = "block";
+        }
+        else { // currentStage === practiceStage1
+            // Switch practice stages
+            exports.currentStage = "practiceStage2";
+            // Show Stage 2 Practice Options, hide stage 1 practice display
+            document.getElementById('stage-2-practice-instructions').style.display = "block";
+        }
+        // Show Stage 2 Options, hide stage 1 display (same for main vs practice)
         document.getElementById('stage-2-options').style.display = "block";
         document.getElementById('stage-1-options').style.display = "none";
-        // determine which set of options in stage 2 to display
+        // determine which Planet in Stage 2 to display
         if (outcome === 'X') {
             document.getElementById('planet-X-options').style.display = "block";
             document.getElementById('planet-Y-options').style.display = "none";
@@ -57,7 +68,7 @@ function chooseOption(option) {
         }
         ;
     }
-    else if (exports.currentStage === "stage2") { // Stage 2: Option A, B, C, or D
+    else if (exports.currentStage === "stage2" || exports.currentStage === "practiceStage2") { // Stage 2: Option A, B, C, or D
         console.log("option: " + option);
         // get stage2Options with only the user's choice at this step
         // e.g. likelihoods: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0]
@@ -81,7 +92,8 @@ function chooseOption(option) {
             }
             inputAllowed = false;
             // reward message and image displayed for 0.3 seconds
-            document.getElementById('stage-2-instructions').style.display = 'none';
+            document.getElementById('stage-2-main-instructions').style.display = 'none';
+            document.getElementById('stage-2-practice-instructions').style.display = 'none';
             document.getElementById('reward-message').innerText = rewardMessage;
             document.getElementById('reward-message').style.display = 'block';
             document.getElementById(rewardImage).style.display = 'block';
@@ -95,11 +107,19 @@ function chooseOption(option) {
                 console.log("round: " + exports.round);
                 // check if at the end of game
                 if (exports.round <= exports.totalRounds) {
-                    exports.currentStage = "stage1";
-                    // Show Stage 1 Displays
-                    document.getElementById('stage-1-options').style.display = "block";
-                    document.getElementById('stage-2-instructions').style.display = 'block';
                     document.getElementById('stage-2-options').style.display = "none";
+                    document.getElementById('stage-1-options').style.display = "block";
+                    // Show Stage 1 Displays
+                    if (exports.currentStage === "stage2") {
+                        exports.currentStage = "stage1";
+                        document.getElementById('stage-1-main-instructions').style.display = "block";
+                        document.getElementById('stage-2-main-instructions').style.display = 'block';
+                    }
+                    else { // currentStage === "practiceStage2"
+                        exports.currentStage = "practiceStage1";
+                        document.getElementById('stage-1-practice-instructions').style.display = "block";
+                        document.getElementById('stage-2-practice-instructions').style.display = 'block';
+                    }
                 }
                 else {
                     endTask();
@@ -141,8 +161,8 @@ var handleKeydown = function (event) {
     }
     else if (exports.currentStage == "instructions3") {
         document.getElementById('instructions-screen-3').style.display = 'none';
-        document.getElementById('instructions-final').style.display = 'block';
-        exports.currentStage = "practice-stage1";
+        document.getElementById('game-display').style.display = 'block';
+        exports.currentStage = "practiceStage1";
         // Remove the event listener after continuing to the practice session
         document.removeEventListener('keydown', handleKeydown);
     }
@@ -154,11 +174,11 @@ document.addEventListener('keydown', function (event) {
     event.preventDefault(); // Prevent default scrolling behavior of arrow keys
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
         var choice = void 0;
-        if (exports.currentStage === 'stage1') {
+        if (exports.currentStage === 'stage1' || exports.currentStage === 'practiceStage1') {
             choice = event.key === 'ArrowLeft' ? 'X' : 'Y';
             chooseOption(choice);
         }
-        else if (exports.currentStage === 'stage2') {
+        else if (exports.currentStage === 'stage2' || exports.currentStage === 'practiceStage2') {
             choice = event.key === 'ArrowLeft' ? 'A' : 'B';
             if (((_a = document.getElementById('planet-Y-options')) === null || _a === void 0 ? void 0 : _a.style.display) === 'block') {
                 choice = event.key === 'ArrowLeft' ? 'C' : 'D';

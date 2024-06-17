@@ -69,7 +69,7 @@
         <br>
         <p>Now is the time to play the real game. </p>
         <p>The game will take 8-10 minutes to play. </p>
-        <p>You will get to go to space 120 times. </p>
+        <p>You will have the opportunity to launch into space 150 times to find gems. </p>
         <p>Remember, you will earn a monetary bonus based on the number of points you earn in this game. Good luck!</p>
         <br></br>
         <p><b><i>Press any key to <u>start the real game.</u></i></b></p>
@@ -79,25 +79,30 @@
         <!-- insert button to play again potentially -->
     </div>
     <div id="game-display" style="display: none;">
-        <div id="task-top"></div>
         <div id="stage-1-options">
-            <div id="stage-1-instructions">
+            <div id="stage-1-practice-instructions">
                 <h1>You are on Earth, preparing for your passage into space. </h1>
                 <p>To launch into space and find inter-galactic gems, choose a rocket ship to ride!</p>
                 <p>Depending on which rocketship you choose, you may enter one of two planets.</p>
                 <p>Choose carefully, as the same rocket may not always go to the same planet...</p>
-                <p><b><i>Press LEFT ARROW for the rocket on the left.<br> Press RIGHT ARROW for the rocket on the right.</i></b></p>
+                <p><b><i>Press LEFT ARROW for the rocket on the left. Press RIGHT ARROW for the rocket on the right.</i></b></p>
+            </div>
+            <div id="stage-1-main-instructions" style="display: none;">
+                <h1>You are on Earth. Choose a rocket!</h1>
+                <p><b><i>Press LEFT ARROW for the rocket on the left. Press RIGHT ARROW for the rocket on the right.</i></b></p>
             </div>
             <img class="rocket-img" src="img/Stage1-rocket_A.png" alt="Option X">
             <img class="rocket-img" src="img/Stage1-rocket_B.png" alt="Option Y">
-            <!-- <img src="img/Stage1-rocket_A.png" alt="Option X" onclick="chooseOption('X')" style="cursor: pointer;">
-            <img src="img/Stage1-rocket_B.png" alt="Option Y" onclick="chooseOption('Y')" style="cursor: pointer;"> -->
         </div>
         <div id="stage-2-options" style="display:none;">
-            <div id="stage-2-instructions">
+            <div id="stage-2-practice-instructions">
                 <h1>You have arrived to one of the planets. </h1>
                 <p>Two alien traders stand before you. To find a gem, speak with one of the aliens. <br>One of these aliens may have more (or better) gems to offer you, so make your choice carefully...</p>
-                <p><b><i>Press LEFT ARROW for the alien on the left.<br> Press RIGHT ARROW for the alien on the right.</i></b></p>
+                <p><b><i>Press LEFT ARROW for the alien on the left. Press RIGHT ARROW for the alien on the right.</i></b></p>
+            </div>
+            <div id="stage-2-main-instructions" style="display: none;">
+                <h1>You have arrived to one of the planets. Choose an alien. </h1>
+                <p><b><i>Press LEFT ARROW for the alien on the left. Press RIGHT ARROW for the alien on the right.</i></b></p>
             </div>
             <h1 id="reward-message" style="display:none;"></h1>       
             <div id="reward-container" >
@@ -109,8 +114,6 @@
                 <div class="alien-container">
                     <img class="alien-img" src="img/Stage2-alien-green-A.png" alt="Option A">
                     <img class="alien-img" src="img/Stage2-alien-green-B.png" alt="Option B">
-                <!-- <img class="alien-img" src="img/Stage2-alien-green-A.png" alt="Option A" onclick="chooseOption('A')" style="cursor: pointer;">
-                <img class="alien-img" src="img/Stage2-alien-green-B.png" alt="Option B" onclick="chooseOption('B')" style="cursor: pointer;"> -->
                 </div>
             </div>
             <div id="planet-Y-options" class="planet-container">
@@ -121,14 +124,9 @@
                 </div>
             </div>
         </div>
-        <!-- <div id="reward-stage">  -->
-            <!-- style="display:none;" -->
-            <!-- <a href onclick="nextRound()">Proceed to the next round.</a> -->
-        <!-- </div> -->
         <div id="task-bottom">
             <h2>Points: <span id="pointCounter">0</span></h2>
             <p>Round <span id="roundNumber">1</span></p>
-            <!-- <p id="result"></p> -->
         </div>
     </div>
     
