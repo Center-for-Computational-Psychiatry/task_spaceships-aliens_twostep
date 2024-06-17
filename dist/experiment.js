@@ -133,7 +133,7 @@ function chooseOption(option) {
     }
     document.getElementById('roundNumber').innerText = exports.round.toString();
     // Save user choices into data object
-    exports.results.push({ round: exports.round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });
+    exports.results.push({ stage: exports.currentStage, round: exports.round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });
     // Choice Result Display (mostly for debugging)
     // document.getElementById('result')!.innerText = `You chose ${option}. Outcome: ${outcome}. Reward: ${reward}`;
     //document.getElementById('result').innerText = `You won a reward: ${reward}`; // this needs to be removed
@@ -208,7 +208,7 @@ function saveResultsToCSV(results) {
     var csvContent = "data:text/csv;charset=utf-8,";
     csvContent += "Round,Choice,Outcome,Reward\n";
     results.forEach(function (result) {
-        var row = result.round + "," + result.choice + "," + result.outcome + "," + result.reward + "\n";
+        var row = result.stage + "," + result.round + "," + result.choice + "," + result.outcome + "," + result.reward + "\n";
         csvContent += row;
     });
     var encodedUri = encodeURI(csvContent);

@@ -2,7 +2,7 @@ export let round: number = 1;
 // export let totalRounds: number = 10; // for debugging
 export let totalRounds: number = 10;
 export let currentStage: string = "welcome"; // [welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, stage1, stage2]
-export let results: { round: number; choice: string; outcome: string; reward: number, rewardImage: string }[] = [];
+export let results: { stage: string, round: number; choice: string; outcome: string; reward: number, rewardImage: string }[] = [];
 export let points: number = 0;
 let inputAllowed: boolean = true; // Flag to control input
 
@@ -144,7 +144,7 @@ export function chooseOption(option: string): void {
     document.getElementById('roundNumber')!.innerText = round.toString();
     
     // Save user choices into data object
-    results.push({ round: round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });
+    results.push({ stage: currentStage, round: round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });
 
     // Choice Result Display (mostly for debugging)
     // document.getElementById('result')!.innerText = `You chose ${option}. Outcome: ${outcome}. Reward: ${reward}`;
@@ -213,7 +213,7 @@ export function endTask() {
     // alert("Task completed! Thank you for participating.");
 }
 
-export function saveResultsToCSV(results: { round: number; choice: string; outcome: string; reward: number, rewardImage: string  }[]): void {
+export function saveResultsToCSV(results: { stage: string; round: number; choice: string; outcome: string; reward: number, rewardImage: string  }[]): void {
     let subjectId: string = getParameterByName('subject_id', window.location.href) || 'UnknownSubject';
     // alternative: let subjectId: string = getParameterByName('subject_id', window.location.href) ?? 'UnknownSubject';
     let timestamp: string = new Date().toISOString().replace(/:/g, '-');
@@ -222,7 +222,7 @@ export function saveResultsToCSV(results: { round: number; choice: string; outco
     let csvContent = "data:text/csv;charset=utf-8,";
     csvContent += "Round,Choice,Outcome,Reward\n";
     results.forEach(function(result) {
-        let row: string = result.round + "," + result.choice + "," + result.outcome + "," + result.reward + "\n";
+        let row: string = result.stage + "," + result.round + "," + result.choice + "," + result.outcome + "," + result.reward + "\n";
         csvContent += row;
     });
     var encodedUri: string = encodeURI(csvContent);
