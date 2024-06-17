@@ -4,9 +4,10 @@ exports.getParameterByName = exports.saveResultsToCSV = exports.endTask = export
 exports.round = 1;
 // export let totalRounds: number = 10; // for debugging
 exports.totalRounds = 10;
-exports.currentStage = "instructions"; // [instructions, stage1, stage2]
+exports.currentStage = "welcome"; // [welcome, instructions1, instructions2, instructions3, practice-stage1, practice-stage2, instructionsFinal, stage1, stage2]
 exports.results = [];
 exports.points = 0;
+var inputAllowed = true; // Flag to control input
 // variables for game setting 1
 var REWARD_1 = { points: 100, image: "reward-img-gem", message: "Yay! You found a gem of 100 points! You will now fly back to Earth..." };
 var REWARD_2 = { points: 0, image: "reward-img-dirt", message: "Aw, you found only some dirt (no points)! You will now fly back to Earth..." };
@@ -28,6 +29,8 @@ var stage2Options = {
 //     "D": { likelihoods: [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3] },
 // }
 function chooseOption(option) {
+    if (!inputAllowed)
+        return; // Ignore keyboard input if not allowed
     var outcome = '';
     var reward = 0;
     var rewardImage = '';
@@ -54,7 +57,7 @@ function chooseOption(option) {
         }
         ;
     }
-    else { // Stage 2: Option A, B, C, or D
+    else if (exports.currentStage === "stage2") { // Stage 2: Option A, B, C, or D
         console.log("option: " + option);
         // get stage2Options with only the user's choice at this step
         // e.g. likelihoods: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0]
@@ -76,15 +79,12 @@ function chooseOption(option) {
                 rewardImage = REWARD_2.image;
                 rewardMessage = REWARD_2.message;
             }
+            inputAllowed = false;
             // reward message and image displayed for 0.3 seconds
             document.getElementById('stage-2-instructions').style.display = 'none';
             document.getElementById('reward-message').innerText = rewardMessage;
             document.getElementById('reward-message').style.display = 'block';
             document.getElementById(rewardImage).style.display = 'block';
-            // rewardImgElement!.style.display = 'block';
-            // if (rewardImgElement instanceof HTMLImageElement) { 
-            //     rewardImgElement.src = rewardImage; 
-            // }
             // do this only after temporary reward display shows
             setTimeout(function () {
                 exports.points += reward;
@@ -104,31 +104,48 @@ function chooseOption(option) {
                 else {
                     endTask();
                 }
+                inputAllowed = true;
             }, 2000);
         }
         else {
             console.log("choiceConfig doesn't exist");
         }
     }
+    document.getElementById('roundNumber').innerText = exports.round.toString();
+    // Save user choices into data object
+    exports.results.push({ round: exports.round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });
     // Choice Result Display (mostly for debugging)
     // document.getElementById('result')!.innerText = `You chose ${option}. Outcome: ${outcome}. Reward: ${reward}`;
     //document.getElementById('result').innerText = `You won a reward: ${reward}`; // this needs to be removed
-    exports.results.push({ round: exports.round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });
-    document.getElementById('roundNumber').innerText = exports.round.toString();
 }
 exports.chooseOption = chooseOption;
 // Event listener for instructions screen
 var handleKeydown = function (event) {
     console.log("key event logged");
     // if (event.target && (event.target as HTMLElement).id !== 'instructions-screen') return; // Ignore keydown events outside the instructions screen
-    if (exports.currentStage == "instructions") {
-        console.log("second key event logged");
-        document.getElementById('instructions-screen').style.display = 'none';
-        document.getElementById('game-display').style.display = 'block';
-        exports.currentStage = "stage1";
+    if (exports.currentStage == "welcome") {
+        document.getElementById('welcome-screen').style.display = 'none';
+        document.getElementById('instructions-screen-1').style.display = 'block';
+        exports.currentStage = "instructions1";
+        document.addEventListener('keydown', handleKeydown);
     }
-    // Remove the event listener after continuing from the instructions screen
-    document.removeEventListener('keydown', handleKeydown);
+    else if (exports.currentStage == "instructions1") {
+        document.getElementById('instructions-screen-1').style.display = 'none';
+        document.getElementById('instructions-screen-2').style.display = 'block';
+        exports.currentStage = "instructions2";
+    }
+    else if (exports.currentStage == "instructions2") {
+        document.getElementById('instructions-screen-2').style.display = 'none';
+        document.getElementById('instructions-screen-3').style.display = 'block';
+        exports.currentStage = "instructions3";
+    }
+    else if (exports.currentStage == "instructions3") {
+        document.getElementById('instructions-screen-3').style.display = 'none';
+        document.getElementById('instructions-final').style.display = 'block';
+        exports.currentStage = "practice-stage1";
+        // Remove the event listener after continuing to the practice session
+        document.removeEventListener('keydown', handleKeydown);
+    }
 };
 document.addEventListener('keydown', handleKeydown);
 // Event listener for making key presses in Stage 1 and Stage 2
@@ -139,14 +156,15 @@ document.addEventListener('keydown', function (event) {
         var choice = void 0;
         if (exports.currentStage === 'stage1') {
             choice = event.key === 'ArrowLeft' ? 'X' : 'Y';
+            chooseOption(choice);
         }
-        else {
+        else if (exports.currentStage === 'stage2') {
             choice = event.key === 'ArrowLeft' ? 'A' : 'B';
             if (((_a = document.getElementById('planet-Y-options')) === null || _a === void 0 ? void 0 : _a.style.display) === 'block') {
                 choice = event.key === 'ArrowLeft' ? 'C' : 'D';
             }
+            chooseOption(choice);
         }
-        chooseOption(choice);
     }
 });
 function endTask() {
