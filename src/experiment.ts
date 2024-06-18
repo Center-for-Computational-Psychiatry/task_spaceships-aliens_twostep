@@ -103,14 +103,17 @@ export function chooseOption(option: string): void {
             document.getElementById('reward-message')!.style.display = 'block';
             document.getElementById(rewardImage)!.style.display = 'block';
             
+
             // do this only after temporary reward display shows
             setTimeout(function() {
                 points += reward;
+                round++;
+                console.log("round: " + round)    
+                document.getElementById('roundNumber')!.innerText = round.toString();
                 document.getElementById('pointCounter')!.innerText = points.toString();
                 document.getElementById('reward-message')!.style.display = 'none';
                 document.getElementById(rewardImage)!.style.display = 'none';
-                round++;
-                console.log("round: " + round)
+                
                 
                 // check if at the end of game
                 if (round <= totalRounds) {
@@ -141,7 +144,7 @@ export function chooseOption(option: string): void {
 
 
     }
-    document.getElementById('roundNumber')!.innerText = round.toString();
+    // document.getElementById('roundNumber')!.innerText = round.toString();
     
     // Save user choices into data object
     results.push({ stage: currentStage, round: round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });

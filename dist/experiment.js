@@ -100,11 +100,12 @@ function chooseOption(option) {
             // do this only after temporary reward display shows
             setTimeout(function () {
                 exports.points += reward;
+                exports.round++;
+                console.log("round: " + exports.round);
+                document.getElementById('roundNumber').innerText = exports.round.toString();
                 document.getElementById('pointCounter').innerText = exports.points.toString();
                 document.getElementById('reward-message').style.display = 'none';
                 document.getElementById(rewardImage).style.display = 'none';
-                exports.round++;
-                console.log("round: " + exports.round);
                 // check if at the end of game
                 if (exports.round <= exports.totalRounds) {
                     document.getElementById('stage-2-options').style.display = "none";
@@ -131,7 +132,7 @@ function chooseOption(option) {
             console.log("choiceConfig doesn't exist");
         }
     }
-    document.getElementById('roundNumber').innerText = exports.round.toString();
+    // document.getElementById('roundNumber')!.innerText = round.toString();
     // Save user choices into data object
     exports.results.push({ stage: exports.currentStage, round: exports.round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });
     // Choice Result Display (mostly for debugging)
