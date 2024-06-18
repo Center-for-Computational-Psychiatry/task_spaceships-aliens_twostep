@@ -2,7 +2,7 @@ export let round: number = 1;
 // export let totalRounds: number = 10; // for debugging
 export let totalRounds: number = 10;
 export let currentStage: string = "welcome"; // [welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, stage1, stage2]
-export let results: { stage: string, round: number; choice: string; outcome: string; reward: number, rewardImage: string }[] = [];
+export let results: { stage: string, round: number; choice: string; outcome: string; reward: number, points: number; rewardImage: string }[] = [];
 export let points: number = 0;
 let inputAllowed: boolean = true; // Flag to control input
 
@@ -43,7 +43,7 @@ export function chooseOption(option: string): void {
             outcome = Math.random() < 1.0 ? 'Y' : 'X';
         }
         
-        results.push({ stage: currentStage, round: round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });
+        results.push({ stage: currentStage, round: round, choice: option, outcome: outcome, reward: reward, points: points, rewardImage: rewardImage });
 
         if (currentStage === "stage1") { 
             // Switch main stages
@@ -96,10 +96,6 @@ export function chooseOption(option: string): void {
             // Don't allow key press input during reward display phase
             inputAllowed = false;
             
-            // Save user choices into data object
-            results.push({ stage: currentStage, round: round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });
-            
-
             // reward message and image displayed for 0.3 seconds
             document.getElementById('stage-2-main-instructions')!.style.display = 'none';
             document.getElementById('stage-2-practice-instructions')!.style.display = 'none';
@@ -112,6 +108,9 @@ export function chooseOption(option: string): void {
             // do this only after temporary reward display shows
             setTimeout(function() {
                 points += reward;
+                // Save user choices into data object
+                results.push({ stage: currentStage, round: round, choice: option, outcome: outcome, reward: reward, points: points, rewardImage: rewardImage });
+                
                 round++;
                 console.log("round: " + round)    
                 document.getElementById('roundNumber')!.innerText = round.toString();
@@ -216,16 +215,16 @@ export function endTask() {
     // alert("Task completed! Thank you for participating.");
 }
 
-export function saveResultsToCSV(results: { stage: string; round: number; choice: string; outcome: string; reward: number, rewardImage: string  }[]): void {
+export function saveResultsToCSV(results: { stage: string; round: number; choice: string; outcome: string; reward: number, points: number; rewardImage: string  }[]): void {
     let subjectId: string = getParameterByName('subject_id', window.location.href) || 'UnknownSubject';
     // alternative: let subjectId: string = getParameterByName('subject_id', window.location.href) ?? 'UnknownSubject';
     let timestamp: string = new Date().toISOString().replace(/:/g, '-');
     let filename: string = `data/two_step_task_results_${subjectId}_${timestamp}.csv`;
     
     let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Stage,Round,Choice,Outcome,Reward\n";
+    csvContent += "Stage,Round,Choice,Outcome,Reward,TotalPoints\n";
     results.forEach(function(result) {
-        let row: string = result.stage + "," + result.round + "," + result.choice + "," + result.outcome + "," + result.reward + "\n";
+        let row: string = result.stage + "," + result.round + "," + result.choice + "," + result.outcome + "," + result.reward + "," + result.points + "\n";
         csvContent += row;
     });
     var encodedUri: string = encodeURI(csvContent);
