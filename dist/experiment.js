@@ -42,6 +42,7 @@ function chooseOption(option) {
         else { // option Y
             outcome = Math.random() < 1.0 ? 'Y' : 'X';
         }
+        exports.results.push({ stage: exports.currentStage, round: exports.round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });
         if (exports.currentStage === "stage1") {
             // Switch main stages
             exports.currentStage = "stage2";
@@ -90,7 +91,10 @@ function chooseOption(option) {
                 rewardImage = REWARD_2.image;
                 rewardMessage = REWARD_2.message;
             }
+            // Don't allow key press input during reward display phase
             inputAllowed = false;
+            // Save user choices into data object
+            exports.results.push({ stage: exports.currentStage, round: exports.round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });
             // reward message and image displayed for 0.3 seconds
             document.getElementById('stage-2-main-instructions').style.display = 'none';
             document.getElementById('stage-2-practice-instructions').style.display = 'none';
@@ -132,9 +136,6 @@ function chooseOption(option) {
             console.log("choiceConfig doesn't exist");
         }
     }
-    // document.getElementById('roundNumber')!.innerText = round.toString();
-    // Save user choices into data object
-    exports.results.push({ stage: exports.currentStage, round: exports.round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });
     // Choice Result Display (mostly for debugging)
     // document.getElementById('result')!.innerText = `You chose ${option}. Outcome: ${outcome}. Reward: ${reward}`;
     //document.getElementById('result').innerText = `You won a reward: ${reward}`; // this needs to be removed
@@ -207,7 +208,7 @@ function saveResultsToCSV(results) {
     var timestamp = new Date().toISOString().replace(/:/g, '-');
     var filename = "data/two_step_task_results_".concat(subjectId, "_").concat(timestamp, ".csv");
     var csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Round,Choice,Outcome,Reward\n";
+    csvContent += "Stage,Round,Choice,Outcome,Reward\n";
     results.forEach(function (result) {
         var row = result.stage + "," + result.round + "," + result.choice + "," + result.outcome + "," + result.reward + "\n";
         csvContent += row;

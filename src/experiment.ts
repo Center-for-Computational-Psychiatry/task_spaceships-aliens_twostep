@@ -43,6 +43,7 @@ export function chooseOption(option: string): void {
             outcome = Math.random() < 1.0 ? 'Y' : 'X';
         }
         
+        results.push({ stage: currentStage, round: round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });
 
         if (currentStage === "stage1") { 
             // Switch main stages
@@ -92,8 +93,12 @@ export function chooseOption(option: string): void {
                 rewardImage = REWARD_2.image;
                 rewardMessage = REWARD_2.message;
             }
-            
+            // Don't allow key press input during reward display phase
             inputAllowed = false;
+            
+            // Save user choices into data object
+            results.push({ stage: currentStage, round: round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });
+            
 
             // reward message and image displayed for 0.3 seconds
             document.getElementById('stage-2-main-instructions')!.style.display = 'none';
@@ -141,13 +146,8 @@ export function chooseOption(option: string): void {
             console.log("choiceConfig doesn't exist")
         }
 
-
-
     }
-    // document.getElementById('roundNumber')!.innerText = round.toString();
     
-    // Save user choices into data object
-    results.push({ stage: currentStage, round: round, choice: option, outcome: outcome, reward: reward, rewardImage: rewardImage });
 
     // Choice Result Display (mostly for debugging)
     // document.getElementById('result')!.innerText = `You chose ${option}. Outcome: ${outcome}. Reward: ${reward}`;
@@ -223,7 +223,7 @@ export function saveResultsToCSV(results: { stage: string; round: number; choice
     let filename: string = `data/two_step_task_results_${subjectId}_${timestamp}.csv`;
     
     let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Round,Choice,Outcome,Reward\n";
+    csvContent += "Stage,Round,Choice,Outcome,Reward\n";
     results.forEach(function(result) {
         let row: string = result.stage + "," + result.round + "," + result.choice + "," + result.outcome + "," + result.reward + "\n";
         csvContent += row;
