@@ -1,13 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getParameterByName = exports.saveResultsToCSV = exports.endTask = exports.chooseOption = exports.points = exports.results = exports.currentStage = exports.totalRounds = exports.round = void 0;
+exports.getParameterByName = exports.saveResultsToCSV = exports.endTask = exports.startMainStudy = exports.transitionToMainStudy = exports.chooseOption = exports.keyInputAllowed = exports.results = exports.currentStage = exports.points = exports.totalRounds = exports.mainRounds = exports.practiceRounds = exports.round = void 0;
 exports.round = 1;
-// export let totalRounds: number = 10; // for debugging
-exports.totalRounds = 10;
-exports.currentStage = "welcome"; // [welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, stage1, stage2]
-exports.results = [];
+exports.practiceRounds = 10;
+exports.mainRounds = 15;
+exports.totalRounds = exports.practiceRounds;
 exports.points = 0;
-var inputAllowed = true; // Flag to control input
+exports.currentStage = "welcome"; // [welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, mainStage1, mainStage2]
+exports.results = [];
+exports.keyInputAllowed = true; // Flag to control input
 // variables for game setting 1
 var REWARD_1 = { points: 100, image: "reward-img-gem", message: "Yay! You found a gem of 100 points! You will now fly back to Earth..." };
 var REWARD_2 = { points: 0, image: "reward-img-dirt", message: "Aw, you found only some dirt (no points)! You will now fly back to Earth..." };
@@ -29,23 +30,25 @@ var stage2Options = {
 //     "D": { likelihoods: [0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3, 0.3] },
 // }
 function chooseOption(option) {
-    if (!inputAllowed)
+    if (!exports.keyInputAllowed)
         return; // Ignore keyboard input if not allowed
     var outcome = '';
     var reward = 0;
     var rewardImage = '';
     var rewardMessage = '';
-    if (exports.currentStage === "stage1" || exports.currentStage === "practiceStage1") { // Stage 1: Option X or Y
+    // NOTE: Do not put round counter here because not updated until much later stage
+    if (exports.currentStage === "mainStage1" || exports.currentStage === "practiceStage1") { // Stage 1: Option X or Y
         if (option === 'X') {
             outcome = Math.random() < 1.0 ? 'X' : 'Y';
         }
         else { // option Y
             outcome = Math.random() < 1.0 ? 'Y' : 'X';
         }
+        // NOTE: Do not put round counter here because not updated until much later stage
         exports.results.push({ stage: exports.currentStage, round: exports.round, choice: option, outcome: outcome, reward: reward, points: exports.points, rewardImage: rewardImage });
-        if (exports.currentStage === "stage1") {
+        if (exports.currentStage === "mainStage1") {
             // Switch main stages
-            exports.currentStage = "stage2";
+            exports.currentStage = "mainStage2";
             // Show Stage 2 Options, hide stage 1 display
             document.getElementById('stage-2-main-instructions').style.display = "block";
         }
@@ -69,7 +72,7 @@ function chooseOption(option) {
         }
         ;
     }
-    else if (exports.currentStage === "stage2" || exports.currentStage === "practiceStage2") { // Stage 2: Option A, B, C, or D
+    else if (exports.currentStage === "mainStage2" || exports.currentStage === "practiceStage2") { // Stage 2: Option A, B, C, or D
         console.log("option: " + option);
         // get stage2Options with only the user's choice at this step
         // e.g. likelihoods: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0]
@@ -92,44 +95,57 @@ function chooseOption(option) {
                 rewardMessage = REWARD_2.message;
             }
             // Don't allow key press input during reward display phase
-            inputAllowed = false;
+            exports.keyInputAllowed = false;
             // reward message and image displayed for 0.3 seconds
             document.getElementById('stage-2-main-instructions').style.display = 'none';
             document.getElementById('stage-2-practice-instructions').style.display = 'none';
             document.getElementById('reward-message').innerText = rewardMessage;
             document.getElementById('reward-message').style.display = 'block';
             document.getElementById(rewardImage).style.display = 'block';
-            // do this only after temporary reward display shows
+            // NOTE: Do not put round counter here because not updated until much later stage
+            // Update points value and points counter as soon as user makes the choice (during reward display)
+            exports.points += reward;
+            document.getElementById('pointCounter').innerText = exports.points.toString(); // this updates the point counter as soon as reward is selected, correctly for the practice trials at least
+            // Do the following AFTER reward display ends
             setTimeout(function () {
-                exports.points += reward;
                 // Save user choices into data object
                 exports.results.push({ stage: exports.currentStage, round: exports.round, choice: option, outcome: outcome, reward: reward, points: exports.points, rewardImage: rewardImage });
                 exports.round++;
-                console.log("round: " + exports.round);
+                console.log("round before update: " + exports.round);
                 document.getElementById('roundNumber').innerText = exports.round.toString();
-                document.getElementById('pointCounter').innerText = exports.points.toString();
                 document.getElementById('reward-message').style.display = 'none';
                 document.getElementById(rewardImage).style.display = 'none';
-                // check if at the end of game
+                // Check if end of practice session or main study
                 if (exports.round <= exports.totalRounds) {
+                    // document.getElementById('roundNumber')!.innerText = round.toString();
+                    // document.getElementById('pointCounter')!.innerText = points.toString();
                     document.getElementById('stage-2-options').style.display = "none";
                     document.getElementById('stage-1-options').style.display = "block";
-                    // Show Stage 1 Displays
-                    if (exports.currentStage === "stage2") {
-                        exports.currentStage = "stage1";
+                    if (exports.currentStage === "mainStage2") {
+                        // Show Stage 1 Main Displays
+                        exports.currentStage = "mainStage1";
                         document.getElementById('stage-1-main-instructions').style.display = "block";
                         document.getElementById('stage-2-main-instructions').style.display = 'block';
                     }
                     else { // currentStage === "practiceStage2"
+                        // Show Stage 1 Practice Displays
                         exports.currentStage = "practiceStage1";
                         document.getElementById('stage-1-practice-instructions').style.display = "block";
                         document.getElementById('stage-2-practice-instructions').style.display = 'block';
                     }
                 }
                 else {
-                    endTask();
+                    exports.round = 1;
+                    exports.points = 0;
+                    console.log("round after update: " + exports.round);
+                    if (exports.currentStage == "practiceStage1" || exports.currentStage == "practiceStage2") {
+                        transitionToMainStudy();
+                    }
+                    else { // if currently in the main study
+                        endTask();
+                    }
                 }
-                inputAllowed = true;
+                exports.keyInputAllowed = true;
             }, 2000);
         }
         else {
@@ -165,7 +181,12 @@ var handleKeydown = function (event) {
         document.getElementById('instructions-screen-3').style.display = 'none';
         document.getElementById('game-display').style.display = 'block';
         exports.currentStage = "practiceStage1";
-        // Remove the event listener after continuing to the practice session
+        // Remove this event listener after continuing to the practice session
+        document.removeEventListener('keydown', handleKeydown);
+    }
+    else if (exports.currentStage == "instructionsFinal") {
+        startMainStudy();
+        // Remove this event listener after continuing to the main session
         document.removeEventListener('keydown', handleKeydown);
     }
 };
@@ -174,13 +195,14 @@ document.addEventListener('keydown', handleKeydown);
 document.addEventListener('keydown', function (event) {
     var _a;
     event.preventDefault(); // Prevent default scrolling behavior of arrow keys
+    console.log("key event logged");
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
         var choice = void 0;
-        if (exports.currentStage === 'stage1' || exports.currentStage === 'practiceStage1') {
+        if (exports.currentStage === 'mainStage1' || exports.currentStage === 'practiceStage1') {
             choice = event.key === 'ArrowLeft' ? 'X' : 'Y';
             chooseOption(choice);
         }
-        else if (exports.currentStage === 'stage2' || exports.currentStage === 'practiceStage2') {
+        else if (exports.currentStage === 'mainStage2' || exports.currentStage === 'practiceStage2') {
             choice = event.key === 'ArrowLeft' ? 'A' : 'B';
             if (((_a = document.getElementById('planet-Y-options')) === null || _a === void 0 ? void 0 : _a.style.display) === 'block') {
                 choice = event.key === 'ArrowLeft' ? 'C' : 'D';
@@ -189,17 +211,30 @@ document.addEventListener('keydown', function (event) {
         }
     }
 });
+function transitionToMainStudy() {
+    exports.currentStage = "instructionsFinal";
+    exports.totalRounds = exports.mainRounds;
+    document.getElementById('instructions-final').style.display = "block";
+    document.getElementById('game-display').style.display = "none";
+    document.addEventListener('keydown', handleKeydown);
+}
+exports.transitionToMainStudy = transitionToMainStudy;
+function startMainStudy() {
+    document.getElementById('instructions-final').style.display = 'none';
+    document.getElementById('stage-1-practice-instructions').style.display = 'none';
+    document.getElementById('stage-1-main-instructions').style.display = 'block';
+    document.getElementById('roundNumber').innerText = exports.round.toString(); // needs to be here in order for first trial to render correct values
+    document.getElementById('pointCounter').innerText = exports.points.toString(); // needs to be here in order for first trial to render correct values
+    document.getElementById('game-display').style.display = 'block';
+    document.getElementById('stage-1-options').style.display = 'block';
+    document.getElementById('stage-2-options').style.display = 'none';
+    exports.currentStage = "mainStage1";
+}
+exports.startMainStudy = startMainStudy;
 function endTask() {
-    // End of the task, save results to CSV
     saveResultsToCSV(exports.results);
-    // wipe the game display elements and notify participant of end of study
     document.getElementById('game-status').style.display = "block";
     document.getElementById('game-display').style.display = "none";
-    // this resets the round and points but not reflected in the display until 1-2 rounds later
-    exports.round = 1;
-    exports.results = [];
-    exports.points = 0;
-    // alert("Task completed! Thank you for participating.");
 }
 exports.endTask = endTask;
 function saveResultsToCSV(results) {
