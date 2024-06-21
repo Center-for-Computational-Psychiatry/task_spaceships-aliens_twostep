@@ -36,6 +36,12 @@ export function chooseOption(option: string): void {
     let reward: number = 0;
     let rewardImage: string = '';
     let rewardMessage: string = '';
+    let intertrialInterval1: number = Math.random() < 0.5 ? 500 : 1000; // 500 or 1000 milliseconds
+    // let intertrialInterval2options: [number] = [500, 1000, 1500]; 
+    // let intertrialInterval2: number = intertrialInterval2options[(Math.floor(Math.random() * intertrialInterval2options.length))]
+    console.log("intertrialInterval1: " + intertrialInterval1)
+    // console.log("intertrialInterval2: " + intertrialInterval2)
+
     // NOTE: Do not put round counter here because not updated until much later stage
 
     if (currentStage === "mainStage1" || currentStage === "practiceStage1" ) { // Stage 1: Option X or Y
@@ -49,30 +55,33 @@ export function chooseOption(option: string): void {
 
         results.push({ stage: currentStage, round: round, choice: option, outcome: outcome, reward: reward, points: points, rewardImage: rewardImage });
 
-        if (currentStage === "mainStage1") { 
-            // Switch main stages
-            currentStage = "mainStage2"; 
-            // Show Stage 2 Options, hide stage 1 display
-            document.getElementById('stage-2-main-instructions')!.style.display = "block";    
-        } else { // currentStage === practiceStage1
-            // Switch practice stages
-            currentStage = "practiceStage2"; 
-            // Show Stage 2 Practice Options, hide stage 1 practice display
-            document.getElementById('stage-2-practice-instructions')!.style.display = "block";    
-        }
-        // Show Stage 2 Options, hide stage 1 display (same for main vs practice)
-        document.getElementById('stage-2-options')!.style.display = "block";
-        document.getElementById('stage-1-options')!.style.display = "none";
-        
+        // Introduce intertrialInterval delay between Stage 1 user choice and Stage 2 display
+        setTimeout(() => {
+            if (currentStage === "mainStage1") { 
+                // Switch main stages
+                currentStage = "mainStage2"; 
+                // Show Stage 2 Options, hide stage 1 display
+                document.getElementById('stage-2-main-instructions')!.style.display = "block";    
+            } else { // currentStage === practiceStage1
+                // Switch practice stages
+                currentStage = "practiceStage2"; 
+                // Show Stage 2 Practice Options, hide stage 1 practice display
+                document.getElementById('stage-2-practice-instructions')!.style.display = "block";    
+            }
+            // Show Stage 2 Options, hide stage 1 display (same for main vs practice)
+            document.getElementById('stage-2-options')!.style.display = "block";
+            document.getElementById('stage-1-options')!.style.display = "none";
+            
 
-        // determine which Planet in Stage 2 to display
-        if (outcome === 'X') { 
-            document.getElementById('planet-X-options')!.style.display = "block";
-            document.getElementById('planet-Y-options')!.style.display = "none";
-        } else { // Option Y
-            document.getElementById('planet-Y-options')!.style.display = "block";
-            document.getElementById('planet-X-options')!.style.display = "none";
-        };
+            // determine which Planet in Stage 2 to display
+            if (outcome === 'X') { 
+                document.getElementById('planet-X-options')!.style.display = "block";
+                document.getElementById('planet-Y-options')!.style.display = "none";
+            } else { // Option Y
+                document.getElementById('planet-Y-options')!.style.display = "block";
+                document.getElementById('planet-X-options')!.style.display = "none";
+            };
+        }, intertrialInterval1); // 0.5 or 1.0 seconds
         
     } else if (currentStage === "mainStage2" || currentStage === "practiceStage2") { // Stage 2: Option A, B, C, or D
         console.log("option: " + option)
@@ -84,7 +93,8 @@ export function chooseOption(option: string): void {
         if (userChoice) {
             const likelihoods = userChoice.likelihoods;
             const currentLikelihood = likelihoods[round]; // pick the likelihood associated with this round
-            
+            console.log("currentLikelihood: " + currentLikelihood)
+
             // select reward from user choice
             if (Math.random() < currentLikelihood) {
                 outcome = option;
@@ -100,7 +110,7 @@ export function chooseOption(option: string): void {
             // Don't allow key press input during reward display phase
             keyInputAllowed = false;
             
-            // reward message and image displayed for 0.3 seconds
+            // reward message and image displayed for 2 seconds
             document.getElementById('stage-2-main-instructions')!.style.display = 'none';
             document.getElementById('stage-2-practice-instructions')!.style.display = 'none';
 
@@ -129,9 +139,6 @@ export function chooseOption(option: string): void {
                 
                 // Check if end of practice session or main study
                 if (round <= totalRounds) {
-                    // document.getElementById('roundNumber')!.innerText = round.toString();
-                    // document.getElementById('pointCounter')!.innerText = points.toString();
-                    
                     document.getElementById('stage-2-options')!.style.display = "none";
                     document.getElementById('stage-1-options')!.style.display = "block";
                     
@@ -156,7 +163,7 @@ export function chooseOption(option: string): void {
                         endTask();
                     }
                 }
-
+                // Re-allow keyboard input after reward display ends
                 keyInputAllowed = true;
 
             }, 2000);
