@@ -57,23 +57,25 @@ export function chooseOption(option: string): void {
 
         // Introduce intertrialInterval delay between Stage 1 user choice and Stage 2 display
         setTimeout(() => {
+            // Determine which key options to display (practice vs. main trials)
             if (currentStage === "mainStage1") { 
                 // Switch main stages
                 currentStage = "mainStage2"; 
                 // Show Stage 2 Options, hide stage 1 display
+                document.getElementById('stage-1-main-instructions')!.style.display = "none";
                 document.getElementById('stage-2-main-instructions')!.style.display = "block";    
             } else { // currentStage === practiceStage1
                 // Switch practice stages
                 currentStage = "practiceStage2"; 
                 // Show Stage 2 Practice Options, hide stage 1 practice display
+                document.getElementById('stage-1-practice-instructions')!.style.display = "none";
                 document.getElementById('stage-2-practice-instructions')!.style.display = "block";    
             }
-            // Show Stage 2 Options, hide stage 1 display (same for main vs practice)
+            // Show Stage 2 Options, hide stage 1 display (same for both main and practice)
             document.getElementById('stage-2-options')!.style.display = "block";
             document.getElementById('stage-1-options')!.style.display = "none";
             
-
-            // determine which Planet in Stage 2 to display
+            // Determine which Planet in Stage 2 to display
             if (outcome === 'X') { 
                 document.getElementById('planet-X-options')!.style.display = "block";
                 document.getElementById('planet-Y-options')!.style.display = "none";
@@ -81,6 +83,9 @@ export function chooseOption(option: string): void {
                 document.getElementById('planet-Y-options')!.style.display = "block";
                 document.getElementById('planet-X-options')!.style.display = "none";
             };
+            
+            keyInputAllowed = true; // Re-allow keyboard input after intertrial interval ends
+
         }, intertrialInterval1); // 0.5 or 1.0 seconds
         
     } else if (currentStage === "mainStage2" || currentStage === "practiceStage2") { // Stage 2: Option A, B, C, or D
@@ -107,8 +112,8 @@ export function chooseOption(option: string): void {
                 rewardImage = REWARD_2.image;
                 rewardMessage = REWARD_2.message;
             }
-            // Don't allow key press input during reward display phase
-            keyInputAllowed = false;
+            // // Don't allow key press input during reward display phase
+            // keyInputAllowed = false;
             
             // reward message and image displayed for 2 seconds
             document.getElementById('stage-2-main-instructions')!.style.display = 'none';
@@ -131,27 +136,27 @@ export function chooseOption(option: string): void {
                 results.push({ stage: currentStage, round: round, choice: option, outcome: outcome, reward: reward, points: points, rewardImage: rewardImage });
                 
                 round++;
-                console.log("round before update: " + round)    
+                console.log("round before update: " + round)
                 document.getElementById('roundNumber')!.innerText = round.toString();
 
                 document.getElementById('reward-message')!.style.display = 'none';
                 document.getElementById(rewardImage)!.style.display = 'none';
                 
+                document.getElementById('stage-2-options')!.style.display = "none";
                 // Check if end of practice session or main study
                 if (round <= totalRounds) {
-                    document.getElementById('stage-2-options')!.style.display = "none";
                     document.getElementById('stage-1-options')!.style.display = "block";
                     
                     if (currentStage === "mainStage2") {
                         // Show Stage 1 Main Displays
                         currentStage = "mainStage1";
                         document.getElementById('stage-1-main-instructions')!.style.display = "block";
-                        document.getElementById('stage-2-main-instructions')!.style.display = 'block';
+                        document.getElementById('stage-2-main-instructions')!.style.display = 'none';
                     } else { // currentStage === "practiceStage2"
                         // Show Stage 1 Practice Displays
                         currentStage = "practiceStage1";
                         document.getElementById('stage-1-practice-instructions')!.style.display = "block";
-                        document.getElementById('stage-2-practice-instructions')!.style.display = 'block';
+                        document.getElementById('stage-2-practice-instructions')!.style.display = 'none';
                     }
                 } else {
                     round = 1;
@@ -182,7 +187,7 @@ export function chooseOption(option: string): void {
 
 // Event listener for instructions screen
 const handleKeydown = function(event: KeyboardEvent) {
-    console.log("key event logged")
+    console.log("first key event logged")
     
     // if (event.target && (event.target as HTMLElement).id !== 'instructions-screen') return; // Ignore keydown events outside the instructions screen
     if (currentStage == "welcome") {    
@@ -214,22 +219,26 @@ document.addEventListener('keydown', handleKeydown);
 
 // Event listener for making key presses in Stage 1 and Stage 2
 document.addEventListener('keydown', function(event) {
+    if (!keyInputAllowed) return; // Ignore keyboard input if not allowed
+    console.log("second key event logged")
     event.preventDefault(); // Prevent default scrolling behavior of arrow keys
-    console.log("key event logged")
 
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
         let choice;
         if (currentStage === 'mainStage1' || currentStage === 'practiceStage1') {
+            console.log("key input stopped for stage 1")
             choice = event.key === 'ArrowLeft' ? 'X' : 'Y';
             chooseOption(choice);
+            keyInputAllowed = false; // Don't allow key press input after first key press in stage 1
         } else if (currentStage === 'mainStage2' || currentStage === 'practiceStage2') {
+            console.log("key input stopped for stage 2")
             choice = event.key === 'ArrowLeft' ? 'A' : 'B';
             if (document.getElementById('planet-Y-options')?.style.display === 'block') {
                 choice = event.key === 'ArrowLeft' ? 'C' : 'D';
             }
             chooseOption(choice);
+            keyInputAllowed = false; // Don't allow key press input after first key press in stage 2
         }
-        
     }
 });
 
@@ -243,12 +252,12 @@ export function transitionToMainStudy() {
 
 export function startMainStudy() {
     document.getElementById('instructions-final')!.style.display = 'none';
-    document.getElementById('stage-1-practice-instructions')!.style.display = 'none'; 
-    document.getElementById('stage-1-main-instructions')!.style.display = 'block'; 
     document.getElementById('roundNumber')!.innerText = round.toString(); // needs to be here in order for first trial to render correct values
     document.getElementById('pointCounter')!.innerText = points.toString(); // needs to be here in order for first trial to render correct values
     document.getElementById('game-display')!.style.display = 'block';
     document.getElementById('stage-1-options')!.style.display = 'block';
+    document.getElementById('stage-1-practice-instructions')!.style.display = 'none'; 
+    document.getElementById('stage-1-main-instructions')!.style.display = 'block'; 
     document.getElementById('stage-2-options')!.style.display = 'none';
     currentStage = "mainStage1"
 }
