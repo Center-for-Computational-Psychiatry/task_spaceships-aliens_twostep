@@ -1,6 +1,6 @@
 export let round: number = 1;
 export let practiceRounds: number = 10;
-export let mainRounds: number = 15; 
+export let mainRounds: number = 150; 
 export let totalRounds: number = practiceRounds;
 export let points: number = 0;
 export let currentStage: string = "welcome"; // [welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, mainStage1, mainStage2]
