@@ -24,6 +24,23 @@ p {
     font-size: 22px;
 }
 
+/* .demo-span {
+    border: 5px solid blue;
+} */
+
+.demo-img {
+    height: 300px;
+    width: auto;
+    border: 10px solid skyblue;
+}
+.demo-reward {
+    height: 150px;
+    width: auto;
+    max-width: 250px;
+    margin-left: 25px;
+    margin-right: 25px;
+}
+
 #game-status {
   display: none;
 }
