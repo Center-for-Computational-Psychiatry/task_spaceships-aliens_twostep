@@ -29,7 +29,7 @@
         <h1>Welcome to the Aliens and Spaceships Game!</h1>
         <br>
         <p>You are a citizen of Earth. In recent years, Earth has run out of rare gems and minerals. As an astronaut working for Secret Government Agency (SGA), you are sent to meet with intergalactic aliens on neighboring planets to find valuable gems around the galaxy.</p>
-        <p>In this game, you will earn points for each gem you find. Your mission director has directed you to take 150 trips into space to collect as many valuable gems as possible. </p>
+        <p>In this game, you will earn points for each gem you find. Your mission director has asked you to take 150 trips into space to collect as many valuable gems as possible. </p>
         <p>At the end of this game, you will earn a monetary bonus based on points collected during your mission. Good luck!</p>
         <p>This game takes 10-12 minutes to play. Please set aside 12 minutes for uninterrupted gameplay.</p>
         <br></br>
@@ -39,7 +39,7 @@
         <h1>Game Instructions</h1>
         <br>
         <p>In this game, you will get points from going to outer space and trading with alien traders. </p>
-        <p>In the first stage, you will decide which rocket to use to reach one of two alien planets. Due to unpredictable asteroid activity, each rocket will take you to one of the two planets most of the time and to the other planet sometimes. </p> 
+        <p>In the first stage, you will decide which spaceship to use to reach one of two alien planets. Due to unpredictable asteroid activity, each rocket will take you to one of the two planets most of the time and to the other planet sometimes. </p> 
         <p>You will be using the left and right arrow keys to make your selection (left for the left rocket, right for the right rocket).</p>
         <br></br>
         <p><b><i>Press any key to continue to the next instruction. </i></b></p>
@@ -67,7 +67,7 @@
         <h1>Get ready to play!</h1>
         <br>
         <p>Now is the time to play the real game. </p>
-        <p>The game will take 8-10 minutes to play. </p>
+        <p>The game will take 10-12 minutes to play. </p>
         <p>You will have the opportunity to launch into space 150 times to find gems. </p>
         <p>Remember, you will earn a monetary bonus based on the number of points you earn in this game. Good luck!</p>
         <br></br>
@@ -80,33 +80,37 @@
     <div id="game-display" style="display: none;">
         <div id="stage-1-options">
             <div id="stage-1-practice-instructions">
-                <h1>You are on Earth, preparing for your passage into space. </h1>
+                <h1>You are on Earth. Choose a rocket!</h1>
+                <p><i>Press LEFT ARROW for the rocket on the left. Press RIGHT ARROW for rocket on the right.</i></p>
+                <!-- <h1>You are on Earth, preparing for your passage into space. </h1>
                 <p>To launch into space and find inter-galactic gems, choose a rocket ship to ride!</p>
                 <p>Depending on which rocketship you choose, you may enter one of two planets.</p>
                 <p>Choose carefully, as the same rocket may not always go to the same planet...</p>
-                <p><b><i>Press LEFT ARROW for the rocket on the left. Press RIGHT ARROW for the rocket on the right.</i></b></p>
+                <p><b><i>Press LEFT ARROW for the rocket on the left. Press RIGHT ARROW for the rocket on the right.</i></b></p> -->
             </div>
             <div id="stage-1-main-instructions" style="display: none;">
                 <h1>You are on Earth. Choose a rocket!</h1>
-                <p><b><i>Press LEFT ARROW for the rocket on the left. Press RIGHT ARROW for the rocket on the right.</i></b></p>
+                <p><i>Press LEFT ARROW for the left rocket on the left. Press RIGHT ARROW for the rocket on the right.</i></p>
             </div>
             <img class="rocket-img" src="img/Stage1-rocket_A.png" alt="Option X">
             <img class="rocket-img" src="img/Stage1-rocket_B.png" alt="Option Y">
         </div>
         <div id="stage-2-options" style="display:none;">
             <div id="stage-2-practice-instructions">
-                <h1>You have arrived to one of the planets. </h1>
+                <h1>You have arrived to one of the planets. Choose an alien. </h1>
+                <p><i>Press LEFT ARROW for the alien on the left. Press RIGHT ARROW for the alien on the right.</i></p>
+                <!-- <h1>You have arrived to one of the planets. </h1>
                 <p>Two alien traders stand before you. To find a gem, speak with one of the aliens. <br>One of these aliens may have more (or better) gems to offer you, so make your choice carefully...</p>
-                <p><b><i>Press LEFT ARROW for the alien on the left. Press RIGHT ARROW for the alien on the right.</i></b></p>
+                <p><b><i>Press LEFT ARROW for the alien on the left. Press RIGHT ARROW for the alien on the right.</i></b></p> -->
             </div>
             <div id="stage-2-main-instructions" style="display: none;">
                 <h1>You have arrived to one of the planets. Choose an alien. </h1>
-                <p><b><i>Press LEFT ARROW for the alien on the left. Press RIGHT ARROW for the alien on the right.</i></b></p>
+                <p><i>Press LEFT ARROW for the alien on the left. Press RIGHT ARROW for the alien on the right.</i></p>
             </div>
-            <h1 id="reward-message" style="display:none;"></h1>       
             <div id="reward-container" >
                 <img class="reward-img" id="reward-img-dirt" src="img/dirt.png" style="display:none">
                 <img class="reward-img" id="reward-img-gem" src="img/gem-emerald.png" style="display:none">
+                <h1 id="reward-message" style="display:none;"></h1>
             </div>
             <div id="planet-X-options" class="planet-container">
                 <img class="planet-img" src="img/planet_purple.png" alt="Planet X"><br>
@@ -125,7 +129,7 @@
         </div>
         <div id="task-bottom">
             <h2>Points: <span id="pointCounter">0</span></h2>
-            <p>Round <span id="roundNumber">1</span></p>
+            <h2>Round <span id="roundNumber">1</span></h2>
         </div>
     </div>
     

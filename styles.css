@@ -21,7 +21,7 @@ h1, h2, p {
 }
 
 p {
-    font-size: 24px;
+    font-size: 22px;
 }
 
 #game-status {
@@ -33,11 +33,11 @@ p {
 }
 
 #stage-1-options img {
-  width: 300px;
-  height: auto;
+  height: 400px;
+  width: auto;
   margin-top: 10px;
-  margin-left: 50px;
-  margin-right: 50px;
+  margin-left: 25px;
+  margin-right: 25px;
 }
 
 /* #stage-2-options {
@@ -54,7 +54,7 @@ p {
 }
 
 .reward-img {
-    height: 150px;
+    height: 75px;
     width: auto;
     /* max-width: 200px;
     max-height: auto;
@@ -67,7 +67,7 @@ p {
 
 .alien-container {
     position: absolute;
-    bottom: 30px; /* Adjust to move the aliens up or down on the planet */
+    bottom: 50px; /* Adjust to move the aliens up or down on the planet */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -75,8 +75,8 @@ p {
 }
 
 .planet-img {
-  width: 900px;
-  height: auto;
+    height: 400px;
+    width: auto;
 }
 
 .alien-img {

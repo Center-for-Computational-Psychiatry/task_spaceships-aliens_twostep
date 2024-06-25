@@ -7,9 +7,14 @@ export let currentStage: string = "welcome"; // [welcome, instructions1, instruc
 export let results: { stage: string, round: number; choice: string; outcome: string; reward: number, points: number; rewardImage: string }[] = [];
 export let keyInputAllowed: boolean = true; // Flag to control input
 
+export let intertrialInterval1: number = 0;
+export let intertrialInterval2: number = 0;
+console.log("intertrialInterval1: " + intertrialInterval1)
+console.log("intertrialInterval2: " + intertrialInterval2)
+
 // variables for game setting 1
-const REWARD_1 = { points: 100, image: "reward-img-gem", message: "Yay! You found a gem of 100 points! You will now fly back to Earth..."};
-const REWARD_2 = { points: 0, image: "reward-img-dirt", message: "Aw, you found only some dirt (no points)! You will now fly back to Earth..."};
+const REWARD_1 = { points: 100, image: "reward-img-gem", message: "You found a gem (+100 points)! You return to Earth..."};
+const REWARD_2 = { points: 0, image: "reward-img-dirt", message: "You found some dirt (no points)! You return to Earth..."};
 // // variables for game setting 2
 // const REWARD_1 = { points: 100, image: "img/gem-sapphire.png" };
 // const REWARD_2 = { points: 100, image: "img/gem-ruby.png" };
@@ -36,15 +41,15 @@ export function chooseOption(option: string): void {
     let reward: number = 0;
     let rewardImage: string = '';
     let rewardMessage: string = '';
-    let intertrialInterval1: number = Math.random() < 0.5 ? 500 : 1000; // 500 or 1000 milliseconds
-    // let intertrialInterval2options: [number] = [500, 1000, 1500]; 
-    // let intertrialInterval2: number = intertrialInterval2options[(Math.floor(Math.random() * intertrialInterval2options.length))]
-    console.log("intertrialInterval1: " + intertrialInterval1)
-    // console.log("intertrialInterval2: " + intertrialInterval2)
-
+    
     // NOTE: Do not put round counter here because not updated until much later stage
 
     if (currentStage === "mainStage1" || currentStage === "practiceStage1" ) { // Stage 1: Option X or Y
+        intertrialInterval1 = [500, 1000, 1500][Math.floor(Math.random() * 3)]; // 500, 1000, or 1500 millisecond
+        intertrialInterval2 = 0;
+        console.log("intertrialInterval1: " + intertrialInterval1)
+        console.log("intertrialInterval2: " + intertrialInterval2)
+
         if (option === 'X') {
             outcome = Math.random() < 1.0 ? 'X' : 'Y';
         } else { // option Y
@@ -83,12 +88,16 @@ export function chooseOption(option: string): void {
                 document.getElementById('planet-Y-options')!.style.display = "block";
                 document.getElementById('planet-X-options')!.style.display = "none";
             };
-            
+            console.log("intertrialInterval1 before timeout: " + intertrialInterval1)
             keyInputAllowed = true; // Re-allow keyboard input after intertrial interval ends
 
         }, intertrialInterval1); // 0.5 or 1.0 seconds
         
     } else if (currentStage === "mainStage2" || currentStage === "practiceStage2") { // Stage 2: Option A, B, C, or D
+        intertrialInterval2 = [500, 1000, 1500][Math.floor(Math.random() * 3)]; // 500, 1000, or 1500 millisecond
+        console.log("intertrialInterval1: " + intertrialInterval1)
+        console.log("intertrialInterval2: " + intertrialInterval2)
+
         console.log("option: " + option)
         // get stage2Options with only the user's choice at this step
             // e.g. likelihoods: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0]
@@ -112,66 +121,69 @@ export function chooseOption(option: string): void {
                 rewardImage = REWARD_2.image;
                 rewardMessage = REWARD_2.message;
             }
-            // // Don't allow key press input during reward display phase
-            // keyInputAllowed = false;
             
-            // reward message and image displayed for 2 seconds
-            document.getElementById('stage-2-main-instructions')!.style.display = 'none';
-            document.getElementById('stage-2-practice-instructions')!.style.display = 'none';
+            // This stuff happens IMMEDIATELY AFTER participant makes a key choice
+            points += reward; // needs to happen BEFORE data is saved for the round
+            
+            // Save user choices into data object
+            results.push({ stage: currentStage, round: round, choice: option, outcome: outcome, reward: reward, points: points, rewardImage: rewardImage });
 
-            document.getElementById('reward-message')!.innerText = rewardMessage;
-            document.getElementById('reward-message')!.style.display = 'block';
-            document.getElementById(rewardImage)!.style.display = 'block';
-            
             // NOTE: Do not put round counter here because not updated until much later stage
-
-            // Update points value and points counter as soon as user makes the choice (during reward display)
-            points += reward;
-            document.getElementById('pointCounter')!.innerText = points.toString(); // this updates the point counter as soon as reward is selected, correctly for the practice trials at least
-
-            // Do the following AFTER reward display ends
-            setTimeout(function() {
+            
+            setTimeout(() => { // This stuff happens AFTER the intertrial interval
                 
-                // Save user choices into data object
-                results.push({ stage: currentStage, round: round, choice: option, outcome: outcome, reward: reward, points: points, rewardImage: rewardImage });
+                // Show reward message
+                    // Replace instructions text with reward message + image, keep stage 2 planet + aliens
+                document.getElementById('stage-2-main-instructions')!.style.display = 'none';
+                document.getElementById('stage-2-practice-instructions')!.style.display = 'none';
+                document.getElementById('reward-message')!.innerText = rewardMessage;
+                document.getElementById('reward-message')!.style.display = 'block';
+                document.getElementById(rewardImage)!.style.display = 'block';
+                document.getElementById('pointCounter')!.innerText = points.toString(); // this updates the point counter as soon as reward is selected, correctly for the practice trials at least
                 
-                round++;
-                console.log("round before update: " + round)
-                document.getElementById('roundNumber')!.innerText = round.toString();
-
-                document.getElementById('reward-message')!.style.display = 'none';
-                document.getElementById(rewardImage)!.style.display = 'none';
-                
-                document.getElementById('stage-2-options')!.style.display = "none";
-                // Check if end of practice session or main study
-                if (round <= totalRounds) {
-                    document.getElementById('stage-1-options')!.style.display = "block";
+                setTimeout(() => { // This stuff happens AFTER the 2 second reward display interval
                     
-                    if (currentStage === "mainStage2") {
-                        // Show Stage 1 Main Displays
-                        currentStage = "mainStage1";
-                        document.getElementById('stage-1-main-instructions')!.style.display = "block";
-                        document.getElementById('stage-2-main-instructions')!.style.display = 'none';
-                    } else { // currentStage === "practiceStage2"
-                        // Show Stage 1 Practice Displays
-                        currentStage = "practiceStage1";
-                        document.getElementById('stage-1-practice-instructions')!.style.display = "block";
-                        document.getElementById('stage-2-practice-instructions')!.style.display = 'none';
-                    }
-                } else {
-                    round = 1;
-                    points = 0;
-                    console.log("round after update: " + round)
-                    if (currentStage == "practiceStage1" || currentStage == "practiceStage2") {
-                        transitionToMainStudy();
-                    } else { // if currently in the main study
-                        endTask();
-                    }
-                }
-                // Re-allow keyboard input after reward display ends
-                keyInputAllowed = true;
+                    // Hide reward message, hide stage 2 planet + aliens
+                    document.getElementById('reward-message')!.style.display = 'none';
+                    document.getElementById(rewardImage)!.style.display = 'none';
+                    document.getElementById('stage-2-options')!.style.display = "none";
+                    round++;
 
-            }, 2000);
+                    // Continue to next round or end the session
+                    if (round <= totalRounds) { // continue to next round
+                        document.getElementById('stage-1-options')!.style.display = "block";
+                        document.getElementById('roundNumber')!.innerText = round.toString(); // update round display
+
+                        if (currentStage === "mainStage2") {
+                            // Show Stage 1 Main Displays
+                            currentStage = "mainStage1";
+                            document.getElementById('stage-1-main-instructions')!.style.display = "block";
+                            document.getElementById('stage-2-main-instructions')!.style.display = 'none';
+                        } else { // currentStage === "practiceStage2"
+                            // Show Stage 1 Practice Displays
+                            currentStage = "practiceStage1";
+                            document.getElementById('stage-1-practice-instructions')!.style.display = "block";
+                            document.getElementById('stage-2-practice-instructions')!.style.display = 'none';
+                        }
+                    } else { // end the session
+                        round = 1;
+                        points = 0;
+                        
+                        if (currentStage == "practiceStage1" || currentStage == "practiceStage2") {
+                            transitionToMainStudy();
+                        } else { // if currently in the main study
+                            endTask();
+                        }
+                    }
+                    
+                    // Re-allow keyboard input after reward display ends
+                    keyInputAllowed = true;
+
+                    console.log("intertrialInterval2 before timeout: " + intertrialInterval2)
+                    
+                }, 2000);
+
+            }, intertrialInterval2);
             
         } else {
             console.log("choiceConfig doesn't exist")
@@ -179,9 +191,6 @@ export function chooseOption(option: string): void {
 
     }
 
-    // Choice Result Display (mostly for debugging)
-    // document.getElementById('result')!.innerText = `You chose ${option}. Outcome: ${outcome}. Reward: ${reward}`;
-    //document.getElementById('result').innerText = `You won a reward: ${reward}`; // this needs to be removed
 }
 
 
