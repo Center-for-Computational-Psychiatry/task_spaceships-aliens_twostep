@@ -51,9 +51,9 @@ export function chooseOption(option: string): void {
         console.log("intertrialInterval2: " + intertrialInterval2)
 
         if (option === 'X') {
-            outcome = Math.random() < 1.0 ? 'X' : 'Y';
+            outcome = Math.random() < 0.8 ? 'X' : 'Y';
         } else { // option Y
-            outcome = Math.random() < 1.0 ? 'Y' : 'X';
+            outcome = Math.random() < 0.8 ? 'Y' : 'X';
         }
         // NOTE: Do not put round counter here because not updated until much later stage
 
