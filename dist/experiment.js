@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getParameterByName = exports.saveResultsToCSV = exports.endTask = exports.startMainStudy = exports.transitionToMainStudy = exports.chooseOption = exports.intertrialInterval2 = exports.intertrialInterval1 = exports.keyInputAllowed = exports.results = exports.currentStage = exports.points = exports.totalRounds = exports.mainRounds = exports.practiceRounds = exports.round = void 0;
+exports.getParameterByName = exports.saveResultsToCSV = exports.endTask = exports.startMainStudy = exports.transitionToMainStudy = exports.chooseOption = exports.intertrialInterval2 = exports.intertrialInterval1 = exports.stage1Probability = exports.keyInputAllowed = exports.results = exports.currentStage = exports.points = exports.totalRounds = exports.mainRounds = exports.practiceRounds = exports.round = void 0;
 exports.round = 1;
 exports.practiceRounds = 10;
 exports.mainRounds = 15;
@@ -9,6 +9,7 @@ exports.points = 0;
 exports.currentStage = "welcome"; // [welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, mainStage1, mainStage2]
 exports.results = [];
 exports.keyInputAllowed = true; // Flag to control input
+exports.stage1Probability = 0.8;
 exports.intertrialInterval1 = 0;
 exports.intertrialInterval2 = 0;
 console.log("intertrialInterval1: " + exports.intertrialInterval1);
@@ -47,10 +48,10 @@ function chooseOption(option) {
         console.log("intertrialInterval1: " + exports.intertrialInterval1);
         console.log("intertrialInterval2: " + exports.intertrialInterval2);
         if (option === 'X') {
-            outcome = Math.random() < 1.0 ? 'X' : 'Y';
+            outcome = Math.random() < exports.stage1Probability ? 'X' : 'Y';
         }
         else { // option Y
-            outcome = Math.random() < 1.0 ? 'Y' : 'X';
+            outcome = Math.random() < exports.stage1Probability ? 'Y' : 'X';
         }
         // NOTE: Do not put round counter here because not updated until much later stage
         exports.results.push({ stage: exports.currentStage, round: exports.round, choice: option, outcome: outcome, reward: reward, points: exports.points, rewardImage: rewardImage });

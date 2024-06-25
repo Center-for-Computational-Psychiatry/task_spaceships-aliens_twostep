@@ -6,6 +6,7 @@ export let points: number = 0;
 export let currentStage: string = "welcome"; // [welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, mainStage1, mainStage2]
 export let results: { stage: string, round: number; choice: string; outcome: string; reward: number, points: number; rewardImage: string }[] = [];
 export let keyInputAllowed: boolean = true; // Flag to control input
+export let stage1Probability: number = 0.8;
 
 export let intertrialInterval1: number = 0;
 export let intertrialInterval2: number = 0;
@@ -51,9 +52,9 @@ export function chooseOption(option: string): void {
         console.log("intertrialInterval2: " + intertrialInterval2)
 
         if (option === 'X') {
-            outcome = Math.random() < 0.8 ? 'X' : 'Y';
+            outcome = Math.random() < stage1Probability ? 'X' : 'Y';
         } else { // option Y
-            outcome = Math.random() < 0.8 ? 'Y' : 'X';
+            outcome = Math.random() < stage1Probability ? 'Y' : 'X';
         }
         // NOTE: Do not put round counter here because not updated until much later stage
 
