@@ -99,7 +99,7 @@ function chooseOption(option) {
         console.log("choiceConfig.likelihoods: " + userChoice.likelihoods);
         if (userChoice) {
             var likelihoods = userChoice.likelihoods;
-            var currentLikelihood = likelihoods[exports.round]; // pick the likelihood associated with this round
+            var currentLikelihood = likelihoods[exports.round - 1]; // pick the likelihood associated with this round (minu one for array index)
             console.log("currentLikelihood: " + currentLikelihood);
             // select reward from user choice
             if (Math.random() < currentLikelihood) {

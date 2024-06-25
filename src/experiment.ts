@@ -106,7 +106,7 @@ export function chooseOption(option: string): void {
         
         if (userChoice) {
             const likelihoods = userChoice.likelihoods;
-            const currentLikelihood = likelihoods[round]; // pick the likelihood associated with this round
+            const currentLikelihood = likelihoods[round-1]; // pick the likelihood associated with this round (minu one for array index)
             console.log("currentLikelihood: " + currentLikelihood)
 
             // select reward from user choice
