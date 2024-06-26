@@ -170,34 +170,36 @@ exports.chooseOption = chooseOption;
 // Event listener for instructions screen
 var handleKeydown = function (event) {
     console.log("first key event logged");
-    // if (event.target && (event.target as HTMLElement).id !== 'instructions-screen') return; // Ignore keydown events outside the instructions screen
-    if (exports.currentStage == "welcome") {
-        document.getElementById('welcome-screen').style.display = 'none';
-        document.getElementById('instructions-screen-1').style.display = 'block';
-        exports.currentStage = "instructions1";
-        document.addEventListener('keydown', handleKeydown);
-    }
-    else if (exports.currentStage == "instructions1") {
-        document.getElementById('instructions-screen-1').style.display = 'none';
-        document.getElementById('instructions-screen-2').style.display = 'block';
-        exports.currentStage = "instructions2";
-    }
-    else if (exports.currentStage == "instructions2") {
-        document.getElementById('instructions-screen-2').style.display = 'none';
-        document.getElementById('instructions-screen-3').style.display = 'block';
-        exports.currentStage = "instructions3";
-    }
-    else if (exports.currentStage == "instructions3") {
-        document.getElementById('instructions-screen-3').style.display = 'none';
-        document.getElementById('game-display').style.display = 'block';
-        exports.currentStage = "practiceStage1";
-        // Remove this event listener after continuing to the practice session
-        document.removeEventListener('keydown', handleKeydown);
-    }
-    else if (exports.currentStage == "instructionsFinal") {
-        startMainStudy();
-        // Remove this event listener after continuing to the main session
-        document.removeEventListener('keydown', handleKeydown);
+    if (event.key === ' ' || event.key === 'Spacebar') {
+        // if (event.target && (event.target as HTMLElement).id !== 'instructions-screen') return; // Ignore keydown events outside the instructions screen
+        if (exports.currentStage == "welcome") {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('instructions-screen-1').style.display = 'block';
+            exports.currentStage = "instructions1";
+            document.addEventListener('keydown', handleKeydown);
+        }
+        else if (exports.currentStage == "instructions1") {
+            document.getElementById('instructions-screen-1').style.display = 'none';
+            document.getElementById('instructions-screen-2').style.display = 'block';
+            exports.currentStage = "instructions2";
+        }
+        else if (exports.currentStage == "instructions2") {
+            document.getElementById('instructions-screen-2').style.display = 'none';
+            document.getElementById('instructions-screen-3').style.display = 'block';
+            exports.currentStage = "instructions3";
+        }
+        else if (exports.currentStage == "instructions3") {
+            document.getElementById('instructions-screen-3').style.display = 'none';
+            document.getElementById('game-display').style.display = 'block';
+            exports.currentStage = "practiceStage1";
+            // Remove this event listener after continuing to the practice session
+            document.removeEventListener('keydown', handleKeydown);
+        }
+        else if (exports.currentStage == "instructionsFinal") {
+            startMainStudy();
+            // Remove this event listener after continuing to the main session
+            document.removeEventListener('keydown', handleKeydown);
+        }
     }
 };
 document.addEventListener('keydown', handleKeydown);
