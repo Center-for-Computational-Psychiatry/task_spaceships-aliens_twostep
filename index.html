@@ -29,29 +29,32 @@
         <h1>Welcome to the Spaceships and Aliens Game!</h1>
         <br>
         <p>You are a citizen of Earth. In recent years, Earth has run out of rare gems and minerals. As an astronaut working for Secret Government Agency (SGA), you are sent to meet with intergalactic aliens on neighboring planets to find valuable gems around the galaxy.</p>
-        <p>In this game, you will earn points for each gem you find. Your mission director has asked you to take 150 trips into space to collect as many valuable gems as possible. </p>
+        <p>In this game, you will earn points for each gem you find. Your mission director has assigned you to take 150 trips into space to collect as many valuable gems as possible. </p>
         <p>At the end of this game, you will earn a monetary bonus based on points collected during your mission. Good luck!</p>
-        <p>This game takes 10-12 minutes to play. Please set aside time for uninterrupted gameplay.</p>
+        <p>This game takes 12-15 minutes to play. Please set aside time for uninterrupted gameplay.</p>
         <br>
         <p><b><i>When you are ready to play, press the SPACEBAR to continue.</i></b></p>
     </div>
     <div id="instructions-screen-1" style="display: none;">
         <h1>Game Instructions</h1>
-        <p>In this game, you will get points from going to outer space and trading with alien traders. In the first stage, you will decide which spaceship to use to reach one of two alien planets. </p>
+        <p>In this game, you will get points from flying to alien planets and trading with alien traders. In the first stage, you will decide which rocket to use to fly to <b>one of two alien planets.</b> </p>
+        <p><b>There are two rockets you can choose to ride.</b> Both rockets can take you to both planets. However, one rocket will <b>tend to</b> take you to one planet <b>most of the time</b> and the other rocket will <b>tend to</b> take you to the other planet <b>most of the time</b>. </p>
+        <p>Be sure to pay attention to which rocket brings you to which planet!</p> 
+        <p>Here are the two rockets you'll choose from during this stage of the game.</p>
         <span class="demo-span">
-            <img class="demo-img" src="img/Stage1-demo.png" alt="Stage 1 Example">
+            <img class="demo-img" src="img/demo-two-planets.png" alt="Stage 1 Two Planets">
         </span>
-        <p>Due to unpredictable asteroid activity, each rocket will take you to one of the two planets most of the time and to the other planet sometimes. </p> 
-        <p>You will be using the left and right arrow keys to make your selection.</p>
         <p><b><i>Press the SPACEBAR to continue to the next instruction. </i></b></p>
     </div>
     <div id="instructions-screen-2" style="display: none;">
         <h1>Game Instructions</h1>
-        <p>In the second stage, after landing on one of the two planets, you will need to choose which alien trader to speak to. </p>
+        <p>In the second stage, after landing on one of the two planets, you will need to choose which alien trader to speak to. <b>Each alien planet has two alien traders you can talk to.</b> Be aware, some aliens trade gems a lot of the time, some aliens do not have many gems and can only offer you dirt. </p>
+        <p>You will have to find <b>which planet</b> and <b>which alien</b> has the most gems, but be aware that <b>this will change over time, so you need to adapt!</b> </p>
+        <p>Below are the planets and aliens you might see during this stage of the game.</p>
         <span class="demo-span">
-            <img class="demo-img" src="img/Stage2-demo.png" alt="Stage 2 Example">
+            <img class="demo-img" src="img/demo-greenplanet-aliens.png" alt="Stage 2 Green Planet Aliens">
+            <img class="demo-img" src="img/demo-purpleplanet-aliens.png" alt="Stage 2 Purple Planet Aliens">
         </span>
-        <p>Some aliens trade gems a lot of the time, some aliens do not have many gems and can only offer you dirt. You will have to find which planet and alien has the most gems, but be aware that this will change over time. You will be using the left and right arrow keys to make your selection (left for the left rocket, right for the right rocket).</p>
         <p><b><i>Press the SPACEBAR to continue to the next instruction. </i></b></p>
     </div>
     <div id="instructions-screen-3" style="display: none;">
@@ -64,15 +67,15 @@
         </span>
         <br></br>
         <p>Shortly thereafter, you will return to the first stage, and make your new selections (for rockets and aliens) again. You will be making these selections for a total of 150 rounds.</p>
-        <p>In total, the game will take 10-12 minutes to play. Before you start the real game, you will have a chance to play a short practice session. </p>
+        <p>In total, the game will take 12-15 minutes to play. Before the real game starts, you will have a chance to play a short practice session. </p>
         <p><b><i>Press the SPACEBAR to <u>proceed to the practice session.</u></i></b></p>
     </div>
     <div id="instructions-final" style="display: none;">
         <h1>Get ready to play!</h1>
         <br>
         <p>Now is the time to play the real game. </p>
-        <p>You will have the opportunity to launch into space 150 times to find gems. </p>
-        <p>The game will take 10-12 minutes to play. Please set aside uninterrupted time to play this game.</p>
+        <!-- <p>You will have the opportunity to launch into space 150 times to find gems. </p> -->
+        <p>The game will take 12-15 minutes to play. Please set aside uninterrupted time to play this game.</p>
         <p>Remember, you will earn a monetary bonus based on the number of points you earn in this game. Good luck!</p>
         <br></br>
         <p><b><i>Press the SPACEBAR to <u>start the real game.</u></i></b></p>
@@ -84,32 +87,21 @@
     <div id="game-display" style="display: none;">
         <div id="stage-1-options">
             <div id="stage-1-practice-instructions">
-                <h1>You are on Earth. Choose a rocket!</h1>
-                <p><i>Press LEFT ARROW for the rocket on the left. Press RIGHT ARROW for rocket on the right.</i></p>
-                <!-- <h1>You are on Earth, preparing for your passage into space. </h1>
-                <p>To launch into space and find inter-galactic gems, choose a rocket ship to ride!</p>
-                <p>Depending on which rocketship you choose, you may enter one of two planets.</p>
-                <p>Choose carefully, as the same rocket may not always go to the same planet...</p>
-                <p><b><i>Press LEFT ARROW for the rocket on the left. Press RIGHT ARROW for the rocket on the right.</i></b></p> -->
+                <!-- <h1>You are on Earth. Choose a rocket!</h1> -->
             </div>
             <div id="stage-1-main-instructions" style="display: none;">
-                <h1>You are on Earth. Choose a rocket!</h1>
-                <p><i>Press LEFT ARROW for the left rocket on the left. Press RIGHT ARROW for the rocket on the right.</i></p>
+                <!-- <h1>You are on Earth. Choose a rocket!</h1> -->
             </div>
             <img class="rocket-img" src="img/Stage1-rocket_A.png" alt="Option X">
             <img class="rocket-img" src="img/Stage1-rocket_B.png" alt="Option Y">
+            <p><i>Press LEFT ARROW for the left rocket on the left. Press RIGHT ARROW for the rocket on the right.</i></p>
         </div>
         <div id="stage-2-options" style="display:none;">
             <div id="stage-2-practice-instructions">
-                <h1>You have arrived to one of the planets. Choose an alien. </h1>
-                <p><i>Press LEFT ARROW for the alien on the left. Press RIGHT ARROW for the alien on the right.</i></p>
-                <!-- <h1>You have arrived to one of the planets. </h1>
-                <p>Two alien traders stand before you. To find a gem, speak with one of the aliens. <br>One of these aliens may have more (or better) gems to offer you, so make your choice carefully...</p>
-                <p><b><i>Press LEFT ARROW for the alien on the left. Press RIGHT ARROW for the alien on the right.</i></b></p> -->
+                <!-- <h1>You have arrived to one of the planets. Choose an alien. </h1> -->
             </div>
             <div id="stage-2-main-instructions" style="display: none;">
-                <h1>You have arrived to one of the planets. Choose an alien. </h1>
-                <p><i>Press LEFT ARROW for the alien on the left. Press RIGHT ARROW for the alien on the right.</i></p>
+                <!-- <h1>You have arrived to one of the planets. Choose an alien. </h1> -->
             </div>
             <div id="reward-container" >
                 <img class="reward-img" id="reward-img-dirt" src="img/dirt.png" style="display:none">
@@ -122,6 +114,7 @@
                     <img class="alien-img" src="img/Stage2-alien-green-A.png" alt="Option A">
                     <img class="alien-img" src="img/Stage2-alien-green-B.png" alt="Option B">
                 </div>
+                <p><i>Press LEFT ARROW for the alien on the left. Press RIGHT ARROW for the alien on the right.</i></p>
             </div>
             <div id="planet-Y-options" class="planet-container">
                 <img class="planet-img" src="img/planet_green.png" alt="Planet Y"><br>
@@ -129,11 +122,12 @@
                     <img class="alien-img" src="img/Stage2-alien-purple-A.png" alt="Option C">
                     <img class="alien-img" src="img/Stage2-alien-purple-B.png" alt="Option D">
                 </div>
+                <p><i>Press LEFT ARROW for the alien on the left. Press RIGHT ARROW for the alien on the right.</i></p>
             </div>
         </div>
         <div id="task-bottom">
             <h2>Points: <span id="pointCounter">0</span></h2>
-            <h2>Round <span id="roundNumber">1</span></h2>
+            <!-- <h2>Round <span id="roundNumber">1</span></h2> -->
         </div>
     </div>
     

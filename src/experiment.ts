@@ -146,7 +146,7 @@ export function chooseOption(option: string): void {
                     // Continue to next round or end the session
                     if (round <= totalRounds) { // continue to next round
                         document.getElementById('stage-1-options')!.style.display = "block";
-                        document.getElementById('roundNumber')!.innerText = round.toString(); // update round display
+                        // document.getElementById('roundNumber')!.innerText = round.toString(); // update round display
 
                         if (currentStage === "mainStage2") {
                             // Show Stage 1 Main Displays
@@ -190,9 +190,8 @@ export function chooseOption(option: string): void {
 
 // Event listener for instructions screen
 const handleKeydown = function(event: KeyboardEvent) {
-    console.log("first key event logged")
-    
     if (event.key === ' ' || event.key === 'Spacebar') {
+        console.log("first key event logged")
         // if (event.target && (event.target as HTMLElement).id !== 'instructions-screen') return; // Ignore keydown events outside the instructions screen
         if (currentStage == "welcome") {    
             document.getElementById('welcome-screen')!.style.display = 'none';
@@ -257,7 +256,7 @@ export function transitionToMainStudy() {
 
 export function startMainStudy() {
     document.getElementById('instructions-final')!.style.display = 'none';
-    document.getElementById('roundNumber')!.innerText = round.toString(); // needs to be here in order for first trial to render correct values
+    // document.getElementById('roundNumber')!.innerText = round.toString(); // needs to be here in order for first trial to render correct values
     document.getElementById('pointCounter')!.innerText = points.toString(); // needs to be here in order for first trial to render correct values
     document.getElementById('game-display')!.style.display = 'block';
     document.getElementById('stage-1-options')!.style.display = 'block';

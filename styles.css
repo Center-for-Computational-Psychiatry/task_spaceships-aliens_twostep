@@ -31,7 +31,9 @@ p {
 .demo-img {
     height: 300px;
     width: auto;
-    border: 10px solid lightseagreen;
+    margin-left: 10px;
+    margin-right: 10px;
+    /* border: 10px solid lightseagreen; */
 }
 .demo-reward {
     height: 150px;
