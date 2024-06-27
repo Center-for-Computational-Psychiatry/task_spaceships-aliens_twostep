@@ -39,7 +39,7 @@ export function chooseOption(option: string): void {
     // NOTE: Do not put round counter here because not updated until much later stage
 
     if (currentStage === "mainStage1" || currentStage === "practiceStage1" ) { // Stage 1: Option X or Y
-        intertrialInterval1 = [500, 1000, 1500][Math.floor(Math.random() * 3)]; // 500, 1000, or 1500 millisecond
+        intertrialInterval1 = [400, 600, 800][Math.floor(Math.random() * 3)]; // 500, 1000, or 1500 millisecond
         intertrialInterval2 = 0;
         console.log("intertrialInterval1: " + intertrialInterval1)
         console.log("intertrialInterval2: " + intertrialInterval2)
@@ -62,13 +62,15 @@ export function chooseOption(option: string): void {
                 currentStage = "mainStage2"; 
                 // Show Stage 2 Options, hide stage 1 display
                 document.getElementById('stage-1-main-instructions')!.style.display = "none";
-                document.getElementById('stage-2-main-instructions')!.style.display = "block";    
+                document.getElementById('stage-2-main-instructions')!.style.display = "block";
+                document.getElementById('key-instruction')!.style.display = 'block'; // needs to be here otherwise first trial of stage 2 doesn't have key instruction
             } else { // currentStage === practiceStage1
                 // Switch practice stages
                 currentStage = "practiceStage2"; 
                 // Show Stage 2 Practice Options, hide stage 1 practice display
                 document.getElementById('stage-1-practice-instructions')!.style.display = "none";
-                document.getElementById('stage-2-practice-instructions')!.style.display = "block";    
+                document.getElementById('stage-2-practice-instructions')!.style.display = "block";
+                document.getElementById('key-instruction')!.style.display = 'block'; // needs to be here otherwise first trial of stage 2 doesn't have key instruction
             }
             // Show Stage 2 Options, hide stage 1 display (same for both main and practice)
             document.getElementById('stage-2-options')!.style.display = "block";
@@ -88,7 +90,7 @@ export function chooseOption(option: string): void {
         }, intertrialInterval1); // 0.5 or 1.0 seconds
         
     } else if (currentStage === "mainStage2" || currentStage === "practiceStage2") { // Stage 2: Option A, B, C, or D
-        intertrialInterval2 = [500, 1000, 1500][Math.floor(Math.random() * 3)]; // 500, 1000, or 1500 millisecond
+        intertrialInterval2 = [400, 600, 800][Math.floor(Math.random() * 3)]; // 500, 1000, or 1500 millisecond
         console.log("intertrialInterval1: " + intertrialInterval1)
         console.log("intertrialInterval2: " + intertrialInterval2)
 
@@ -130,6 +132,7 @@ export function chooseOption(option: string): void {
                     // Replace instructions text with reward message + image, keep stage 2 planet + aliens
                 document.getElementById('stage-2-main-instructions')!.style.display = 'none';
                 document.getElementById('stage-2-practice-instructions')!.style.display = 'none';
+                document.getElementById('key-instruction')!.style.display = 'none';
                 document.getElementById('reward-message')!.innerText = rewardMessage;
                 document.getElementById('reward-message')!.style.display = 'block';
                 document.getElementById(rewardImage)!.style.display = 'block';
@@ -140,6 +143,7 @@ export function chooseOption(option: string): void {
                     // Hide reward message, hide stage 2 planet + aliens
                     document.getElementById('reward-message')!.style.display = 'none';
                     document.getElementById(rewardImage)!.style.display = 'none';
+                    document.getElementById('key-instruction')!.style.display = 'block';
                     document.getElementById('stage-2-options')!.style.display = "none";
                     round++;
 
@@ -152,18 +156,20 @@ export function chooseOption(option: string): void {
                             // Show Stage 1 Main Displays
                             currentStage = "mainStage1";
                             document.getElementById('stage-1-main-instructions')!.style.display = "block";
+                            document.getElementById('key-instruction')!.style.display = 'block';
                             document.getElementById('stage-2-main-instructions')!.style.display = 'none';
                         } else { // currentStage === "practiceStage2"
                             // Show Stage 1 Practice Displays
                             currentStage = "practiceStage1";
                             document.getElementById('stage-1-practice-instructions')!.style.display = "block";
+                            document.getElementById('key-instruction')!.style.display = 'block';
                             document.getElementById('stage-2-practice-instructions')!.style.display = 'none';
                         }
                     } else { // end the session
-                        round = 1;
-                        points = 0;
-                        
+
                         if (currentStage == "practiceStage1" || currentStage == "practiceStage2") {
+                            points = 0;
+                            round = 1;
                             transitionToMainStudy();
                         } else { // if currently in the main study
                             endTask();
@@ -213,6 +219,7 @@ const handleKeydown = function(event: KeyboardEvent) {
             // Remove this event listener after continuing to the practice session
             document.removeEventListener('keydown', handleKeydown);
         } else if (currentStage == "instructionsFinal") {
+            document.getElementById('key-instruction')!.style.display = 'block'; // needs to be here otherwise first trial of stage 2 doesn't have key instruction
             startMainStudy();
             // Remove this event listener after continuing to the main session
             document.removeEventListener('keydown', handleKeydown);
@@ -269,6 +276,7 @@ export function startMainStudy() {
 export function endTask() {
     saveResultsToCSV(results);
     document.getElementById('game-status')!.style.display = "block";
+    document.getElementById('status')!.innerText = "Game complete! You earned a total of " + points.toString() + " points. Thank you for participating!";
     document.getElementById('game-display')!.style.display = "none";   
 }
 
