@@ -238,12 +238,12 @@ document.addEventListener('keydown', function(event) {
         console.log(event.key)
         let choice;
         if (currentStage === 'mainStage1' || currentStage === 'practiceStage1') {
-            console.log("key input stopped for stage 1")
+            console.log("key input done for stage 1")
             choice = event.key === 'ArrowLeft' ? 'X' : 'Y';
             chooseOption(choice);
             keyInputAllowed = false; // Don't allow key press input after first key press in stage 1
         } else if (currentStage === 'mainStage2' || currentStage === 'practiceStage2') {
-            console.log("key input stopped for stage 2")
+            console.log("key input done for stage 2")
             choice = event.key === 'ArrowLeft' ? 'A' : 'B';
             if (document.getElementById('planet-Y-options')?.style.display === 'block') {
                 choice = event.key === 'ArrowLeft' ? 'C' : 'D';

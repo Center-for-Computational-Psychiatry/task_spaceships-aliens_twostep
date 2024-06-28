@@ -221,13 +221,13 @@ document.addEventListener('keydown', function (event) {
         console.log(event.key);
         var choice = void 0;
         if (exports.currentStage === 'mainStage1' || exports.currentStage === 'practiceStage1') {
-            console.log("key input stopped for stage 1");
+            console.log("key input done for stage 1");
             choice = event.key === 'ArrowLeft' ? 'X' : 'Y';
             chooseOption(choice);
             exports.keyInputAllowed = false; // Don't allow key press input after first key press in stage 1
         }
         else if (exports.currentStage === 'mainStage2' || exports.currentStage === 'practiceStage2') {
-            console.log("key input stopped for stage 2");
+            console.log("key input done for stage 2");
             choice = event.key === 'ArrowLeft' ? 'A' : 'B';
             if (((_a = document.getElementById('planet-Y-options')) === null || _a === void 0 ? void 0 : _a.style.display) === 'block') {
                 choice = event.key === 'ArrowLeft' ? 'C' : 'D';
