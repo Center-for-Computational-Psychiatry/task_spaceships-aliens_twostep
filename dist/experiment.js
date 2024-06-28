@@ -12,8 +12,8 @@ exports.keyInputAllowed = true; // Flag to control input
 exports.stage1Probability = 0.8;
 exports.intertrialInterval1 = 0;
 exports.intertrialInterval2 = 0;
-console.log("intertrialInterval1: " + exports.intertrialInterval1);
-console.log("intertrialInterval2: " + exports.intertrialInterval2);
+// console.log("intertrialInterval1: " + intertrialInterval1)
+// console.log("intertrialInterval2: " + intertrialInterval2)
 // variables for game setting 1
 var REWARD_1 = { points: 100, image: "reward-img-gem", message: "You found a gem (+100 points)! You return to Earth..." };
 var REWARD_2 = { points: 0, image: "reward-img-dirt", message: "You found some dirt (no points)! You return to Earth..." };
@@ -38,8 +38,8 @@ function chooseOption(option) {
     if (exports.currentStage === "mainStage1" || exports.currentStage === "practiceStage1") { // Stage 1: Option X or Y
         exports.intertrialInterval1 = [400, 600, 800][Math.floor(Math.random() * 3)]; // 500, 1000, or 1500 millisecond
         exports.intertrialInterval2 = 0;
-        console.log("intertrialInterval1: " + exports.intertrialInterval1);
-        console.log("intertrialInterval2: " + exports.intertrialInterval2);
+        // console.log("intertrialInterval1: " + intertrialInterval1)
+        // console.log("intertrialInterval2: " + intertrialInterval2)
         if (option === 'X') {
             outcome = Math.random() < exports.stage1Probability ? 'X' : 'Y';
         }
@@ -80,23 +80,23 @@ function chooseOption(option) {
                 document.getElementById('planet-X-options').style.display = "none";
             }
             ;
-            console.log("intertrialInterval1 before timeout: " + exports.intertrialInterval1);
+            // console.log("intertrialInterval1 before timeout: " + intertrialInterval1)
             exports.keyInputAllowed = true; // Re-allow keyboard input after intertrial interval ends
         }, exports.intertrialInterval1); // 0.5 or 1.0 seconds
     }
     else if (exports.currentStage === "mainStage2" || exports.currentStage === "practiceStage2") { // Stage 2: Option A, B, C, or D
         exports.intertrialInterval2 = [400, 600, 800][Math.floor(Math.random() * 3)]; // 500, 1000, or 1500 millisecond
-        console.log("intertrialInterval1: " + exports.intertrialInterval1);
-        console.log("intertrialInterval2: " + exports.intertrialInterval2);
-        console.log("option: " + option);
+        // console.log("intertrialInterval1: " + intertrialInterval1)
+        // console.log("intertrialInterval2: " + intertrialInterval2)
+        // console.log("option: " + option)
         // get stage2Options with only the user's choice at this step
         // e.g. likelihoods: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0]
         var userChoice = stage2Options[option];
-        console.log("choiceConfig.likelihoods: " + userChoice.likelihoods);
+        // console.log("choiceConfig.likelihoods: " + userChoice.likelihoods)
         if (userChoice) {
             var likelihoods = userChoice.likelihoods;
             var currentLikelihood = likelihoods[exports.round - 1]; // pick the likelihood associated with this round (minu one for array index)
-            console.log("currentLikelihood: " + currentLikelihood);
+            // console.log("currentLikelihood: " + currentLikelihood)
             // select reward from user choice
             if (Math.random() < currentLikelihood) {
                 outcome = option;
@@ -163,7 +163,7 @@ function chooseOption(option) {
                     }
                     // Re-allow keyboard input after reward display ends
                     exports.keyInputAllowed = true;
-                    console.log("intertrialInterval2 before timeout: " + exports.intertrialInterval2);
+                    // console.log("intertrialInterval2 before timeout: " + intertrialInterval2)
                 }, 2000);
             }, exports.intertrialInterval2);
         }
@@ -215,9 +215,10 @@ document.addEventListener('keydown', function (event) {
     var _a;
     if (!exports.keyInputAllowed)
         return; // Ignore keyboard input if not allowed
-    console.log("second key event logged");
+    // console.log("second key event logged")
     event.preventDefault(); // Prevent default scrolling behavior of arrow keys
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        console.log(event.key);
         var choice = void 0;
         if (exports.currentStage === 'mainStage1' || exports.currentStage === 'practiceStage1') {
             console.log("key input stopped for stage 1");

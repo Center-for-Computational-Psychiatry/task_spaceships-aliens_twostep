@@ -10,8 +10,8 @@ export let stage1Probability: number = 0.8;
 
 export let intertrialInterval1: number = 0;
 export let intertrialInterval2: number = 0;
-console.log("intertrialInterval1: " + intertrialInterval1)
-console.log("intertrialInterval2: " + intertrialInterval2)
+// console.log("intertrialInterval1: " + intertrialInterval1)
+// console.log("intertrialInterval2: " + intertrialInterval2)
 
 // variables for game setting 1
 const REWARD_1 = { points: 100, image: "reward-img-gem", message: "You found a gem (+100 points)! You return to Earth..."};
@@ -41,8 +41,8 @@ export function chooseOption(option: string): void {
     if (currentStage === "mainStage1" || currentStage === "practiceStage1" ) { // Stage 1: Option X or Y
         intertrialInterval1 = [400, 600, 800][Math.floor(Math.random() * 3)]; // 500, 1000, or 1500 millisecond
         intertrialInterval2 = 0;
-        console.log("intertrialInterval1: " + intertrialInterval1)
-        console.log("intertrialInterval2: " + intertrialInterval2)
+        // console.log("intertrialInterval1: " + intertrialInterval1)
+        // console.log("intertrialInterval2: " + intertrialInterval2)
 
         if (option === 'X') {
             outcome = Math.random() < stage1Probability ? 'X' : 'Y';
@@ -84,26 +84,26 @@ export function chooseOption(option: string): void {
                 document.getElementById('planet-Y-options')!.style.display = "block";
                 document.getElementById('planet-X-options')!.style.display = "none";
             };
-            console.log("intertrialInterval1 before timeout: " + intertrialInterval1)
+            // console.log("intertrialInterval1 before timeout: " + intertrialInterval1)
             keyInputAllowed = true; // Re-allow keyboard input after intertrial interval ends
 
         }, intertrialInterval1); // 0.5 or 1.0 seconds
         
     } else if (currentStage === "mainStage2" || currentStage === "practiceStage2") { // Stage 2: Option A, B, C, or D
         intertrialInterval2 = [400, 600, 800][Math.floor(Math.random() * 3)]; // 500, 1000, or 1500 millisecond
-        console.log("intertrialInterval1: " + intertrialInterval1)
-        console.log("intertrialInterval2: " + intertrialInterval2)
+        // console.log("intertrialInterval1: " + intertrialInterval1)
+        // console.log("intertrialInterval2: " + intertrialInterval2)
 
-        console.log("option: " + option)
+        // console.log("option: " + option)
         // get stage2Options with only the user's choice at this step
             // e.g. likelihoods: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0]
         const userChoice = stage2Options[option as keyof typeof stage2Options];
-        console.log("choiceConfig.likelihoods: " + userChoice.likelihoods)
+        // console.log("choiceConfig.likelihoods: " + userChoice.likelihoods)
         
         if (userChoice) {
             const likelihoods = userChoice.likelihoods;
             const currentLikelihood = likelihoods[round-1]; // pick the likelihood associated with this round (minu one for array index)
-            console.log("currentLikelihood: " + currentLikelihood)
+            // console.log("currentLikelihood: " + currentLikelihood)
 
             // select reward from user choice
             if (Math.random() < currentLikelihood) {
@@ -179,7 +179,7 @@ export function chooseOption(option: string): void {
                     // Re-allow keyboard input after reward display ends
                     keyInputAllowed = true;
 
-                    console.log("intertrialInterval2 before timeout: " + intertrialInterval2)
+                    // console.log("intertrialInterval2 before timeout: " + intertrialInterval2)
                     
                 }, 2000);
 
@@ -231,10 +231,11 @@ document.addEventListener('keydown', handleKeydown);
 // Event listener for making key presses in Stage 1 and Stage 2
 document.addEventListener('keydown', function(event) {
     if (!keyInputAllowed) return; // Ignore keyboard input if not allowed
-    console.log("second key event logged")
+    // console.log("second key event logged")
     event.preventDefault(); // Prevent default scrolling behavior of arrow keys
 
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        console.log(event.key)
         let choice;
         if (currentStage === 'mainStage1' || currentStage === 'practiceStage1') {
             console.log("key input stopped for stage 1")
