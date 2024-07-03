@@ -55,8 +55,8 @@ p {
   height: 400px;
   width: auto;
   margin-top: 10px;
-  margin-left: 25px;
-  margin-right: 25px;
+  margin-left: 100px;
+  margin-right: 100px;
 }
 
 /* #stage-2-options {
@@ -104,14 +104,6 @@ p {
   margin: 0 75px;
   
 }
-
-#key-instruction {
-    
-}
-
-/* #reward-container {
-    border: 5px, solid, cadetblue;
-} */
 
 #reward-message {
     /* color:mediumslateblue; */
