@@ -15,8 +15,8 @@ exports.intertrialInterval2 = 0;
 // console.log("intertrialInterval1: " + intertrialInterval1)
 // console.log("intertrialInterval2: " + intertrialInterval2)
 // variables for game setting 1
-var REWARD_1 = { points: 100, image: "reward-img-gem", message: "You found a gem (+100 points)! You return to Earth..." };
-var REWARD_2 = { points: 0, image: "reward-img-dirt", message: "You found some dirt (no points)! You return to Earth..." };
+var REWARD_1 = { points: 100, image: "reward-img-gem", message: "You found a gem (+100 points)!" };
+var REWARD_2 = { points: 0, image: "reward-img-dirt", message: "You found dirt (no points)!" };
 // // variables for game setting 2
 // const REWARD_1 = { points: 100, image: "img/gem-sapphire.png" };
 // const REWARD_2 = { points: 100, image: "img/gem-ruby.png" };
