@@ -6,14 +6,16 @@
 }
 
 body {
-    /* background-color: aqua; */
-    /* background: aquamarine; */
     background: pink;
     text-align: center;
     margin-left: 200px;
     margin-right: 200px;
     margin-top: 100px;
     /* max-width: 1200px; */
+    
+    /* gpt suggestions */
+    /* margin: 50px;
+    padding: 0 20px; */
 }
 
 h1, h2, p {
@@ -24,27 +26,39 @@ p {
     font-size: 22px;
 }
 
-/* .demo-span {
-    border: 5px solid blue;
-} */
+.demo-span {
+    /* gpt suggestions */
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
 
 .demo-img {
-    height: 300px;
+    /* height: 300px;
     width: auto;
     margin-left: 10px;
-    margin-right: 10px;
-    /* border: 10px solid lightseagreen; */
+    margin-right: 10px; */
+    
+    /* gpt suggestions */
+    height: auto;
+    width: 100%;
+    max-width: 400px;
+    margin: 10px;
 }
+
 .demo-reward {
     height: 150px;
     width: auto;
     max-width: 250px;
     margin-left: 25px;
     margin-right: 25px;
-}
 
-#game-status {
-  display: none;
+    /* gpt suggestions */
+    /* height: auto;
+    width: 100%;
+    max-width: 150px;
+    margin: 10px; */
 }
 
 #game-display {
@@ -76,9 +90,6 @@ p {
     height: 75px;
     width: auto;
     max-width: 125px
-    /* max-width: 200px;
-    max-height: auto;
-    object-fit: cover; */
 }
 
 .planet-container {
@@ -106,7 +117,5 @@ p {
 }
 
 #reward-message {
-    /* color:mediumslateblue; */
-    /* color:darkmagenta; */
     color:midnightblue;
 }
