@@ -38,8 +38,6 @@ function chooseOption(option) {
     if (exports.currentStage === "mainStage1" || exports.currentStage === "practiceStage1") { // Stage 1: Option X or Y
         exports.intertrialInterval1 = [400, 600, 800][Math.floor(Math.random() * 3)]; // 500, 1000, or 1500 millisecond
         exports.intertrialInterval2 = 0;
-        // console.log("intertrialInterval1: " + intertrialInterval1)
-        // console.log("intertrialInterval2: " + intertrialInterval2)
         if (option === 'X') {
             outcome = Math.random() < exports.stage1Probability ? 'X' : 'Y';
         }
@@ -57,7 +55,7 @@ function chooseOption(option) {
                 // Show Stage 2 Options, hide stage 1 display
                 document.getElementById('stage-1-main-instructions').style.display = "none";
                 document.getElementById('stage-2-main-instructions').style.display = "block";
-                document.getElementById('key-instruction').style.display = 'block'; // needs to be here otherwise first trial of stage 2 doesn't have key instruction
+                // document.getElementById('stage-2-key-instruction')!.style.display = 'block'; // needs to be here otherwise first trial of stage 2 doesn't have key instruction
             }
             else { // currentStage === practiceStage1
                 // Switch practice stages
@@ -65,7 +63,7 @@ function chooseOption(option) {
                 // Show Stage 2 Practice Options, hide stage 1 practice display
                 document.getElementById('stage-1-practice-instructions').style.display = "none";
                 document.getElementById('stage-2-practice-instructions').style.display = "block";
-                document.getElementById('key-instruction').style.display = 'block'; // needs to be here otherwise first trial of stage 2 doesn't have key instruction
+                document.getElementById('stage-2-key-instruction').style.display = 'block'; // needs to be here otherwise first trial of stage 2 doesn't have key instruction
             }
             // Show Stage 2 Options, hide stage 1 display (same for both main and practice)
             document.getElementById('stage-2-options').style.display = "block";
@@ -86,8 +84,6 @@ function chooseOption(option) {
     }
     else if (exports.currentStage === "mainStage2" || exports.currentStage === "practiceStage2") { // Stage 2: Option A, B, C, or D
         exports.intertrialInterval2 = [400, 600, 800][Math.floor(Math.random() * 3)]; // 500, 1000, or 1500 millisecond
-        // console.log("intertrialInterval1: " + intertrialInterval1)
-        // console.log("intertrialInterval2: " + intertrialInterval2)
         // console.log("option: " + option)
         // get stage2Options with only the user's choice at this step
         // e.g. likelihoods: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0]
@@ -120,17 +116,19 @@ function chooseOption(option) {
                 // Replace instructions text with reward message + image, keep stage 2 planet + aliens
                 document.getElementById('stage-2-main-instructions').style.display = 'none';
                 document.getElementById('stage-2-practice-instructions').style.display = 'none';
-                document.getElementById('key-instruction').style.display = 'none';
                 document.getElementById('reward-message').innerText = rewardMessage;
                 document.getElementById('reward-message').style.display = 'block';
                 document.getElementById(rewardImage).style.display = 'block';
                 document.getElementById('pointCounter').innerText = exports.points.toString(); // this updates the point counter as soon as reward is selected, correctly for the practice trials at least
+                document.getElementById('stage-2-key-instruction').style.display = 'none'; // dont need???
                 setTimeout(function () {
                     // Hide reward message, hide stage 2 planet + aliens
                     document.getElementById('reward-message').style.display = 'none';
                     document.getElementById(rewardImage).style.display = 'none';
-                    document.getElementById('key-instruction').style.display = 'block';
                     document.getElementById('stage-2-options').style.display = "none";
+                    if (exports.currentStage === "practiceStage2") {
+                        document.getElementById('stage-2-key-instruction').style.display = 'block'; // Show key instruction after reward display for practice trials
+                    }
                     exports.round++;
                     // Continue to next round or end the session
                     if (exports.round <= exports.totalRounds) { // continue to next round
@@ -140,14 +138,13 @@ function chooseOption(option) {
                             // Show Stage 1 Main Displays
                             exports.currentStage = "mainStage1";
                             document.getElementById('stage-1-main-instructions').style.display = "block";
-                            document.getElementById('key-instruction').style.display = 'block';
                             document.getElementById('stage-2-main-instructions').style.display = 'none';
                         }
                         else { // currentStage === "practiceStage2"
                             // Show Stage 1 Practice Displays
                             exports.currentStage = "practiceStage1";
                             document.getElementById('stage-1-practice-instructions').style.display = "block";
-                            document.getElementById('key-instruction').style.display = 'block';
+                            document.getElementById('stage-1-key-instruction').style.display = 'block';
                             document.getElementById('stage-2-practice-instructions').style.display = 'none';
                         }
                     }
@@ -202,7 +199,7 @@ var handleKeydown = function (event) {
             document.removeEventListener('keydown', handleKeydown);
         }
         else if (exports.currentStage == "instructionsFinal") {
-            document.getElementById('key-instruction').style.display = 'block'; // needs to be here otherwise first trial of stage 2 doesn't have key instruction
+            // document.getElementById('key-instruction')!.style.display = 'block'; // needs to be here otherwise first trial of stage 2 doesn't have key instruction
             startMainStudy();
             // Remove this event listener after continuing to the main session
             document.removeEventListener('keydown', handleKeydown);
@@ -247,6 +244,8 @@ function transitionToMainStudy() {
 exports.transitionToMainStudy = transitionToMainStudy;
 function startMainStudy() {
     document.getElementById('instructions-final').style.display = 'none';
+    document.getElementById('stage-1-key-instruction').style.display = 'none';
+    document.getElementById('stage-2-key-instruction').style.display = 'none';
     // document.getElementById('roundNumber')!.innerText = round.toString(); // needs to be here in order for first trial to render correct values
     document.getElementById('pointCounter').innerText = exports.points.toString(); // needs to be here in order for first trial to render correct values
     document.getElementById('game-display').style.display = 'block';

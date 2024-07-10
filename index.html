@@ -48,9 +48,10 @@
     </div>
     <div id="instructions-screen-2" style="display: none;">
         <h1>Game Instructions</h1>
-        <p>In the second stage, after landing on one of the two planets, you will need to choose which alien trader to speak to. <b>Each alien planet has two alien traders you can talk to.</b> Be aware, some aliens trade gems a lot of the time, some aliens do not have many gems and can only offer you dirt. </p>
-        <p>You will have to find <b>which planet</b> and <b>which alien</b> has the most gems, but be aware that <b>this will change over time, so you need to adapt!</b> </p>
-        <p>Below are the planets and aliens you might see during this stage of the game.</p>
+        <p>In the second stage, after landing on one of the two planets, you will need to choose which alien trader to speak to. <b>Each alien planet has two alien traders you can talk to.</b></p>
+        <p>Be aware, some aliens might have a lot of gems to trade, while other aliens can only offer you dirt. <b>What each alien can offer you at any time in the game depends on their rising and falling gem fortunes over time.</b> An alien that has a lot of gems now might run out of gems later in the game (and vice versa: an alien that doesn't have many gems now might have more gems later in the game), so be aware of these changes!</p>
+        <p>You will have to find <b>which planet</b> and <b>which alien</b> has the most gems, but be remember that <b>this will change over time</b>, so you need to adapt!</p>
+        <p>Below are the planets and aliens you will see during this stage of the game.</p>
         <span class="demo-span">
             <img class="demo-img" src="img/demo-greenplanet_aliens.png" alt="Stage 2 Green Planet Aliens">
             <img class="demo-img" src="img/demo-purpleplanet_aliens.png" alt="Stage 2 Purple Planet Aliens">
@@ -59,7 +60,7 @@
     </div>
     <div id="instructions-screen-3" style="display: none;">
         <h1>Game Instructions</h1>
-        <p>After you make your selection of alien trader, you will find out if you received a gem (+100 points) or some dirt (0 points).</p>
+        <p>After you make your selection of rocket and alien trader, you will find out if you received a gem (+100 points) or some dirt (0 points).</p>
         <br>
         <span class="demo-span">
             <img class="demo-reward" src="img/gem-emerald.png" alt="Valuable Gem">
@@ -95,7 +96,7 @@
                 <img class="rocket-img" src="img/rocket_yellow.png" alt="Option X">
                 <img class="rocket-img" src="img/rocket_blue.png" alt="Option Y">
             </div>
-            <p><i>Press LEFT ARROW for the left rocket on the left. Press RIGHT ARROW for the rocket on the right.</i></p>
+            <p id="stage-1-key-instruction"><i>Press LEFT ARROW for the left rocket on the left. Press RIGHT ARROW for the rocket on the right.</i></p>
         </div>
         <div id="stage-2-options" style="display:none;">
             <div id="stage-2-practice-instructions">
@@ -118,7 +119,7 @@
                     <img class="alien-img" src="img/Stage2-alien-purple-B.png" alt="Option D">
                 </div>
             </div>
-            <p id="key-instruction"><i>Press LEFT ARROW for the alien on the left. Press RIGHT ARROW for the alien on the right.</i></p>
+            <p id="stage-2-key-instruction"><i>Press LEFT ARROW for the alien on the left. Press RIGHT ARROW for the alien on the right.</i></p>
             <div id="reward-container" >
                 <img class="reward-img" id="reward-img-dirt" src="img/dirt.png" style="display:none">
                 <img class="reward-img" id="reward-img-gem" src="img/gem-emerald.png" style="display:none">
