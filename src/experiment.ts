@@ -1,15 +1,15 @@
-export let round: number = 1;
-export let practiceRounds: number = 10;
-export let mainRounds: number = 150; 
-export let totalRounds: number = practiceRounds;
-export let points: number = 0;
-export let currentStage: string = "welcome"; // [welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, mainStage1, mainStage2]
-export let results: { stage: string, round: number; choice: string; outcome: string; reward: number, points: number; rewardImage: string }[] = [];
-export let keyInputAllowed: boolean = true; // Flag to control input
-export let stage1Probability: number = 0.8;
+let round: number = 1;
+let practiceRounds: number = 10;
+let mainRounds: number = 150; 
+let totalRounds: number = practiceRounds;
+let points: number = 0;
+let currentStage: string = "welcome"; // [welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, mainStage1, mainStage2]
+let results: { stage: string, round: number; choice: string; outcome: string; reward: number, points: number; rewardImage: string }[] = [];
+let keyInputAllowed: boolean = true; // Flag to control input
+let stage1Probability: number = 0.8;
 
-export let intertrialInterval1: number = 0;
-export let intertrialInterval2: number = 0;
+let intertrialInterval1: number = 0;
+let intertrialInterval2: number = 0;
 // console.log("intertrialInterval1: " + intertrialInterval1)
 // console.log("intertrialInterval2: " + intertrialInterval2)
 
@@ -28,7 +28,7 @@ const stage2Options = {
     "D": { likelihoods: [0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.4,0.3,0.3,0.3,0.3,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.4,0.4,0.4,0.4,0.3,0.4,0.4,0.3,0.4,0.4,0.3,0.4,0.3,0.3,0.3,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.3,0.3,0.3,0.4,0.4,0.3,0.4,0.4,0.4,0.4,0.4,0.5,0.4,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.4,0.4,0.4,0.4,0.4,0.3,0.3,0.5,0.5,0.6,0.6,0.6,0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.6,0.6,0.6,0.7,0.6,0.6,0.6,0.6,0.7,0.7,0.7,0.7,0.7,0.7,0.6,0.6,0.6,0.5,0.6,0.6,0.6,0.6,0.6,0.5,0.6,0.6,0.6,0.6,0.5,0.5,0.5,0.5,0.5,0.6,0.6] },
 }
 
-export function chooseOption(option: string): void {
+function chooseOption(option: string): void {
     if (!keyInputAllowed) return; // Ignore keyboard input if not allowed
 
     let outcome: string = '';
@@ -39,7 +39,7 @@ export function chooseOption(option: string): void {
     // NOTE: Do not put round counter here because not updated until much later stage
 
     if (currentStage === "mainStage1" || currentStage === "practiceStage1" ) { // Stage 1: Option X or Y
-        intertrialInterval1 = [400, 600, 800][Math.floor(Math.random() * 3)]; // 500, 1000, or 1500 millisecond
+        intertrialInterval1 = [400, 600, 800][Math.floor(Math.random() * 3)]; // milliseconds
         intertrialInterval2 = 0;
 
         if (option === 'X') {
@@ -81,7 +81,7 @@ export function chooseOption(option: string): void {
                 document.getElementById('planet-Y-options')!.style.display = "block";
                 document.getElementById('planet-X-options')!.style.display = "none";
             };
-            // console.log("intertrialInterval1 before timeout: " + intertrialInterval1)
+            
             keyInputAllowed = true; // Re-allow keyboard input after intertrial interval ends
 
         }, intertrialInterval1); // 0.5 or 1.0 seconds
@@ -89,15 +89,11 @@ export function chooseOption(option: string): void {
     } else if (currentStage === "mainStage2" || currentStage === "practiceStage2") { // Stage 2: Option A, B, C, or D
         intertrialInterval2 = [400, 600, 800][Math.floor(Math.random() * 3)]; // 500, 1000, or 1500 millisecond
 
-        // console.log("option: " + option)
-        // get stage2Options with only the user's choice at this step
-            // e.g. likelihoods: [0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0]
         const userChoice = stage2Options[option as keyof typeof stage2Options];
-        // console.log("choiceConfig.likelihoods: " + userChoice.likelihoods)
         
         if (userChoice) {
             const likelihoods = userChoice.likelihoods;
-            const currentLikelihood = likelihoods[round-1]; // pick the likelihood associated with this round (minu one for array index)
+            const currentLikelihood = likelihoods[round-1]; // pick the likelihood associated with this round (minus one for array index)
             // console.log("currentLikelihood: " + currentLikelihood)
 
             // select reward from user choice
@@ -194,7 +190,7 @@ export function chooseOption(option: string): void {
 const handleKeydown = function(event: KeyboardEvent) {
     if (event.key === ' ' || event.key === 'Spacebar') {
         console.log("first key event logged")
-        // if (event.target && (event.target as HTMLElement).id !== 'instructions-screen') return; // Ignore keydown events outside the instructions screen
+        
         if (currentStage == "welcome") {    
             document.getElementById('welcome-screen')!.style.display = 'none';
             document.getElementById('instructions-screen-1')!.style.display = 'block';
@@ -215,7 +211,6 @@ const handleKeydown = function(event: KeyboardEvent) {
             // Remove this event listener after continuing to the practice session
             document.removeEventListener('keydown', handleKeydown);
         } else if (currentStage == "instructionsFinal") {
-            // document.getElementById('key-instruction')!.style.display = 'block'; // needs to be here otherwise first trial of stage 2 doesn't have key instruction
             startMainStudy();
             // Remove this event listener after continuing to the main session
             document.removeEventListener('keydown', handleKeydown);
@@ -227,7 +222,7 @@ document.addEventListener('keydown', handleKeydown);
 // Event listener for making key presses in Stage 1 and Stage 2
 document.addEventListener('keydown', function(event) {
     if (!keyInputAllowed) return; // Ignore keyboard input if not allowed
-    // console.log("second key event logged")
+    
     event.preventDefault(); // Prevent default scrolling behavior of arrow keys
 
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
@@ -250,7 +245,7 @@ document.addEventListener('keydown', function(event) {
     }
 });
 
-export function transitionToMainStudy() {
+function transitionToMainStudy() {
     currentStage = "instructionsFinal"
     totalRounds = mainRounds
     document.getElementById('instructions-final')!.style.display = "block";
@@ -258,12 +253,12 @@ export function transitionToMainStudy() {
     document.addEventListener('keydown', handleKeydown);
 }
 
-export function startMainStudy() {
+function startMainStudy() {
     document.getElementById('instructions-final')!.style.display = 'none';
     document.getElementById('stage-1-key-instruction')!.style.display = 'none';
     document.getElementById('stage-2-key-instruction')!.style.display = 'none';
-    // document.getElementById('roundNumber')!.innerText = round.toString(); // needs to be here in order for first trial to render correct values
-    document.getElementById('pointCounter')!.innerText = points.toString(); // needs to be here in order for first trial to render correct values
+    // document.getElementById('roundNumber')!.innerText = round.toString(); // needs to be here in order for first trial to show correct values
+    document.getElementById('pointCounter')!.innerText = points.toString(); // needs to be here in order for first trial to show correct values
     document.getElementById('game-display')!.style.display = 'block';
     document.getElementById('stage-1-options')!.style.display = 'block';
     document.getElementById('stage-1-practice-instructions')!.style.display = 'none'; 
@@ -276,23 +271,27 @@ export function endTask() {
     saveResultsToCSV(results);
     document.getElementById('game-status')!.style.display = "block";
     document.getElementById('status')!.innerText = "Game complete! You earned a total of " + points.toString() + " points. Thank you for participating!";
-    document.getElementById('game-display')!.style.display = "none";   
+    document.getElementById('game-display')!.style.display = "none";
+    
+    // setTimeout(() => { 
+    //     let redirect_url = "http://prolific.com/completion_code_here";
+    //     document.location.assign(redirect_url);
+    // }, 5000);
+
 }
 
-export function saveResultsToCSV(results: { stage: string; round: number; choice: string; outcome: string; reward: number, points: number; rewardImage: string  }[]): void {
-    let subjectId: string = getParameterByName('subject_id', window.location.href) || 'UnknownSubject';
-    // alternative: let subjectId: string = getParameterByName('subject_id', window.location.href) ?? 'UnknownSubject';
-    let timestamp: string = new Date().toISOString().replace(/:/g, '-');
-    let filename: string = `data/two_step_task_results_${subjectId}_${timestamp}.csv`;
+function saveResultsToCSV(results: { stage: string; round: number; choice: string; outcome: string; reward: number, points: number; rewardImage: string  }[]): void {
+    const subjectId: string = getParameterByName('subject_id', window.location.href) || 'UnknownSubject';
+    const timestamp: string = new Date().toISOString().replace(/:/g, '-');
+    const filename: string = `data/two_step_task_results_${subjectId}_${timestamp}.csv`;
     
-    let csvContent = "data:text/csv;charset=utf-8,";
-    csvContent += "Stage,Round,Choice,Outcome,Reward,TotalPoints\n";
-    results.forEach(function(result) {
-        let row: string = result.stage + "," + result.round + "," + result.choice + "," + result.outcome + "," + result.reward + "," + result.points + "\n";
-        csvContent += row;
-    });
-    var encodedUri: string = encodeURI(csvContent);
-    var link: HTMLAnchorElement = document.createElement("a");
+    const csvHeader = "Stage,Round,Choice,Outcome,Reward,TotalPoints";
+    const csvRows = results.map(result => `${result.stage},${result.round},${result.choice},${result.outcome},${result.reward},${result.points}`).join("\n");
+    const csvContent = `data:text/csv;charset=utf-8,${csvHeader}\n${csvRows}`;
+    const encodedUri: string = encodeURI(csvContent);
+
+    // Automatically downloads CSV file to local machine
+    const link: HTMLAnchorElement = document.createElement("a");
     link.setAttribute("href", encodedUri);
     link.setAttribute("download", filename);
     document.body.appendChild(link);
@@ -300,11 +299,10 @@ export function saveResultsToCSV(results: { stage: string; round: number; choice
 }
 
 // Function to get URL parameter by name
-export function getParameterByName(name: string, url: string): string | null {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex: RegExp = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results: RegExpExecArray | null = regex.exec(url);
+function getParameterByName(name: string, url: string): string | null {
+    const paramName = name.replace(/[\[\]]/g, "\\$&");
+    const regex: RegExp = new RegExp("[?&]" + paramName + "(=([^&#]*)|&|#|$)");
+    const results = regex.exec(url);
     if (!results) return null;
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, " "));
