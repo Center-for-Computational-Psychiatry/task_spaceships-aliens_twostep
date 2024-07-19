@@ -79,7 +79,7 @@ function chooseOption(option) {
             }
             ;
             keyInputAllowed = true; // Re-allow keyboard input after intertrial interval ends
-        }, intertrialInterval1); // 0.5 or 1.0 seconds
+        }, intertrialInterval1);
     }
     else if (currentStage === "mainStage2" || currentStage === "practiceStage2") { // Stage 2: Option A, B, C, or D
         intertrialInterval2 = [400, 600, 800][Math.floor(Math.random() * 3)]; // 500, 1000, or 1500 millisecond
