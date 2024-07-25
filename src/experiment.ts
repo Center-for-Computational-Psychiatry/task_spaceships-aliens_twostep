@@ -28,6 +28,7 @@ const stage2Options = {
     "D": { likelihoods: [0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.4,0.3,0.3,0.3,0.3,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.3,0.4,0.4,0.4,0.4,0.3,0.4,0.4,0.3,0.4,0.4,0.3,0.4,0.3,0.3,0.3,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.4,0.3,0.3,0.3,0.4,0.4,0.3,0.4,0.4,0.4,0.4,0.4,0.5,0.4,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.4,0.4,0.4,0.4,0.4,0.3,0.3,0.5,0.5,0.6,0.6,0.6,0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.7,0.6,0.6,0.6,0.7,0.6,0.6,0.6,0.6,0.7,0.7,0.7,0.7,0.7,0.7,0.6,0.6,0.6,0.5,0.6,0.6,0.6,0.6,0.6,0.5,0.6,0.6,0.6,0.6,0.5,0.5,0.5,0.5,0.5,0.6,0.6] },
 }
 
+
 function chooseOption(option: string): void {
     if (!keyInputAllowed) return; // Ignore keyboard input if not allowed
 
@@ -185,6 +186,24 @@ function chooseOption(option: string): void {
 
 }
 
+// Make user display in full screen mode upon opening the application
+function requestFullScreen(element: HTMLElement) {
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if ((element as any).mozRequestFullScreen) { // Older Firefox
+        (element as any).mozRequestFullScreen();
+    } else if ((element as any).webkitRequestFullscreen) { // Older Chrome, Safari and Opera
+        (element as any).webkitRequestFullscreen();
+    } else if ((element as any).msRequestFullscreen) { // Older IE/Edge
+        (element as any).msRequestFullscreen();
+    } else {
+        console.log("Fullscreen API is not supported.");
+    }
+}
+const element = document.getElementById('element-id');
+if (element) {
+    requestFullScreen(element);
+}
 
 // Event listener for instructions screen
 const handleKeydown = function(event: KeyboardEvent) {

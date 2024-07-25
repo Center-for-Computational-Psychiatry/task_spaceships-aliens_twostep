@@ -164,6 +164,28 @@ function chooseOption(option) {
         }
     }
 }
+// Make user display in full screen mode upon opening the application
+function requestFullScreen(element) {
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    }
+    else if (element.mozRequestFullScreen) { // Older Firefox
+        element.mozRequestFullScreen();
+    }
+    else if (element.webkitRequestFullscreen) { // Older Chrome, Safari and Opera
+        element.webkitRequestFullscreen();
+    }
+    else if (element.msRequestFullscreen) { // Older IE/Edge
+        element.msRequestFullscreen();
+    }
+    else {
+        console.log("Fullscreen API is not supported.");
+    }
+}
+var element = document.getElementById('element-id');
+if (element) {
+    requestFullScreen(element);
+}
 // Event listener for instructions screen
 var handleKeydown = function (event) {
     if (event.key === ' ' || event.key === 'Spacebar') {
