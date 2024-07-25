@@ -185,12 +185,12 @@ function requestFullScreen(element) {
         console.log("Fullscreen API is not supported.");
     }
 }
-requestFullScreen(); // Make the entire screen full-screen
 // Event listener for instructions screen
 var handleKeydown = function (event) {
     if (event.key === ' ' || event.key === 'Spacebar') {
         console.log("first key event logged");
         if (currentStage == "welcome") {
+            requestFullScreen(); // Make the entire screen full-screen
             document.getElementById('welcome-screen').style.display = 'none';
             document.getElementById('instructions-screen-1').style.display = 'block';
             currentStage = "instructions1";
