@@ -187,7 +187,9 @@ function chooseOption(option: string): void {
 }
 
 // Make user display in full screen mode upon opening the application
-function requestFullScreen(element: HTMLElement) {
+function requestFullScreen(element: HTMLElement = document.documentElement) {
+    // document.documentElement is the entire <html> element of the html,
+        // meaning the entire html page (similar to <body> tag)
     if (element.requestFullscreen) {
         element.requestFullscreen();
     } else if ((element as any).mozRequestFullScreen) { // Older Firefox
@@ -200,10 +202,8 @@ function requestFullScreen(element: HTMLElement) {
         console.log("Fullscreen API is not supported.");
     }
 }
-const element = document.getElementById('element-id');
-if (element) {
-    requestFullScreen(element);
-}
+requestFullScreen(); // Make the entire screen full-screen
+
 
 // Event listener for instructions screen
 const handleKeydown = function(event: KeyboardEvent) {
