@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,13 +9,13 @@
     <script>
         // Preload images
         const images = [
-            'img/demo-greenplanet_aliens', 
-            'img/demo-purpleplanet_aliens', 
-            'img/demo-two_rockets', 
-            'img/rocket_yellow.png', 'img/rocket_blue.png', 
-            'img/planet_purple.png', 'img/planet_green.png', 
-            'img/Stage2-alien-green-A.png', 'img/Stage2-alien-green-B.png', 
-            'img/Stage2-alien-purple-A.png', 'img/Stage2-alien-purple-B.png', 
+            'img/demo-greenplanet_aliens',
+            'img/demo-purpleplanet_aliens',
+            'img/demo-two_rockets',
+            'img/rocket_yellow.png', 'img/rocket_blue.png',
+            'img/planet_purple.png', 'img/planet_green.png',
+            'img/Stage2-alien-green-A.png', 'img/Stage2-alien-green-B.png',
+            'img/Stage2-alien-purple-A.png', 'img/Stage2-alien-purple-B.png',
             'img/gem-emerald.png', 'img/dirt.png'
         ];
 
@@ -26,8 +27,9 @@
         preloadImages(images);
     </script>
 </head>
+
 <body>
-    <div id="intake-screen" style="display: block;">
+    <div id="intake-screen" style="display: none;">
         <h1>Spaceships and Aliens</h1>
         <br>
         <form>
@@ -39,18 +41,24 @@
     <div id="welcome-screen" style="display: block;">
         <h1>Welcome to the Spaceships and Aliens Game!</h1>
         <br>
-        <p>You are a citizen of Earth. In recent years, Earth has run out of rare gems and minerals. As an astronaut working for Secret Government Agency (SGA), you are sent to meet with intergalactic aliens on neighboring planets to find valuable gems around the galaxy.</p>
-        <p>In this game, you will earn points for each gem you find. Your mission director has assigned you to take 150 trips into space to collect as many valuable gems as possible. </p>
-        <p>At the end of this game, you will earn a monetary bonus based on points collected during your mission. Good luck!</p>
+        <p>You are a citizen of Earth. In recent years, Earth has run out of rare gems and minerals. As an astronaut
+            working for Secret Government Agency (SGA), you are sent to meet with intergalactic aliens on neighboring
+            planets to find valuable gems around the galaxy.</p>
+        <p>In this game, you will earn points for each gem you find. Your mission director has assigned you to take 150
+            trips into space to collect as many valuable gems as possible. </p>
+        <p>At the end of this game, you will earn a monetary bonus based on points collected during your mission. Good
+            luck!</p>
         <p>This game takes 12-15 minutes to play. Please set aside time for uninterrupted gameplay.</p>
         <br>
         <p><b><i>When you are ready to play, press the SPACEBAR to continue.</i></b></p>
     </div>
     <div id="instructions-screen-1" style="display: none;">
         <h1>Game Instructions</h1>
-        <p>In this game, you will get points from flying to alien planets and trading with alien traders. In the first stage, you will decide which rocket to use to fly to <b>one of two alien planets.</b> </p>
-        <p>There are two rockets you can choose to ride. <b>Each rocket usually brings you to <i>one</i> of the two planets <i>most of the time</i>, and to the <i>other</i> planet the rest of the time.</b> </p>
-        <p>Be sure to pay attention to <b>which rocket</b> brings you to <b>which planet</b>!</p> 
+        <p>In this game, you will get points from flying to alien planets and trading with alien traders. In the first
+            stage, you will decide which rocket to use to fly to <b>one of two alien planets.</b> </p>
+        <p>There are two rockets you can choose to ride. <b>Each rocket usually brings you to <i>one</i> of the two
+                planets <i>most of the time</i>, and to the <i>other</i> planet the rest of the time.</b> </p>
+        <p>Be sure to pay attention to <b>which rocket</b> brings you to <b>which planet</b>!</p>
         <p>Here are the two rockets you'll choose from during the game.</p>
         <span class="demo-span">
             <img class="demo-img" src="img/demo-two_rockets.png" alt="Stage 1 Two Rockets">
@@ -59,9 +67,13 @@
     </div>
     <div id="instructions-screen-2" style="display: none;">
         <h1>Game Instructions</h1>
-        <p>In the second stage, after landing on one of the two planets, <b>you will need to choose which of two alien traders to speak to.</b></p>
-        <p>Some aliens might have a lot of gems to trade, while other aliens mostly offer you dirt. <b>The amount of gems or dirt each alien has to trade changes over time throughout the game.</b> An alien may run out of gems (or find more gems) to trade at any point in the game, so be aware of these changes!</p>
-        <p>You will have to find <b>which planet</b> and <b>which alien</b> has the most gems, but remember that <b>this will change over time</b>, so you need to adapt!</p>
+        <p>In the second stage, after landing on one of the two planets, <b>you will need to choose which of two alien
+                traders to speak to.</b></p>
+        <p>Some aliens might have a lot of gems to trade, while other aliens mostly offer you dirt. <b>The amount of
+                gems or dirt each alien has to trade changes over time throughout the game.</b> An alien may run out of
+            gems (or find more gems) to trade at any point in the game, so be aware of these changes!</p>
+        <p>You will have to find <b>which planet</b> and <b>which alien</b> has the most gems, but remember that <b>this
+                will change over time</b>, so you need to adapt!</p>
         <p>Below are the planets and aliens you will see during the game.</p>
         <span class="demo-span">
             <img class="demo-img" src="img/demo-two_planets.png" alt="Stage 2 Two Planets and Aliens">
@@ -70,15 +82,19 @@
     </div>
     <div id="instructions-screen-3" style="display: none;">
         <h1>Game Instructions</h1>
-        <p>After you make your selection of rocket and alien trader, you will find out if you received a gem (+100 points) or some dirt (0 points).</p>
+        <p>After you make your selection of rocket and alien trader, you will find out if you received a gem (+100
+            points) or some dirt (0 points).</p>
         <br>
         <span class="demo-span">
             <img class="demo-reward" src="img/gem-emerald.png" alt="Valuable Gem">
             <img class="demo-reward" src="img/dirt.png" alt="Dirt">
         </span>
         <br></br>
-        <p>Shortly thereafter, you will return to the first stage, and make your new selections (for rockets and aliens) again. You will be making these selections for a total of 150 rounds. <b>You will receive $1 for every 1000 points you earn in the game.</b></b></p>
-        <p>In total, the game will take 12-15 minutes to play. Before the real game starts, you will have a chance to play a short practice session. </p>
+        <p>Shortly thereafter, you will return to the first stage, and make your new selections (for rockets and aliens)
+            again. You will be making these selections for a total of 150 rounds. <b>You will receive $1 for every 1000
+                points you earn in the game.</b></b></p>
+        <p>In total, the game will take 12-15 minutes to play. Before the real game starts, you will have a chance to
+            play a short practice session. </p>
         <p><b><i>Press the SPACEBAR to <u>proceed to the practice session.</u></i></b></p>
     </div>
     <div id="instructions-final" style="display: none;">
@@ -106,7 +122,8 @@
                 <img class="rocket-img" src="img/rocket_yellow.png" alt="Option X">
                 <img class="rocket-img" src="img/rocket_blue.png" alt="Option Y">
             </div>
-            <p id="stage-1-key-instruction"><i>Press LEFT ARROW for the rocket on the left. Press RIGHT ARROW for the rocket on the right.</i></p>
+            <p id="stage-1-key-instruction"><i>Press LEFT ARROW for the rocket on the left. Press RIGHT ARROW for the
+                    rocket on the right.</i></p>
         </div>
         <div id="stage-2-options" style="display:none;">
             <div id="stage-2-practice-instructions">
@@ -129,8 +146,9 @@
                     <img class="alien-img" src="img/Stage2-alien-purple-B.png" alt="Option D">
                 </div>
             </div>
-            <p id="stage-2-key-instruction"><i>Press LEFT ARROW for the alien on the left. Press RIGHT ARROW for the alien on the right.</i></p>
-            <div id="reward-container" >
+            <p id="stage-2-key-instruction"><i>Press LEFT ARROW for the alien on the left. Press RIGHT ARROW for the
+                    alien on the right.</i></p>
+            <div id="reward-container">
                 <img class="reward-img" id="reward-img-dirt" src="img/dirt.png" style="display:none">
                 <img class="reward-img" id="reward-img-gem" src="img/gem-emerald.png" style="display:none">
                 <h2 id="reward-message" style="display:none;"></h2>
@@ -140,10 +158,10 @@
             <h2>Points: <span id="pointCounter">0</span></h2>
         </div>
     </div>
-    
+
     <!-- the following line fixes the "exports not defined" error on line 2 of JS file:
     https://stackoverflow.com/questions/42497479/uncaught-referenceerror-exports-is-not-defined-in-filed-generated-by-typescript -->
-    <script> var exports = {}; </script> 
+    <script> var exports = {}; </script>
 
     <!-- regular javascript import line -->
     <script src="dist/experiment.js"></script>
@@ -152,4 +170,5 @@
     <!-- <script type="module" src="dist/experiment.js"></script> -->
 
 </body>
+
 </html>
