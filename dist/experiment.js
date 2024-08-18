@@ -6,7 +6,7 @@ var practiceRounds = 10;
 var mainRounds = 150;
 var totalRounds = practiceRounds;
 var points = 0;
-var currentStage = "welcome"; // [welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, mainStage1, mainStage2]
+var currentStage = "intake"; // [intake, welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, mainStage1, mainStage2]
 var results = [];
 var keyInputAllowed = true; // Flag to control input
 var stage1Probability = 0.8;
@@ -189,8 +189,13 @@ function requestFullScreen(element) {
 var handleKeydown = function (event) {
     if (event.key === ' ' || event.key === 'Spacebar') {
         console.log("first key event logged");
-        if (currentStage == "welcome") {
+        if (currentStage == "intake") {
             requestFullScreen(); // Make the entire screen full-screen
+            document.getElementById('intake-screen').style.display = 'none';
+            document.getElementById('welcome-screen').style.display = 'block';
+            currentStage = "welcome";
+        }
+        else if (currentStage == "welcome") {
             document.getElementById('welcome-screen').style.display = 'none';
             document.getElementById('instructions-screen-1').style.display = 'block';
             currentStage = "instructions1";

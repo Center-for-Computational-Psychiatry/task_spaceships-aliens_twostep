@@ -3,7 +3,7 @@ let practiceRounds: number = 10;
 let mainRounds: number = 150; 
 let totalRounds: number = practiceRounds;
 let points: number = 0;
-let currentStage: string = "welcome"; // [welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, mainStage1, mainStage2]
+let currentStage: string = "intake"; // [intake, welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, mainStage1, mainStage2]
 let results: { stage: string, round: number; choice: string; outcome: string; reward: number, points: number; rewardImage: string }[] = [];
 let keyInputAllowed: boolean = true; // Flag to control input
 let stage1Probability: number = 0.8;
@@ -209,8 +209,13 @@ const handleKeydown = function(event: KeyboardEvent) {
     if (event.key === ' ' || event.key === 'Spacebar') {
         console.log("first key event logged")
         
-        if (currentStage == "welcome") {    
+        if (currentStage == "intake") {
             requestFullScreen(); // Make the entire screen full-screen
+            document.getElementById('intake-screen')!.style.display = 'none';
+            document.getElementById('welcome-screen')!.style.display = 'block';
+            currentStage = "welcome";
+        }
+        else if (currentStage == "welcome") {
             document.getElementById('welcome-screen')!.style.display = 'none';
             document.getElementById('instructions-screen-1')!.style.display = 'block';
             currentStage = "instructions1";
