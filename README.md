@@ -2,7 +2,7 @@
 
 Spaceships and Aliens game is an online implementation of the original two-stage task paradigm.
 
-The two-step task, also known as the two-stage task, is a experiment designed to assess decision-making processes in the study of reinforcement learning (e.g. model-free and model-based inference approaches), and behavioral pathologies such as obsessive-compulsive disorder and gambling disorder.
+The two-step task, or the "two-stage" task, is an experiment designed to assess decision-making processes in the study of reinforcement learning (e.g. model-free and model-based inference approaches), and behavioral pathologies such as obsessive-compulsive disorder and gambling disorder.
 
 Participants are tasked with navigating a two-stage decision-making process involving choices between different options, with the goal of maximizing point accumulation through strategic selections.
 
