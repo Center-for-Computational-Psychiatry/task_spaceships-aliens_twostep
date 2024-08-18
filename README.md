@@ -18,11 +18,15 @@ Participants will make 150 selections throughout the game, which are tracked to 
 
 ### Stage 1: Rocket Selection
 **Objective:** Choose between two rockets to travel to one of two planets.
+
 **Mechanics:** Each rocket is associated with a probabilistic outcome of landing on one of the two planets. The association between rockets and planets is not fixed and varies probabilistically.
+
 **Controls:**
 LEFT ARROW key: Selects the left rocket. RIGHT ARROW key: Selects the right rocket.
 
 ### Stage 2: Alien Trader Selection
 **Objective:** Upon arriving at a planet, choose between two alien traders.
+
 **Mechanics:** The alien traders offer either valuable gems or non-valuable dirt. The distribution of gems and dirt varies over time, introducing dynamic changes to the trading environment.
+
 **Controls:** LEFT ARROW key: Selects the left alien trader. RIGHT ARROW key: Selects the right alien trader.
