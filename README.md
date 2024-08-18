@@ -11,8 +11,9 @@ Participants are tasked with navigating a two-stage decision-making process invo
 ### Overview
 The Two-Step Task Game simulates a resource-gathering mission where participants act as astronauts tasked with collecting valuable gems from alien traders. The game consists of two stages:
 
-### Rocket Selection (Stage 1)
-Alien Trader Selection (Stage 2)
+- **Rocket Selection (Stage 1)**
+- **Alien Trader Selection (Stage 2)**
+
 Participants will make 150 selections throughout the game, which are tracked to measure decision-making efficiency and adaptability.
 
 ### Stage 1: Rocket Selection
