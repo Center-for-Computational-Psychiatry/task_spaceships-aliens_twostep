@@ -1,12 +1,12 @@
-let round: number = 1;
+let round = 1;
 let totalRounds = 10;
 let results = [];
 let points = 0;
 let rewardA = [1, 2]; // Rewards for choosing Option X in different worlds (80% and 20%)
 let rewardB = [3, 4];  // Rewards for choosing Option Y in different worlds (80% and 20%)
 
-function chooseOption(option: string): void {
-    let outcome: string = '';
+function chooseOption() {
+    let outcome = '';
     let reward = 0;
     if (round % 2 === 1) { // Stage 1: Choosing between Option A and Option B
         if (option === 'A') {
@@ -54,7 +54,7 @@ function chooseOption(option: string): void {
                 outcome = Math.random() < 0.7 ? 'W' : 'Z';
                 reward = (outcome === 'Z') ? rewardB[0] : rewardB[1];
                 break;
-        }    
+        }
         document.getElementById('stage').innerText = "Stage 1: Choose between these two options";
         // document.getElementById('task').innerHTML = `
         // <img src="optionA.jpg" alt="Option A" onclick="chooseOption('A')" style="cursor: pointer;">
@@ -66,7 +66,7 @@ function chooseOption(option: string): void {
         `;
         points += reward;
         document.getElementById('pointCounter').innerText = points;
-        
+
     }
 
     document.getElementById('result').innerText = `You chose ${option}. Outcome: ${outcome}. Reward: ${reward}`;
@@ -89,10 +89,10 @@ function saveResultsToCSV(results) {
     let subjectId = getParameterByName('subject_id') || 'UnknownSubject';
     let timestamp = new Date().toISOString().replace(/:/g, '-');
     let filename = `data/two_step_task_results_${subjectId}_${timestamp}.csv`;
-    
+
     let csvContent = "data:text/csv;charset=utf-8,";
     csvContent += "Round,Choice,Outcome,Reward\n";
-    results.forEach(function(result) {
+    results.forEach(function (result) {
         let row = result.round + "," + result.choice + "," + result.outcome + "," + result.reward + "\n";
         csvContent += row;
     });
