@@ -8,11 +8,16 @@ var mainRounds = 150;
 var totalRounds = practiceRounds;
 var points = 0;
 var currentStage = "intake"; // [intake, welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, mainStage1, mainStage2]
+var option;
+var outcome;
+var reward;
+var rewardImage;
 var results = [];
 var keyInputAllowed = true; // Flag to control input
 var stage1Probability = 0.8;
 var intertrialInterval1 = 0;
 var intertrialInterval2 = 0;
+var subjectId = ''; // Declare globally so it can be used in other functions
 // variables for game setting 1
 var REWARD_1 = { points: 100, image: "reward-img-gem", message: "You found a gem (+100 points)!" };
 var REWARD_2 = { points: 0, image: "reward-img-dirt", message: "You found dirt (no points)!" };
@@ -58,12 +63,21 @@ function resetSelectionBoxes() {
     document.getElementById('stage-1-main-instructions').style.display = "none";
     document.getElementById('stage-2-main-instructions').style.display = "none";
 }
+function addData() {
+    results.push({
+        stage: currentStage,
+        round: round,
+        choice: option,
+        outcome: outcome,
+        reward: reward,
+        points: points,
+        rewardImage: rewardImage,
+        timestamp: new Date().toISOString() // Add timestamp here
+    });
+}
 function chooseOption(option) {
     if (!keyInputAllowed)
         return; // Ignore keyboard input if not allowed
-    var outcome = '';
-    var reward = 0;
-    var rewardImage = '';
     var rewardMessage = '';
     // NOTE: Do not put round counter here because not updated until much later stage
     if (currentStage === "mainStage1" || currentStage === "practiceStage1") { // Stage 1: Option X or Y
@@ -76,7 +90,7 @@ function chooseOption(option) {
             outcome = Math.random() < stage1Probability ? 'Y' : 'X';
         }
         // NOTE: Do not put round counter here because not updated until much later stage
-        results.push({ stage: currentStage, round: round, choice: option, outcome: outcome, reward: reward, points: points, rewardImage: rewardImage });
+        addData();
         // Introduce intertrialInterval delay between Stage 1 user choice and Stage 2 display
         setTimeout(function () {
             // Hide previous selection boxes and elements
@@ -88,7 +102,7 @@ function chooseOption(option) {
                 // Show Stage 2 Options, hide stage 1 display
                 document.getElementById('stage-1-main-instructions').style.display = "none";
                 document.getElementById('stage-2-main-instructions').style.display = "block";
-                // document.getElementById('stage-2-key-instruction')!.style.display = 'block'; // needs to be here otherwise first trial of stage 2 doesn't have key instruction
+                addData();
             }
             else { // currentStage === practiceStage1
                 // Switch practice stages
@@ -97,6 +111,7 @@ function chooseOption(option) {
                 document.getElementById('stage-1-practice-instructions').style.display = "none";
                 document.getElementById('stage-2-practice-instructions').style.display = "block";
                 document.getElementById('stage-2-key-instruction').style.display = 'block'; // needs to be here otherwise first trial of stage 2 doesn't have key instruction
+                addData();
             }
             // Show Stage 2 Options, hide stage 1 display (same for both main and practice)
             document.getElementById('stage-2-options').style.display = "block";
@@ -137,7 +152,7 @@ function chooseOption(option) {
             // This stuff happens IMMEDIATELY AFTER participant makes a key choice
             points += reward; // needs to happen BEFORE data is saved for the round
             // Save user choices into data object
-            results.push({ stage: currentStage, round: round, choice: option, outcome: outcome, reward: reward, points: points, rewardImage: rewardImage });
+            addData();
             // NOTE: Do not put round counter here because not updated until much later stage
             setTimeout(function () {
                 // Show reward message
@@ -158,6 +173,7 @@ function chooseOption(option) {
                         document.getElementById('stage-2-key-instruction').style.display = 'block'; // Show key instruction after reward display for practice trials
                     }
                     round++;
+                    addData();
                     // Continue to next round or end the session
                     if (round <= totalRounds) { // continue to next round
                         document.getElementById('stage-1-options').style.display = "block";
@@ -228,7 +244,7 @@ window.addEventListener('DOMContentLoaded', function () {
 function handleParticipantIDSubmit(event) {
     event.preventDefault(); // Prevent the default form submission
     var subjectIdInput = document.getElementById('subject-id');
-    var subjectId = subjectIdInput ? subjectIdInput.value : '';
+    subjectId = subjectIdInput ? subjectIdInput.value : '';
     if (subjectId.trim() === '') {
         alert('Please enter a valid subject ID.');
         return;
@@ -391,15 +407,16 @@ window.addEventListener('beforeunload', function (event) {
     // return message; // For some older browsers
 });
 function saveResultsToCSV(results) {
-    var subjectId = getParameterByName('subject_id', window.location.href) || 'UnknownSubject';
     var timestamp = new Date().toISOString().replace(/:/g, '-');
     var filename = "data/two_step_task_results_".concat(subjectId, "_").concat(timestamp, ".csv");
-    var csvHeader = "Stage,Round,Choice,Outcome,Reward,TotalPoints";
-    var csvRows = results.map(function (result) { return "".concat(result.stage, ",").concat(result.round, ",").concat(result.choice, ",").concat(result.outcome, ",").concat(result.reward, ",").concat(result.points); }).join("\n");
+    // Updated CSV header to include Timestamp
+    var csvHeader = "SubjectID,Stage,Round,Choice,Outcome,Reward,TotalPoints,RewardImage,Timestamp";
+    // Include the Timestamp in each row of the results
+    var csvRows = results.map(function (result) {
+        return "".concat(subjectId, ",").concat(result.stage, ",").concat(result.round, ",").concat(result.choice, ",").concat(result.outcome, ",").concat(result.reward, ",").concat(result.points, ",").concat(result.rewardImage, ",").concat(result.timestamp);
+    }).join("\n");
     var csvContent = "data:text/csv;charset=utf-8,".concat(csvHeader, "\n").concat(csvRows);
     var encodedUri = encodeURI(csvContent);
-    // Append to Google Sheets
-    // appendDataToSheet(results);
     // Automatically downloads CSV file to local machine
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
@@ -407,16 +424,14 @@ function saveResultsToCSV(results) {
     document.body.appendChild(link);
     link.click();
 }
-// Function to get URL parameter by name
-function getParameterByName(name, url) {
-    var paramName = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + paramName + "(=([^&#]*)|&|#|$)");
-    var results = regex.exec(url);
-    if (!results)
-        return null;
-    if (!results[2])
-        return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
+// Function to get URL parameter by name (for online studies only - Note: Needs to be connected to save data function)
+// function getParameterByName(name: string, url: string): string | null {
+//     const paramName = name.replace(/[\[\]]/g, "\\$&");
+//     const regex: RegExp = new RegExp("[?&]" + paramName + "(=([^&#]*)|&|#|$)");
+//     const results = regex.exec(url);
+//     if (!results) return null;
+//     if (!results[2]) return '';
+//     return decodeURIComponent(results[2].replace(/\+/g, " "));
+// }
 // Attach the chooseOption function to the window object
 window.chooseOption = chooseOption;

@@ -6,12 +6,28 @@ let mainRounds: number = 150;
 let totalRounds: number = practiceRounds;
 let points: number = 0;
 let currentStage: string = "intake"; // [intake, welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, mainStage1, mainStage2]
-let results: { stage: string, round: number; choice: string; outcome: string; reward: number, points: number; rewardImage: string }[] = [];
+let option: string;
+let choice: string;
+let outcome: string;
+let reward: number;
+let rewardImage: string;
+
+let results: {
+    stage: string;
+    round: number;
+    choice: string;
+    outcome: string;
+    reward: number;
+    points: number;
+    rewardImage: string;
+    timestamp: string;
+}[] = [];
 let keyInputAllowed: boolean = true; // Flag to control input
 let stage1Probability: number = 0.8;
 
 let intertrialInterval1: number = 0;
 let intertrialInterval2: number = 0;
+let subjectId: string = ''; // Declare globally so it can be used in other functions
 
 
 // variables for game setting 1
@@ -66,13 +82,22 @@ function resetSelectionBoxes() {
     document.getElementById('stage-2-main-instructions')!.style.display = "none";
 }
 
+function addData() {
+    results.push({
+        stage: currentStage,
+        round: round,
+        choice: option,
+        outcome: outcome,
+        reward: reward,
+        points: points,
+        rewardImage: rewardImage,
+        timestamp: new Date().toISOString() // Add timestamp here
+    });
+}
 
 function chooseOption(option: string): void {
     if (!keyInputAllowed) return; // Ignore keyboard input if not allowed
 
-    let outcome: string = '';
-    let reward: number = 0;
-    let rewardImage: string = '';
     let rewardMessage: string = '';
 
     // NOTE: Do not put round counter here because not updated until much later stage
@@ -88,7 +113,7 @@ function chooseOption(option: string): void {
         }
         // NOTE: Do not put round counter here because not updated until much later stage
 
-        results.push({ stage: currentStage, round: round, choice: option, outcome: outcome, reward: reward, points: points, rewardImage: rewardImage });
+        addData();
 
         // Introduce intertrialInterval delay between Stage 1 user choice and Stage 2 display
         setTimeout(() => {
@@ -102,7 +127,7 @@ function chooseOption(option: string): void {
                 // Show Stage 2 Options, hide stage 1 display
                 document.getElementById('stage-1-main-instructions')!.style.display = "none";
                 document.getElementById('stage-2-main-instructions')!.style.display = "block";
-                // document.getElementById('stage-2-key-instruction')!.style.display = 'block'; // needs to be here otherwise first trial of stage 2 doesn't have key instruction
+                addData();
             } else { // currentStage === practiceStage1
                 // Switch practice stages
                 currentStage = "practiceStage2";
@@ -110,6 +135,7 @@ function chooseOption(option: string): void {
                 document.getElementById('stage-1-practice-instructions')!.style.display = "none";
                 document.getElementById('stage-2-practice-instructions')!.style.display = "block";
                 document.getElementById('stage-2-key-instruction')!.style.display = 'block'; // needs to be here otherwise first trial of stage 2 doesn't have key instruction
+                addData();
             }
             // Show Stage 2 Options, hide stage 1 display (same for both main and practice)
             document.getElementById('stage-2-options')!.style.display = "block";
@@ -155,7 +181,7 @@ function chooseOption(option: string): void {
             points += reward; // needs to happen BEFORE data is saved for the round
 
             // Save user choices into data object
-            results.push({ stage: currentStage, round: round, choice: option, outcome: outcome, reward: reward, points: points, rewardImage: rewardImage });
+            addData();
 
             // NOTE: Do not put round counter here because not updated until much later stage
 
@@ -181,7 +207,7 @@ function chooseOption(option: string): void {
                         document.getElementById('stage-2-key-instruction')!.style.display = 'block'; // Show key instruction after reward display for practice trials
                     }
                     round++;
-
+                    addData();
                     // Continue to next round or end the session
                     if (round <= totalRounds) { // continue to next round
                         document.getElementById('stage-1-options')!.style.display = "block";
@@ -200,11 +226,11 @@ function chooseOption(option: string): void {
                             document.getElementById('stage-2-practice-instructions')!.style.display = 'none';
                         }
                     } else { // end the session
-
                         if (currentStage == "practiceStage1" || currentStage == "practiceStage2") {
                             points = 0;
                             round = 1;
                             transitionToMainStudy();
+
                         } else { // if currently in the main study
                             endTask();
                         }
@@ -256,7 +282,7 @@ function handleParticipantIDSubmit(event: Event) {
     event.preventDefault(); // Prevent the default form submission
 
     const subjectIdInput = document.getElementById('subject-id') as HTMLInputElement;
-    const subjectId = subjectIdInput ? subjectIdInput.value : '';
+    subjectId = subjectIdInput ? subjectIdInput.value : '';
 
     if (subjectId.trim() === '') {
         alert('Please enter a valid subject ID.');
@@ -337,10 +363,11 @@ document.addEventListener('keydown', function (event) {
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
         event.preventDefault(); // Prevent default scrolling behavior of arrow keys
         console.log(event.key)
-        let choice;
+
         if (currentStage === 'mainStage1' || currentStage === 'practiceStage1') {
             console.log("key input done for stage 1")
             choice = event.key === 'ArrowLeft' ? 'X' : 'Y';
+            console.log("choice: " + choice)
             // display black selection box
             if (event.key === "ArrowLeft") { updateSelectedRocket(0); } else { updateSelectedRocket(1); }
             // implement logic for user choice
@@ -352,10 +379,12 @@ document.addEventListener('keydown', function (event) {
             // identify user's key selection choice based on which planet they are on
             if (document.getElementById('planet-X-options')?.style.display === 'block') {
                 choice = event.key === 'ArrowLeft' ? 'A' : 'B';
+                console.log("choice: " + choice)
                 // display black selection box
                 if (event.key === "ArrowLeft") { updateSelectedAlien(0); } else { updateSelectedAlien(1); }
             } else {
                 choice = event.key === 'ArrowLeft' ? 'C' : 'D';
+                console.log("choice: " + choice)
                 // display black selection box
                 if (event.key === "ArrowLeft") { updateSelectedAlien(2); } else { updateSelectedAlien(3); }
             }
@@ -412,18 +441,29 @@ window.addEventListener('beforeunload', (event) => {
     // return message; // For some older browsers
 });
 
-function saveResultsToCSV(results: { stage: string; round: number; choice: string; outcome: string; reward: number, points: number; rewardImage: string }[]): void {
-    const subjectId: string = getParameterByName('subject_id', window.location.href) || 'UnknownSubject';
+function saveResultsToCSV(results: {
+    stage: string;
+    round: number;
+    choice: string;
+    outcome: string;
+    reward: number;
+    points: number;
+    rewardImage: string;
+    timestamp: string; // Add timestamp here
+}[]): void {
     const timestamp: string = new Date().toISOString().replace(/:/g, '-');
     const filename: string = `data/two_step_task_results_${subjectId}_${timestamp}.csv`;
 
-    const csvHeader = "Stage,Round,Choice,Outcome,Reward,TotalPoints";
-    const csvRows = results.map(result => `${result.stage},${result.round},${result.choice},${result.outcome},${result.reward},${result.points}`).join("\n");
+    // Updated CSV header to include Timestamp
+    const csvHeader = "SubjectID,Stage,Round,Choice,Outcome,Reward,TotalPoints,RewardImage,Timestamp";
+
+    // Include the Timestamp in each row of the results
+    const csvRows = results.map(result =>
+        `${subjectId},${result.stage},${result.round},${result.choice},${result.outcome},${result.reward},${result.points},${result.rewardImage},${result.timestamp}`
+    ).join("\n");
+
     const csvContent = `data:text/csv;charset=utf-8,${csvHeader}\n${csvRows}`;
     const encodedUri: string = encodeURI(csvContent);
-
-    // Append to Google Sheets
-    // appendDataToSheet(results);
 
     // Automatically downloads CSV file to local machine
     const link: HTMLAnchorElement = document.createElement("a");
@@ -433,15 +473,15 @@ function saveResultsToCSV(results: { stage: string; round: number; choice: strin
     link.click();
 }
 
-// Function to get URL parameter by name
-function getParameterByName(name: string, url: string): string | null {
-    const paramName = name.replace(/[\[\]]/g, "\\$&");
-    const regex: RegExp = new RegExp("[?&]" + paramName + "(=([^&#]*)|&|#|$)");
-    const results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
+// Function to get URL parameter by name (for online studies only - Note: Needs to be connected to save data function)
+// function getParameterByName(name: string, url: string): string | null {
+//     const paramName = name.replace(/[\[\]]/g, "\\$&");
+//     const regex: RegExp = new RegExp("[?&]" + paramName + "(=([^&#]*)|&|#|$)");
+//     const results = regex.exec(url);
+//     if (!results) return null;
+//     if (!results[2]) return '';
+//     return decodeURIComponent(results[2].replace(/\+/g, " "));
+// }
 
 // Attach the chooseOption function to the window object
 (window as any).chooseOption = chooseOption;
