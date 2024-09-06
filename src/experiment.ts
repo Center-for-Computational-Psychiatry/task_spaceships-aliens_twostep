@@ -244,33 +244,42 @@ function requestFullScreen(element: HTMLElement = document.documentElement) {
     }
 }
 
+// Attach the event listener to the form's submit event
+window.addEventListener('DOMContentLoaded', () => {
+    const intakeForm = document.getElementById('intake-form') as HTMLFormElement;
+    if (intakeForm) {
+        intakeForm.addEventListener('submit', handleParticipantIDSubmit);
+    }
+});
+
+function handleParticipantIDSubmit(event: Event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const subjectIdInput = document.getElementById('subject-id') as HTMLInputElement;
+    const subjectId = subjectIdInput ? subjectIdInput.value : '';
+
+    if (subjectId.trim() === '') {
+        alert('Please enter a valid subject ID.');
+        return;
+    }
+
+    console.log('Subject ID:', subjectId); // Log subject ID or use it as needed
+
+    // Hide intake screen and show the welcome screen
+    document.getElementById('intake-screen')!.style.display = 'none';
+    document.getElementById('welcome-screen')!.style.display = 'block';
+    currentStage = "welcome";
+
+    // Make the entire screen full-screen
+    requestFullScreen();
+}
 
 // Event listener for instructions screen
 const handleKeydown = function (event: KeyboardEvent) {
     if (event.key === ' ' || event.key === 'Spacebar') {
         console.log("first key event logged")
 
-        if (currentStage == "intake") {
-            const subjectIdInput = document.getElementById('subject-id') as HTMLInputElement;
-            const subjectId = subjectIdInput ? subjectIdInput.value : '';
-
-            if (subjectId.trim() === '') {
-                alert('Please enter a valid subject ID.');
-                return;
-            }
-
-            console.log('Subject ID:', subjectId); // Log subject ID or use it as needed
-
-            // Hide intake screen and show the welcome screen
-            document.getElementById('intake-screen')!.style.display = 'none';
-            document.getElementById('welcome-screen')!.style.display = 'block';
-            currentStage = "welcome";
-
-            // Make the entire screen full-screen
-            requestFullScreen();
-
-        }
-        else if (currentStage == "welcome") {
+        if (currentStage == "welcome") {
             document.getElementById('welcome-screen')!.style.display = 'none';
             document.getElementById('instructions-screen-1')!.style.display = 'block';
             currentStage = "instructions1";
@@ -302,9 +311,12 @@ document.addEventListener('keydown', handleKeydown);
 document.addEventListener('keydown', function (event) {
     if (!keyInputAllowed) return; // Ignore keyboard input if not allowed
 
-    event.preventDefault(); // Prevent default scrolling behavior of arrow keys
+    if (currentStage === "intake") {
+        return
+    };
 
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        event.preventDefault(); // Prevent default scrolling behavior of arrow keys
         console.log(event.key)
         let choice;
         if (currentStage === 'mainStage1' || currentStage === 'practiceStage1') {
@@ -375,10 +387,10 @@ export function endTask() {
 window.addEventListener('beforeunload', (event) => {
     saveResultsToCSV(results);
 
-    // (Note that modern browsers may ignore this and show their own message)
-    const message = "Are you sure you want to leave?";
-    event.returnValue = message; // For most browsers
-    return message; // For some older browsers
+    // // (Note that modern browsers may ignore this and show their own message)
+    // const message = "Are you sure you want to leave?";
+    // event.returnValue = message; // For most browsers
+    // return message; // For some older browsers
 });
 
 function saveResultsToCSV(results: { stage: string; round: number; choice: string; outcome: string; reward: number, points: number; rewardImage: string }[]): void {
