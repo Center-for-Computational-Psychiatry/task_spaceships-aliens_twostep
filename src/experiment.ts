@@ -283,8 +283,8 @@ function playInstructionalVideo() {
     // Event listener for when the video ends
     video.onended = function () {
         document.getElementById('video-screen')!.style.display = 'none';
-        document.getElementById('game-display')!.style.display = 'block';
-        currentStage = "practiceStage1";
+        document.getElementById('before-practice-screen')!.style.display = 'block';
+        currentStage = "beforePractice";
     };
 }
 
@@ -311,6 +311,10 @@ const handleKeydown = function (event: KeyboardEvent) {
             document.getElementById('video-screen')!.style.display = 'block';
             currentStage = "videoPlaying";
             playInstructionalVideo();
+        } else if (currentStage === "beforePractice") {
+            document.getElementById('before-practice-screen')!.style.display = 'none';
+            document.getElementById('game-display')!.style.display = 'block';
+            currentStage = "practiceStage1";
             // Remove this event listener after continuing to the practice session
             document.removeEventListener('keydown', handleKeydown);
         } else if (currentStage == "instructionsFinal") {
