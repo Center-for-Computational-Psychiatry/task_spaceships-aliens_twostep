@@ -50,6 +50,14 @@ function updateSelectedAlien(index) {
     selectedAlien = aliens[index];
     selectedAlien.classList.add('selected');
 }
+function resetSelectionBoxes() {
+    // Hide or reset all selection boxes (rockets and aliens)
+    rockets.forEach(function (rocket) { return rocket.classList.remove('selected'); });
+    aliens.forEach(function (alien) { return alien.classList.remove('selected'); });
+    // Reset any other visual elements as needed
+    document.getElementById('stage-1-main-instructions').style.display = "none";
+    document.getElementById('stage-2-main-instructions').style.display = "none";
+}
 function chooseOption(option) {
     if (!keyInputAllowed)
         return; // Ignore keyboard input if not allowed
@@ -71,6 +79,8 @@ function chooseOption(option) {
         results.push({ stage: currentStage, round: round, choice: option, outcome: outcome, reward: reward, points: points, rewardImage: rewardImage });
         // Introduce intertrialInterval delay between Stage 1 user choice and Stage 2 display
         setTimeout(function () {
+            // Hide previous selection boxes and elements
+            resetSelectionBoxes();
             // Determine which key options to display (practice vs. main trials)
             if (currentStage === "mainStage1") {
                 // Switch main stages
@@ -278,16 +288,23 @@ document.addEventListener('keydown', function (event) {
             // identify user's key selection choice based on which planet they are on
             if (((_a = document.getElementById('planet-X-options')) === null || _a === void 0 ? void 0 : _a.style.display) === 'block') {
                 choice = event.key === 'ArrowLeft' ? 'A' : 'B';
+                // display black selection box
+                if (event.key === "ArrowLeft") {
+                    updateSelectedAlien(0);
+                }
+                else {
+                    updateSelectedAlien(1);
+                }
             }
             else {
                 choice = event.key === 'ArrowLeft' ? 'C' : 'D';
-            }
-            // display black selection box
-            if (event.key === "ArrowLeft") {
-                updateSelectedAlien(0);
-            }
-            else {
-                updateSelectedAlien(1);
+                // display black selection box
+                if (event.key === "ArrowLeft") {
+                    updateSelectedAlien(2);
+                }
+                else {
+                    updateSelectedAlien(3);
+                }
             }
             // implement logic for user choice
             chooseOption(choice);

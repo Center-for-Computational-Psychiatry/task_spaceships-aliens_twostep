@@ -56,6 +56,15 @@ function updateSelectedAlien(index: number) {
     selectedAlien.classList.add('selected');
 }
 
+function resetSelectionBoxes() {
+    // Hide or reset all selection boxes (rockets and aliens)
+    rockets.forEach(rocket => rocket.classList.remove('selected'));
+    aliens.forEach(alien => alien.classList.remove('selected'));
+
+    // Reset any other visual elements as needed
+    document.getElementById('stage-1-main-instructions')!.style.display = "none";
+    document.getElementById('stage-2-main-instructions')!.style.display = "none";
+}
 
 
 function chooseOption(option: string): void {
@@ -83,6 +92,9 @@ function chooseOption(option: string): void {
 
         // Introduce intertrialInterval delay between Stage 1 user choice and Stage 2 display
         setTimeout(() => {
+            // Hide previous selection boxes and elements
+            resetSelectionBoxes();
+
             // Determine which key options to display (practice vs. main trials)
             if (currentStage === "mainStage1") {
                 // Switch main stages
@@ -295,11 +307,14 @@ document.addEventListener('keydown', function (event) {
             // identify user's key selection choice based on which planet they are on
             if (document.getElementById('planet-X-options')?.style.display === 'block') {
                 choice = event.key === 'ArrowLeft' ? 'A' : 'B';
+                // display black selection box
+                if (event.key === "ArrowLeft") { updateSelectedAlien(0); } else { updateSelectedAlien(1); }
             } else {
                 choice = event.key === 'ArrowLeft' ? 'C' : 'D';
+                // display black selection box
+                if (event.key === "ArrowLeft") { updateSelectedAlien(2); } else { updateSelectedAlien(3); }
             }
-            // display black selection box
-            if (event.key === "ArrowLeft") { updateSelectedAlien(0); } else { updateSelectedAlien(1); }
+
             // implement logic for user choice
             chooseOption(choice);
             // stop all key inputs after user makes a choice
