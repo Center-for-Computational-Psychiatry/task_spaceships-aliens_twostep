@@ -274,6 +274,20 @@ function handleParticipantIDSubmit(event: Event) {
     requestFullScreen();
 }
 
+// Function to play the instructional video and proceed after it ends
+function playInstructionalVideo() {
+    const video = document.getElementById('instructional-video') as HTMLVideoElement;
+
+    video.play();
+
+    // Event listener for when the video ends
+    video.onended = function () {
+        document.getElementById('video-screen')!.style.display = 'none';
+        document.getElementById('game-display')!.style.display = 'block';
+        currentStage = "practiceStage1";
+    };
+}
+
 // Event listener for instructions screen
 const handleKeydown = function (event: KeyboardEvent) {
     if (event.key === ' ' || event.key === 'Spacebar') {
@@ -294,8 +308,9 @@ const handleKeydown = function (event: KeyboardEvent) {
             currentStage = "instructions3";
         } else if (currentStage == "instructions3") {
             document.getElementById('instructions-screen-3')!.style.display = 'none';
-            document.getElementById('game-display')!.style.display = 'block';
-            currentStage = "practiceStage1";
+            document.getElementById('video-screen')!.style.display = 'block';
+            currentStage = "videoPlaying";
+            playInstructionalVideo();
             // Remove this event listener after continuing to the practice session
             document.removeEventListener('keydown', handleKeydown);
         } else if (currentStage == "instructionsFinal") {
