@@ -1,8 +1,8 @@
 .option {
-  width: 180px;
-  height: 150px;
-  display: inline-block;
-  margin-right: 10px;
+    width: 180px;
+    height: 150px;
+    display: inline-block;
+    margin-right: 10px;
 }
 
 body {
@@ -12,18 +12,24 @@ body {
     margin-right: 200px;
     margin-top: 100px;
     /* max-width: 1200px; */
-    
+
     /* gpt suggestions */
     /* margin: 50px;
     padding: 0 20px; */
 }
 
-h1, h2, p {
+h1,
+h2,
+p {
     font-family: Verdana;
 }
 
 p {
     font-size: 22px;
+}
+
+.selected {
+    border: 5px solid black;
 }
 
 .demo-span {
@@ -39,7 +45,7 @@ p {
     width: auto;
     /* margin-left: 10px;
     margin-right: 10px;  */
-    
+
     /* gpt suggestions */
     /* height: auto; */
     /* width: 100%; */
@@ -62,15 +68,15 @@ p {
 }
 
 #game-display {
-  text-align: center;
+    text-align: center;
 }
 
 #stage-1-options img {
-  height: 400px;
-  width: auto;
-  margin-top: 10px;
-  margin-left: 100px;
-  margin-right: 100px;
+    height: 400px;
+    width: auto;
+    margin-top: 10px;
+    margin-left: 100px;
+    margin-right: 100px;
 }
 
 /* #stage-2-options {
@@ -98,7 +104,8 @@ p {
 
 .alien-container {
     position: absolute;
-    bottom: 50px; /* Adjust to move the aliens up or down on the planet */
+    bottom: 50px;
+    /* Adjust to move the aliens up or down on the planet */
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -111,11 +118,11 @@ p {
 }
 
 .alien-img {
-  height: 200px;
-  margin: 0 75px;
-  
+    height: 200px;
+    margin: 0 75px;
+
 }
 
 #reward-message {
-    color:midnightblue;
+    color: midnightblue;
 }

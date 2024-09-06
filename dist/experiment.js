@@ -13,14 +13,9 @@ var keyInputAllowed = true; // Flag to control input
 var stage1Probability = 0.8;
 var intertrialInterval1 = 0;
 var intertrialInterval2 = 0;
-// console.log("intertrialInterval1: " + intertrialInterval1)
-// console.log("intertrialInterval2: " + intertrialInterval2)
 // variables for game setting 1
 var REWARD_1 = { points: 100, image: "reward-img-gem", message: "You found a gem (+100 points)!" };
 var REWARD_2 = { points: 0, image: "reward-img-dirt", message: "You found dirt (no points)!" };
-// // variables for game setting 2
-// const REWARD_1 = { points: 100, image: "img/gem-sapphire.png" };
-// const REWARD_2 = { points: 100, image: "img/gem-ruby.png" };
 // likelihoods for game setting 1
 var stage2Options = {
     "A": { likelihoods: [0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.2, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5] },
@@ -30,6 +25,31 @@ var stage2Options = {
 };
 // Initialize Google Sheets API for data saving
 // handleClientLoad();
+// References to HTML rockets and aliens
+var rockets = document.querySelectorAll('.rocket-img');
+var aliens = document.querySelectorAll('.alien-img');
+var selectedRocket = null;
+var selectedAlien = null;
+// Function to update the selected rocket visual
+function updateSelectedRocket(index) {
+    // Remove the selected class from the previously selected rocket
+    if (selectedRocket) {
+        selectedRocket.classList.remove('selected');
+    }
+    // Add the selected class to the new rocket
+    selectedRocket = rockets[index];
+    selectedRocket.classList.add('selected');
+}
+// Function to update the selected alien visual
+function updateSelectedAlien(index) {
+    // Remove the selected class from the previously selected alien
+    if (selectedAlien) {
+        selectedAlien.classList.remove('selected');
+    }
+    // Add the selected class to the new alien
+    selectedAlien = aliens[index];
+    selectedAlien.classList.add('selected');
+}
 function chooseOption(option) {
     if (!keyInputAllowed)
         return; // Ignore keyboard input if not allowed
@@ -241,17 +261,38 @@ document.addEventListener('keydown', function (event) {
         if (currentStage === 'mainStage1' || currentStage === 'practiceStage1') {
             console.log("key input done for stage 1");
             choice = event.key === 'ArrowLeft' ? 'X' : 'Y';
+            // display black selection box
+            if (event.key === "ArrowLeft") {
+                updateSelectedRocket(0);
+            }
+            else {
+                updateSelectedRocket(1);
+            }
+            // implement logic for user choice
             chooseOption(choice);
-            keyInputAllowed = false; // Don't allow key press input after first key press in stage 1
+            // stop all key inputs after user makes a choice
+            keyInputAllowed = false;
         }
         else if (currentStage === 'mainStage2' || currentStage === 'practiceStage2') {
             console.log("key input done for stage 2");
-            choice = event.key === 'ArrowLeft' ? 'A' : 'B';
-            if (((_a = document.getElementById('planet-Y-options')) === null || _a === void 0 ? void 0 : _a.style.display) === 'block') {
+            // identify user's key selection choice based on which planet they are on
+            if (((_a = document.getElementById('planet-X-options')) === null || _a === void 0 ? void 0 : _a.style.display) === 'block') {
+                choice = event.key === 'ArrowLeft' ? 'A' : 'B';
+            }
+            else {
                 choice = event.key === 'ArrowLeft' ? 'C' : 'D';
             }
+            // display black selection box
+            if (event.key === "ArrowLeft") {
+                updateSelectedAlien(0);
+            }
+            else {
+                updateSelectedAlien(1);
+            }
+            // implement logic for user choice
             chooseOption(choice);
-            keyInputAllowed = false; // Don't allow key press input after first key press in stage 2
+            // stop all key inputs after user makes a choice
+            keyInputAllowed = false;
         }
     }
 });
