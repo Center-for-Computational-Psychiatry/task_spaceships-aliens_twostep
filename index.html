@@ -31,16 +31,18 @@
 
 
 <body>
-    <div id="intake-screen" style="display: none;">
+    <div id="intake-screen" style="display: block;">
         <h1>Spaceships and Aliens</h1>
         <br>
-        <form>
-            Please enter your subject ID:
+        <form id="intake-form">
+            <label for="subject-id">Please enter your subject ID:</label>
+            <input type="text" id="subject-id" name="subject-id" required>
+            <button type="submit">Submit</button>
         </form>
         <br>
         <p><b><i>When you are ready to play, press the SPACEBAR to continue.</i></b></p>
     </div>
-    <div id="welcome-screen" style="display: block;">
+    <div id="welcome-screen" style="display: none;">
         <h1>Welcome to the Spaceships and Aliens Game!</h1>
         <br>
         <p>You are a citizen of Earth. In recent years, Earth has run out of rare gems and minerals. As an astronaut

@@ -223,10 +223,19 @@ var handleKeydown = function (event) {
     if (event.key === ' ' || event.key === 'Spacebar') {
         console.log("first key event logged");
         if (currentStage == "intake") {
-            requestFullScreen(); // Make the entire screen full-screen
+            var subjectIdInput = document.getElementById('subject-id');
+            var subjectId = subjectIdInput ? subjectIdInput.value : '';
+            if (subjectId.trim() === '') {
+                alert('Please enter a valid subject ID.');
+                return;
+            }
+            console.log('Subject ID:', subjectId); // Log subject ID or use it as needed
+            // Hide intake screen and show the welcome screen
             document.getElementById('intake-screen').style.display = 'none';
             document.getElementById('welcome-screen').style.display = 'block';
             currentStage = "welcome";
+            // Make the entire screen full-screen
+            requestFullScreen();
         }
         else if (currentStage == "welcome") {
             document.getElementById('welcome-screen').style.display = 'none';
@@ -344,6 +353,14 @@ function endTask() {
     // }, 5000);
 }
 exports.endTask = endTask;
+// Allow the data to be saved whenever user exits the window/screen
+window.addEventListener('beforeunload', function (event) {
+    saveResultsToCSV(results);
+    // (Note that modern browsers may ignore this and show their own message)
+    var message = "Are you sure you want to leave?";
+    event.returnValue = message; // For most browsers
+    return message; // For some older browsers
+});
 function saveResultsToCSV(results) {
     var subjectId = getParameterByName('subject_id', window.location.href) || 'UnknownSubject';
     var timestamp = new Date().toISOString().replace(/:/g, '-');

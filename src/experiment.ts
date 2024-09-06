@@ -251,10 +251,24 @@ const handleKeydown = function (event: KeyboardEvent) {
         console.log("first key event logged")
 
         if (currentStage == "intake") {
-            requestFullScreen(); // Make the entire screen full-screen
+            const subjectIdInput = document.getElementById('subject-id') as HTMLInputElement;
+            const subjectId = subjectIdInput ? subjectIdInput.value : '';
+
+            if (subjectId.trim() === '') {
+                alert('Please enter a valid subject ID.');
+                return;
+            }
+
+            console.log('Subject ID:', subjectId); // Log subject ID or use it as needed
+
+            // Hide intake screen and show the welcome screen
             document.getElementById('intake-screen')!.style.display = 'none';
             document.getElementById('welcome-screen')!.style.display = 'block';
             currentStage = "welcome";
+
+            // Make the entire screen full-screen
+            requestFullScreen();
+
         }
         else if (currentStage == "welcome") {
             document.getElementById('welcome-screen')!.style.display = 'none';
@@ -357,6 +371,15 @@ export function endTask() {
     // }, 5000);
 
 }
+// Allow the data to be saved whenever user exits the window/screen
+window.addEventListener('beforeunload', (event) => {
+    saveResultsToCSV(results);
+
+    // (Note that modern browsers may ignore this and show their own message)
+    const message = "Are you sure you want to leave?";
+    event.returnValue = message; // For most browsers
+    return message; // For some older browsers
+});
 
 function saveResultsToCSV(results: { stage: string; round: number; choice: string; outcome: string; reward: number, points: number; rewardImage: string }[]): void {
     const subjectId: string = getParameterByName('subject_id', window.location.href) || 'UnknownSubject';
@@ -391,3 +414,4 @@ function getParameterByName(name: string, url: string): string | null {
 
 // Attach the chooseOption function to the window object
 (window as any).chooseOption = chooseOption;
+
