@@ -6,7 +6,6 @@ let mainRounds: number = 150;
 let totalRounds: number = practiceRounds;
 let points: number = 0;
 let currentStage: string = "intake"; // [intake, welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, mainStage1, mainStage2]
-let option: string;
 let choice: string;
 let outcome: string;
 let reward: number;
@@ -82,11 +81,11 @@ function resetSelectionBoxes() {
     document.getElementById('stage-2-main-instructions')!.style.display = "none";
 }
 
-function addData() {
+function addData(choiceMade: string) {
     results.push({
         stage: currentStage,
         round: round,
-        choice: option,
+        choice: choiceMade,
         outcome: outcome,
         reward: reward,
         points: points,
@@ -95,7 +94,7 @@ function addData() {
     });
 }
 
-function chooseOption(option: string): void {
+function chooseOption(optionChosen: string): void {
     if (!keyInputAllowed) return; // Ignore keyboard input if not allowed
 
     let rewardMessage: string = '';
@@ -106,14 +105,14 @@ function chooseOption(option: string): void {
         intertrialInterval1 = [400, 600, 800][Math.floor(Math.random() * 3)]; // milliseconds
         intertrialInterval2 = 0;
 
-        if (option === 'X') {
+        if (optionChosen === 'X') {
             outcome = Math.random() < stage1Probability ? 'X' : 'Y';
-        } else { // option Y
+        } else { // optionChosen Y
             outcome = Math.random() < stage1Probability ? 'Y' : 'X';
         }
         // NOTE: Do not put round counter here because not updated until much later stage
 
-        addData();
+        addData(optionChosen);
 
         // Introduce intertrialInterval delay between Stage 1 user choice and Stage 2 display
         setTimeout(() => {
@@ -127,7 +126,7 @@ function chooseOption(option: string): void {
                 // Show Stage 2 Options, hide stage 1 display
                 document.getElementById('stage-1-main-instructions')!.style.display = "none";
                 document.getElementById('stage-2-main-instructions')!.style.display = "block";
-                addData();
+                addData(optionChosen);
             } else { // currentStage === practiceStage1
                 // Switch practice stages
                 currentStage = "practiceStage2";
@@ -135,7 +134,7 @@ function chooseOption(option: string): void {
                 document.getElementById('stage-1-practice-instructions')!.style.display = "none";
                 document.getElementById('stage-2-practice-instructions')!.style.display = "block";
                 document.getElementById('stage-2-key-instruction')!.style.display = 'block'; // needs to be here otherwise first trial of stage 2 doesn't have key instruction
-                addData();
+                addData(optionChosen);
             }
             // Show Stage 2 Options, hide stage 1 display (same for both main and practice)
             document.getElementById('stage-2-options')!.style.display = "block";
@@ -157,7 +156,7 @@ function chooseOption(option: string): void {
     } else if (currentStage === "mainStage2" || currentStage === "practiceStage2") { // Stage 2: Option A, B, C, or D
         intertrialInterval2 = [400, 600, 800][Math.floor(Math.random() * 3)]; // 500, 1000, or 1500 millisecond
 
-        const userChoice = stage2Options[option as keyof typeof stage2Options];
+        const userChoice = stage2Options[optionChosen as keyof typeof stage2Options];
 
         if (userChoice) {
             const likelihoods = userChoice.likelihoods;
@@ -166,12 +165,12 @@ function chooseOption(option: string): void {
 
             // select reward from user choice
             if (Math.random() < currentLikelihood) {
-                outcome = option;
+                outcome = optionChosen;
                 reward = REWARD_1.points;
                 rewardImage = REWARD_1.image;
                 rewardMessage = REWARD_1.message;
             } else {
-                outcome = option;
+                outcome = optionChosen;
                 reward = REWARD_2.points;
                 rewardImage = REWARD_2.image;
                 rewardMessage = REWARD_2.message;
@@ -181,7 +180,7 @@ function chooseOption(option: string): void {
             points += reward; // needs to happen BEFORE data is saved for the round
 
             // Save user choices into data object
-            addData();
+            addData(optionChosen);
 
             // NOTE: Do not put round counter here because not updated until much later stage
 
@@ -207,7 +206,7 @@ function chooseOption(option: string): void {
                         document.getElementById('stage-2-key-instruction')!.style.display = 'block'; // Show key instruction after reward display for practice trials
                     }
                     round++;
-                    addData();
+                    addData(optionChosen);
                     // Continue to next round or end the session
                     if (round <= totalRounds) { // continue to next round
                         document.getElementById('stage-1-options')!.style.display = "block";
@@ -364,33 +363,35 @@ document.addEventListener('keydown', function (event) {
         event.preventDefault(); // Prevent default scrolling behavior of arrow keys
         console.log(event.key)
 
+        let optionChosen: string;
+
         if (currentStage === 'mainStage1' || currentStage === 'practiceStage1') {
             console.log("key input done for stage 1")
-            choice = event.key === 'ArrowLeft' ? 'X' : 'Y';
+            optionChosen = event.key === 'ArrowLeft' ? 'X' : 'Y';
             console.log("choice: " + choice)
             // display black selection box
             if (event.key === "ArrowLeft") { updateSelectedRocket(0); } else { updateSelectedRocket(1); }
             // implement logic for user choice
-            chooseOption(choice);
+            chooseOption(optionChosen);
             // stop all key inputs after user makes a choice
             keyInputAllowed = false;
         } else if (currentStage === 'mainStage2' || currentStage === 'practiceStage2') {
             console.log("key input done for stage 2")
             // identify user's key selection choice based on which planet they are on
             if (document.getElementById('planet-X-options')?.style.display === 'block') {
-                choice = event.key === 'ArrowLeft' ? 'A' : 'B';
+                optionChosen = event.key === 'ArrowLeft' ? 'A' : 'B';
                 console.log("choice: " + choice)
                 // display black selection box
                 if (event.key === "ArrowLeft") { updateSelectedAlien(0); } else { updateSelectedAlien(1); }
             } else {
-                choice = event.key === 'ArrowLeft' ? 'C' : 'D';
+                optionChosen = event.key === 'ArrowLeft' ? 'C' : 'D';
                 console.log("choice: " + choice)
                 // display black selection box
                 if (event.key === "ArrowLeft") { updateSelectedAlien(2); } else { updateSelectedAlien(3); }
             }
 
             // implement logic for user choice
-            chooseOption(choice);
+            chooseOption(optionChosen);
             // stop all key inputs after user makes a choice
             keyInputAllowed = false;
         }
