@@ -11,7 +11,8 @@ var currentStage = "intake"; // [intake, welcome, instructions1, instructions2, 
 var choice;
 var outcome;
 var reward = 0;
-var rewardImage;
+var rewardImage = "";
+var dataSaved = false; // Track if data has already been saved for the task session
 var results = [];
 var keyInputAllowed = true; // Flag to control input
 var stage1Probability = 0.8;
@@ -410,6 +411,9 @@ window.addEventListener('beforeunload', function (event) {
     // return message; // For some older browsers
 });
 function saveResultsToCSV(results) {
+    if (dataSaved) {
+        return;
+    } // If data has already been saved for this round, exit
     var timestamp = new Date().toISOString().replace(/:/g, '-');
     var filename = "data/two_step_task_results_".concat(subjectId, "_").concat(timestamp, ".csv");
     // Updated CSV header to include Timestamp
@@ -426,6 +430,8 @@ function saveResultsToCSV(results) {
     link.setAttribute("download", filename);
     document.body.appendChild(link);
     link.click();
+    // Set dataSaved to be true
+    dataSaved = true;
 }
 // Function to get URL parameter by name (for online studies only - Note: Needs to be connected to save data function)
 // function getParameterByName(name: string, url: string): string | null {
