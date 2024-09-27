@@ -10,6 +10,7 @@ let choice: string;
 let outcome: string;
 let reward: number = 0;
 let rewardImage: string = "";
+let dataSaved: boolean = false; // Track if data has already been saved for the task session
 
 let results: {
     stage: string;
@@ -452,6 +453,8 @@ function saveResultsToCSV(results: {
     rewardImage: string;
     timestamp: string; // Add timestamp here
 }[]): void {
+    if (dataSaved) { return; } // If data has already been saved for this round, exit
+
     const timestamp: string = new Date().toISOString().replace(/:/g, '-');
     const filename: string = `data/two_step_task_results_${subjectId}_${timestamp}.csv`;
 
@@ -472,6 +475,9 @@ function saveResultsToCSV(results: {
     link.setAttribute("download", filename);
     document.body.appendChild(link);
     link.click();
+
+    // Set dataSaved to be true
+    dataSaved = true;
 }
 
 // Function to get URL parameter by name (for online studies only - Note: Needs to be connected to save data function)
