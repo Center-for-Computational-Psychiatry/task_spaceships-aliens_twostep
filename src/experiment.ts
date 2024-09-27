@@ -9,7 +9,7 @@ let currentStage: string = "intake"; // [intake, welcome, instructions1, instruc
 let choice: string;
 let outcome: string;
 let reward: number = 0;
-let rewardImage: string;
+let rewardImage: string = "";
 
 let results: {
     stage: string;
