@@ -369,7 +369,7 @@ document.addEventListener('keydown', function (event) {
         if (currentStage === 'mainStage1' || currentStage === 'practiceStage1') {
             console.log("key input done for stage 1")
             optionChosen = event.key === 'ArrowLeft' ? 'X' : 'Y';
-            console.log("choice: " + choice)
+            console.log("choice: " + optionChosen)
             // display black selection box
             if (event.key === "ArrowLeft") { updateSelectedRocket(0); } else { updateSelectedRocket(1); }
             // implement logic for user choice
@@ -381,12 +381,12 @@ document.addEventListener('keydown', function (event) {
             // identify user's key selection choice based on which planet they are on
             if (document.getElementById('planet-X-options')?.style.display === 'block') {
                 optionChosen = event.key === 'ArrowLeft' ? 'A' : 'B';
-                console.log("choice: " + choice)
+                console.log("choice: " + optionChosen)
                 // display black selection box
                 if (event.key === "ArrowLeft") { updateSelectedAlien(0); } else { updateSelectedAlien(1); }
             } else {
                 optionChosen = event.key === 'ArrowLeft' ? 'C' : 'D';
-                console.log("choice: " + choice)
+                console.log("choice: " + optionChosen)
                 // display black selection box
                 if (event.key === "ArrowLeft") { updateSelectedAlien(2); } else { updateSelectedAlien(3); }
             }
