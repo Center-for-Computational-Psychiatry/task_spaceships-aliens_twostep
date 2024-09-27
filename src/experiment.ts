@@ -8,7 +8,7 @@ let points: number = 0;
 let currentStage: string = "intake"; // [intake, welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, mainStage1, mainStage2]
 let choice: string;
 let outcome: string;
-let reward: number;
+let reward: number = 0;
 let rewardImage: string;
 
 let results: {
