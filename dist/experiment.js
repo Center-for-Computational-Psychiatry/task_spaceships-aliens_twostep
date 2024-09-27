@@ -10,7 +10,7 @@ var points = 0;
 var currentStage = "intake"; // [intake, welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, mainStage1, mainStage2]
 var choice;
 var outcome;
-var reward;
+var reward = 0;
 var rewardImage;
 var results = [];
 var keyInputAllowed = true; // Flag to control input
@@ -102,7 +102,7 @@ function chooseOption(optionChosen) {
                 // Show Stage 2 Options, hide stage 1 display
                 document.getElementById('stage-1-main-instructions').style.display = "none";
                 document.getElementById('stage-2-main-instructions').style.display = "block";
-                addData(optionChosen);
+                // addData(optionChosen);
             }
             else { // currentStage === practiceStage1
                 // Switch practice stages
@@ -111,7 +111,7 @@ function chooseOption(optionChosen) {
                 document.getElementById('stage-1-practice-instructions').style.display = "none";
                 document.getElementById('stage-2-practice-instructions').style.display = "block";
                 document.getElementById('stage-2-key-instruction').style.display = 'block'; // needs to be here otherwise first trial of stage 2 doesn't have key instruction
-                addData(optionChosen);
+                // addData(optionChosen);
             }
             // Show Stage 2 Options, hide stage 1 display (same for both main and practice)
             document.getElementById('stage-2-options').style.display = "block";
@@ -173,7 +173,7 @@ function chooseOption(optionChosen) {
                         document.getElementById('stage-2-key-instruction').style.display = 'block'; // Show key instruction after reward display for practice trials
                     }
                     round++;
-                    addData(optionChosen);
+                    // addData(optionChosen);
                     // Continue to next round or end the session
                     if (round <= totalRounds) { // continue to next round
                         document.getElementById('stage-1-options').style.display = "block";
