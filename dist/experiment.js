@@ -13,6 +13,7 @@ var outcome;
 var reward = 0;
 var rewardImage = "";
 var dataSaved = false; // Track if data has already been saved for the task session
+var rewardDisplayInterval = 2000;
 var results = [];
 var keyInputAllowed = true; // Flag to control input
 var stage1Probability = 0.8;
@@ -83,7 +84,10 @@ function addData(choiceMade) {
         points: points,
         rewardImage: rewardImage,
         relativeTime: relativeTime.toFixed(2), // Relative timestamp in seconds with 2 decimals
-        absoluteTime: currentTime.toISOString() // Optionally, save the current absolute timestamp as well
+        absoluteTime: currentTime.toISOString(), // Optionally, save the current absolute timestamp as well
+        rewardDisplayInterval: rewardDisplayInterval,
+        intertrialInterval1: intertrialInterval1,
+        intertrialInterval2: intertrialInterval2
     });
 }
 function chooseOption(optionChosen) {
@@ -217,7 +221,7 @@ function chooseOption(optionChosen) {
                     // Re-allow keyboard input after reward display ends
                     keyInputAllowed = true;
                     // console.log("intertrialInterval2 before timeout: " + intertrialInterval2)
-                }, 2000);
+                }, rewardDisplayInterval);
             }, intertrialInterval2);
         }
         else {
@@ -452,7 +456,7 @@ function saveResultsToCSV(results) {
     var csvHeader = "SubjectID,Stage,Round,Choice,Outcome,Reward,TotalPoints,RewardImage,RelativeTime,AbsoluteTime";
     // Include the Timestamp in each row of the results
     var csvRows = results.map(function (result) {
-        return "".concat(subjectId, ",").concat(result.stage, ",").concat(result.round, ",").concat(result.choice, ",").concat(result.outcome, ",").concat(result.reward, ",").concat(result.points, ",").concat(result.rewardImage, ",").concat(result.relativeTime, ",").concat(result.absoluteTime);
+        return "".concat(subjectId, ",").concat(result.stage, ",").concat(result.round, ",").concat(result.choice, ",").concat(result.outcome, ",").concat(result.reward, ",").concat(result.points, ",").concat(result.rewardImage, ",").concat(result.relativeTime, ",").concat(result.absoluteTime, ",").concat(result.rewardDisplayInterval, ",").concat(result.intertrialInterval1, ",").concat(result.intertrialInterval2);
     }).join("\n");
     var csvContent = "data:text/csv;charset=utf-8,".concat(csvHeader, "\n").concat(csvRows);
     var encodedUri = encodeURI(csvContent);
