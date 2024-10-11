@@ -443,10 +443,10 @@ function saveResultsToCSV(results) {
     }
     var filename = "data/two_step_task_results_".concat(subjectId, "_").concat(formattedStartTime, ".csv");
     // Updated CSV header to include Timestamp
-    var csvHeader = "SubjectID,Stage,Round,Choice,Outcome,Reward,TotalPoints,RewardImage,Timestamp";
+    var csvHeader = "SubjectID,Stage,Round,Choice,Outcome,Reward,TotalPoints,RewardImage,RelativeTime,AbsoluteTime";
     // Include the Timestamp in each row of the results
     var csvRows = results.map(function (result) {
-        return "".concat(subjectId, ",").concat(result.stage, ",").concat(result.round, ",").concat(result.choice, ",").concat(result.outcome, ",").concat(result.reward, ",").concat(result.points, ",").concat(result.rewardImage, ",").concat(result.absoluteTime, ",").concat(result.relativeTime);
+        return "".concat(subjectId, ",").concat(result.stage, ",").concat(result.round, ",").concat(result.choice, ",").concat(result.outcome, ",").concat(result.reward, ",").concat(result.points, ",").concat(result.rewardImage, ",").concat(result.relativeTime, ",").concat(result.absoluteTime);
     }).join("\n");
     var csvContent = "data:text/csv;charset=utf-8,".concat(csvHeader, "\n").concat(csvRows);
     var encodedUri = encodeURI(csvContent);
