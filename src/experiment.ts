@@ -20,8 +20,8 @@ let results: {
     reward: number;
     points: number;
     rewardImage: string;
-    absoluteTime: string;
     relativeTime: string;
+    absoluteTime: string;
 }[] = [];
 let keyInputAllowed: boolean = true; // Flag to control input
 let stage1Probability: number = 0.8;
@@ -84,7 +84,7 @@ function resetSelectionBoxes() {
     document.getElementById('stage-2-main-instructions')!.style.display = "none";
 }
 
-function addData(choiceMade: string) {
+function addData(choiceMade: string = "") {
     if (!startTime) {
         console.error('Start time is not set.');
         return;
@@ -302,15 +302,15 @@ function handleParticipantIDSubmit(event: Event) {
 
     console.log('Subject ID:', subjectId); // Log subject ID or use it as needed
 
-    // Save the absolute start time of the task
-    startTime = new Date();
-    console.log('Task start time (absolute):', startTime.toISOString());
-
-
     // Hide intake screen and show the welcome screen
     document.getElementById('intake-screen')!.style.display = 'none';
     document.getElementById('welcome-screen')!.style.display = 'block';
     currentStage = "welcome";
+
+    // Save the absolute start time of the task
+    startTime = new Date();
+    console.log('Task start time (absolute):', startTime.toISOString());
+    addData() // log start of the task
 
     // Make the entire screen full-screen
     requestFullScreen();
@@ -327,6 +327,7 @@ function playInstructionalVideo() {
         document.getElementById('video-screen')!.style.display = 'none';
         document.getElementById('before-practice-screen')!.style.display = 'block';
         currentStage = "beforePractice";
+        addData() // log start of stage
     };
 }
 
@@ -339,27 +340,33 @@ const handleKeydown = function (event: KeyboardEvent) {
             document.getElementById('welcome-screen')!.style.display = 'none';
             document.getElementById('instructions-screen-1')!.style.display = 'block';
             currentStage = "instructions1";
+            addData() // log start of stage
             document.addEventListener('keydown', handleKeydown);
         } else if (currentStage == "instructions1") {
             document.getElementById('instructions-screen-1')!.style.display = 'none';
             document.getElementById('instructions-screen-2')!.style.display = 'block';
             currentStage = "instructions2";
+            addData() // log start of stage
         } else if (currentStage == "instructions2") {
             document.getElementById('instructions-screen-2')!.style.display = 'none';
             document.getElementById('instructions-screen-3')!.style.display = 'block';
             currentStage = "instructions3";
+            addData() // log start of stage
         } else if (currentStage == "instructions3") {
             document.getElementById('instructions-screen-3')!.style.display = 'none';
             document.getElementById('video-screen')!.style.display = 'block';
             currentStage = "videoPlaying";
+            addData() // log start of stage
             playInstructionalVideo();
         } else if (currentStage === "beforePractice") {
             document.getElementById('before-practice-screen')!.style.display = 'none';
             document.getElementById('game-display')!.style.display = 'block';
             currentStage = "practiceStage1";
+            addData() // log start of stage
             // Remove this event listener after continuing to the practice session
             document.removeEventListener('keydown', handleKeydown);
         } else if (currentStage == "instructionsFinal") {
+            addData() // log start of stage
             startMainStudy();
             // Remove this event listener after continuing to the main session
             document.removeEventListener('keydown', handleKeydown);
@@ -483,11 +490,11 @@ function saveResultsToCSV(results: {
     const filename: string = `data/two_step_task_results_${subjectId}_${formattedStartTime}.csv`;
 
     // Updated CSV header to include Timestamp
-    const csvHeader = "SubjectID,Stage,Round,Choice,Outcome,Reward,TotalPoints,RewardImage,Timestamp";
+    const csvHeader = "SubjectID,Stage,Round,Choice,Outcome,Reward,TotalPoints,RewardImage,RelativeTime,AbsoluteTime";
 
     // Include the Timestamp in each row of the results
     const csvRows = results.map(result =>
-        `${subjectId},${result.stage},${result.round},${result.choice},${result.outcome},${result.reward},${result.points},${result.rewardImage},${result.absoluteTime},${result.relativeTime}`
+        `${subjectId},${result.stage},${result.round},${result.choice},${result.outcome},${result.reward},${result.points},${result.rewardImage},${result.relativeTime},${result.absoluteTime}`
     ).join("\n");
 
     const csvContent = `data:text/csv;charset=utf-8,${csvHeader}\n${csvRows}`;

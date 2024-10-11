@@ -66,6 +66,7 @@ function resetSelectionBoxes() {
     document.getElementById('stage-2-main-instructions').style.display = "none";
 }
 function addData(choiceMade) {
+    if (choiceMade === void 0) { choiceMade = ""; }
     if (!startTime) {
         console.error('Start time is not set.');
         return;
@@ -257,13 +258,14 @@ function handleParticipantIDSubmit(event) {
         return;
     }
     console.log('Subject ID:', subjectId); // Log subject ID or use it as needed
-    // Save the absolute start time of the task
-    startTime = new Date();
-    console.log('Task start time (absolute):', startTime.toISOString());
     // Hide intake screen and show the welcome screen
     document.getElementById('intake-screen').style.display = 'none';
     document.getElementById('welcome-screen').style.display = 'block';
     currentStage = "welcome";
+    // Save the absolute start time of the task
+    startTime = new Date();
+    console.log('Task start time (absolute):', startTime.toISOString());
+    addData(); // log start of the task
     // Make the entire screen full-screen
     requestFullScreen();
 }
@@ -276,6 +278,7 @@ function playInstructionalVideo() {
         document.getElementById('video-screen').style.display = 'none';
         document.getElementById('before-practice-screen').style.display = 'block';
         currentStage = "beforePractice";
+        addData(); // log start of stage
     };
 }
 // Event listener for instructions screen
@@ -286,32 +289,38 @@ var handleKeydown = function (event) {
             document.getElementById('welcome-screen').style.display = 'none';
             document.getElementById('instructions-screen-1').style.display = 'block';
             currentStage = "instructions1";
+            addData(); // log start of stage
             document.addEventListener('keydown', handleKeydown);
         }
         else if (currentStage == "instructions1") {
             document.getElementById('instructions-screen-1').style.display = 'none';
             document.getElementById('instructions-screen-2').style.display = 'block';
             currentStage = "instructions2";
+            addData(); // log start of stage
         }
         else if (currentStage == "instructions2") {
             document.getElementById('instructions-screen-2').style.display = 'none';
             document.getElementById('instructions-screen-3').style.display = 'block';
             currentStage = "instructions3";
+            addData(); // log start of stage
         }
         else if (currentStage == "instructions3") {
             document.getElementById('instructions-screen-3').style.display = 'none';
             document.getElementById('video-screen').style.display = 'block';
             currentStage = "videoPlaying";
+            addData(); // log start of stage
             playInstructionalVideo();
         }
         else if (currentStage === "beforePractice") {
             document.getElementById('before-practice-screen').style.display = 'none';
             document.getElementById('game-display').style.display = 'block';
             currentStage = "practiceStage1";
+            addData(); // log start of stage
             // Remove this event listener after continuing to the practice session
             document.removeEventListener('keydown', handleKeydown);
         }
         else if (currentStage == "instructionsFinal") {
+            addData(); // log start of stage
             startMainStudy();
             // Remove this event listener after continuing to the main session
             document.removeEventListener('keydown', handleKeydown);
