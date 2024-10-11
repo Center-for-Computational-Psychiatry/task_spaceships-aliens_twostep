@@ -11,6 +11,7 @@ let outcome: string;
 let reward: number = 0;
 let rewardImage: string = "";
 let dataSaved: boolean = false; // Track if data has already been saved for the task session
+let rewardDisplayInterval: number = 2000;
 
 let results: {
     stage: string;
@@ -22,6 +23,9 @@ let results: {
     rewardImage: string;
     relativeTime: string;
     absoluteTime: string;
+    rewardDisplayInterval: number;
+    intertrialInterval1: number;
+    intertrialInterval2: number;
 }[] = [];
 let keyInputAllowed: boolean = true; // Flag to control input
 let stage1Probability: number = 0.8;
@@ -102,7 +106,10 @@ function addData(choiceMade: string = "") {
         points: points,
         rewardImage: rewardImage,
         relativeTime: relativeTime.toFixed(2), // Relative timestamp in seconds with 2 decimals
-        absoluteTime: currentTime.toISOString() // Optionally, save the current absolute timestamp as well
+        absoluteTime: currentTime.toISOString(), // Optionally, save the current absolute timestamp as well
+        rewardDisplayInterval: rewardDisplayInterval,
+        intertrialInterval1: intertrialInterval1,
+        intertrialInterval2: intertrialInterval2
     });
 }
 
@@ -139,6 +146,7 @@ function chooseOption(optionChosen: string): void {
                 document.getElementById('stage-1-main-instructions')!.style.display = "none";
                 document.getElementById('stage-2-main-instructions')!.style.display = "block";
 
+
             } else { // currentStage === practiceStage1
                 // Switch practice stages
                 currentStage = "practiceStage2";
@@ -160,7 +168,7 @@ function chooseOption(optionChosen: string): void {
                 document.getElementById('planet-Y-options')!.style.display = "block";
                 document.getElementById('planet-X-options')!.style.display = "none";
             };
-
+            addData() // log start of trial
             keyInputAllowed = true; // Re-allow keyboard input after intertrial interval ends
 
         }, intertrialInterval1);
@@ -229,22 +237,26 @@ function chooseOption(optionChosen: string): void {
                             currentStage = "mainStage1";
                             document.getElementById('stage-1-main-instructions')!.style.display = "block";
                             document.getElementById('stage-2-main-instructions')!.style.display = 'none';
+
                         } else { // currentStage === "practiceStage2"
                             // Show Stage 1 Practice Displays
                             currentStage = "practiceStage1";
                             document.getElementById('stage-1-practice-instructions')!.style.display = "block";
                             document.getElementById('stage-1-key-instruction')!.style.display = 'block';
                             document.getElementById('stage-2-practice-instructions')!.style.display = 'none';
+
                         }
+                        addData() // log start of trial or start of session
                     } else { // end the session
                         if (currentStage == "practiceStage1" || currentStage == "practiceStage2") {
                             points = 0;
                             round = 1;
                             transitionToMainStudy();
-
                         } else { // if currently in the main study
+                            currentStage = "endTask"
                             endTask();
                         }
+                        addData() // log end of session or end of task
                     }
 
                     // Re-allow keyboard input after reward display ends
@@ -252,7 +264,7 @@ function chooseOption(optionChosen: string): void {
 
                     // console.log("intertrialInterval2 before timeout: " + intertrialInterval2)
 
-                }, 2000);
+                }, rewardDisplayInterval);
 
             }, intertrialInterval2);
 
@@ -424,6 +436,7 @@ document.addEventListener('keydown', function (event) {
 
 function transitionToMainStudy() {
     currentStage = "instructionsFinal"
+    addData() // log start of stage
     totalRounds = mainRounds
     document.getElementById('instructions-final')!.style.display = "block";
     document.getElementById('game-display')!.style.display = "none";
@@ -442,6 +455,7 @@ function startMainStudy() {
     document.getElementById('stage-1-main-instructions')!.style.display = 'block';
     document.getElementById('stage-2-options')!.style.display = 'none';
     currentStage = "mainStage1"
+    addData() // log start of trial
 }
 
 // Add redirect links
@@ -477,6 +491,9 @@ function saveResultsToCSV(results: {
     rewardImage: string;
     relativeTime: string;
     absoluteTime: string;
+    rewardDisplayInterval: number;
+    intertrialInterval1: number;
+    intertrialInterval2: number;
 }[]): void {
     if (dataSaved) { return; } // If data has already been saved for this round, exit
 
@@ -494,7 +511,7 @@ function saveResultsToCSV(results: {
 
     // Include the Timestamp in each row of the results
     const csvRows = results.map(result =>
-        `${subjectId},${result.stage},${result.round},${result.choice},${result.outcome},${result.reward},${result.points},${result.rewardImage},${result.relativeTime},${result.absoluteTime}`
+        `${subjectId},${result.stage},${result.round},${result.choice},${result.outcome},${result.reward},${result.points},${result.rewardImage},${result.relativeTime},${result.absoluteTime},${result.rewardDisplayInterval},${result.intertrialInterval1},${result.intertrialInterval2}`
     ).join("\n");
 
     const csvContent = `data:text/csv;charset=utf-8,${csvHeader}\n${csvRows}`;

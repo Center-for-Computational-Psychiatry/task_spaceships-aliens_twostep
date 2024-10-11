@@ -135,6 +135,7 @@ function chooseOption(optionChosen) {
                 document.getElementById('planet-X-options').style.display = "none";
             }
             ;
+            addData(); // log start of trial
             keyInputAllowed = true; // Re-allow keyboard input after intertrial interval ends
         }, intertrialInterval1);
     }
@@ -199,6 +200,7 @@ function chooseOption(optionChosen) {
                             document.getElementById('stage-1-key-instruction').style.display = 'block';
                             document.getElementById('stage-2-practice-instructions').style.display = 'none';
                         }
+                        addData(); // log start of trial or start of session
                     }
                     else { // end the session
                         if (currentStage == "practiceStage1" || currentStage == "practiceStage2") {
@@ -207,8 +209,10 @@ function chooseOption(optionChosen) {
                             transitionToMainStudy();
                         }
                         else { // if currently in the main study
+                            currentStage = "endTask";
                             endTask();
                         }
+                        addData(); // log end of session or end of task
                     }
                     // Re-allow keyboard input after reward display ends
                     keyInputAllowed = true;
@@ -391,6 +395,7 @@ document.addEventListener('keydown', function (event) {
 });
 function transitionToMainStudy() {
     currentStage = "instructionsFinal";
+    addData(); // log start of stage
     totalRounds = mainRounds;
     document.getElementById('instructions-final').style.display = "block";
     document.getElementById('game-display').style.display = "none";
@@ -408,6 +413,7 @@ function startMainStudy() {
     document.getElementById('stage-1-main-instructions').style.display = 'block';
     document.getElementById('stage-2-options').style.display = 'none';
     currentStage = "mainStage1";
+    addData(); // log start of trial
 }
 // Add redirect links
 function endTask() {
