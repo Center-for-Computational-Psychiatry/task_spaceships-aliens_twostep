@@ -19,6 +19,7 @@ var stage1Probability = 0.8;
 var intertrialInterval1 = 0;
 var intertrialInterval2 = 0;
 var subjectId = ''; // Declare globally so it can be used in other functions
+var startTime = null; // For storing the absolute start datetime of the task
 // variables for game setting 1
 var REWARD_1 = { points: 100, image: "reward-img-gem", message: "You found a gem (+100 points)!" };
 var REWARD_2 = { points: 0, image: "reward-img-dirt", message: "You found dirt (no points)!" };
@@ -65,6 +66,13 @@ function resetSelectionBoxes() {
     document.getElementById('stage-2-main-instructions').style.display = "none";
 }
 function addData(choiceMade) {
+    if (!startTime) {
+        console.error('Start time is not set.');
+        return;
+    }
+    // Calculate the relative time by subtracting the start time from the current time
+    var currentTime = new Date();
+    var relativeTime = (currentTime.getTime() - startTime.getTime()) / 1000; // Relative time in seconds
     results.push({
         stage: currentStage,
         round: round,
@@ -73,7 +81,8 @@ function addData(choiceMade) {
         reward: reward,
         points: points,
         rewardImage: rewardImage,
-        timestamp: new Date().toISOString() // Add timestamp here
+        relativeTime: relativeTime.toFixed(2), // Relative timestamp in seconds with 2 decimals
+        absoluteTime: currentTime.toISOString() // Optionally, save the current absolute timestamp as well
     });
 }
 function chooseOption(optionChosen) {
@@ -103,7 +112,6 @@ function chooseOption(optionChosen) {
                 // Show Stage 2 Options, hide stage 1 display
                 document.getElementById('stage-1-main-instructions').style.display = "none";
                 document.getElementById('stage-2-main-instructions').style.display = "block";
-                // addData(optionChosen);
             }
             else { // currentStage === practiceStage1
                 // Switch practice stages
@@ -112,7 +120,6 @@ function chooseOption(optionChosen) {
                 document.getElementById('stage-1-practice-instructions').style.display = "none";
                 document.getElementById('stage-2-practice-instructions').style.display = "block";
                 document.getElementById('stage-2-key-instruction').style.display = 'block'; // needs to be here otherwise first trial of stage 2 doesn't have key instruction
-                // addData(optionChosen);
             }
             // Show Stage 2 Options, hide stage 1 display (same for both main and practice)
             document.getElementById('stage-2-options').style.display = "block";
@@ -174,7 +181,6 @@ function chooseOption(optionChosen) {
                         document.getElementById('stage-2-key-instruction').style.display = 'block'; // Show key instruction after reward display for practice trials
                     }
                     round++;
-                    // addData(optionChosen);
                     // Continue to next round or end the session
                     if (round <= totalRounds) { // continue to next round
                         document.getElementById('stage-1-options').style.display = "block";
@@ -251,6 +257,9 @@ function handleParticipantIDSubmit(event) {
         return;
     }
     console.log('Subject ID:', subjectId); // Log subject ID or use it as needed
+    // Save the absolute start time of the task
+    startTime = new Date();
+    console.log('Task start time (absolute):', startTime.toISOString());
     // Hide intake screen and show the welcome screen
     document.getElementById('intake-screen').style.display = 'none';
     document.getElementById('welcome-screen').style.display = 'block';
@@ -391,6 +400,7 @@ function startMainStudy() {
     document.getElementById('stage-2-options').style.display = 'none';
     currentStage = "mainStage1";
 }
+// Add redirect links
 function endTask() {
     saveResultsToCSV(results);
     document.getElementById('game-status').style.display = "block";
@@ -414,13 +424,20 @@ function saveResultsToCSV(results) {
     if (dataSaved) {
         return;
     } // If data has already been saved for this round, exit
-    var timestamp = new Date().toISOString().replace(/:/g, '-');
-    var filename = "data/two_step_task_results_".concat(subjectId, "_").concat(timestamp, ".csv");
+    var formattedStartTime;
+    if (startTime) {
+        formattedStartTime = startTime.toISOString().replace(/:/g, '-');
+    }
+    else {
+        console.log("This line should never be printed. If it is being printed, check timestamp saving in 'saveResultsToCSV' function");
+        formattedStartTime = new Date().toISOString().replace(/:/g, '-');
+    }
+    var filename = "data/two_step_task_results_".concat(subjectId, "_").concat(formattedStartTime, ".csv");
     // Updated CSV header to include Timestamp
     var csvHeader = "SubjectID,Stage,Round,Choice,Outcome,Reward,TotalPoints,RewardImage,Timestamp";
     // Include the Timestamp in each row of the results
     var csvRows = results.map(function (result) {
-        return "".concat(subjectId, ",").concat(result.stage, ",").concat(result.round, ",").concat(result.choice, ",").concat(result.outcome, ",").concat(result.reward, ",").concat(result.points, ",").concat(result.rewardImage, ",").concat(result.timestamp);
+        return "".concat(subjectId, ",").concat(result.stage, ",").concat(result.round, ",").concat(result.choice, ",").concat(result.outcome, ",").concat(result.reward, ",").concat(result.points, ",").concat(result.rewardImage, ",").concat(result.absoluteTime, ",").concat(result.relativeTime);
     }).join("\n");
     var csvContent = "data:text/csv;charset=utf-8,".concat(csvHeader, "\n").concat(csvRows);
     var encodedUri = encodeURI(csvContent);

@@ -20,7 +20,8 @@ let results: {
     reward: number;
     points: number;
     rewardImage: string;
-    timestamp: string;
+    absoluteTime: string;
+    relativeTime: string;
 }[] = [];
 let keyInputAllowed: boolean = true; // Flag to control input
 let stage1Probability: number = 0.8;
@@ -28,6 +29,7 @@ let stage1Probability: number = 0.8;
 let intertrialInterval1: number = 0;
 let intertrialInterval2: number = 0;
 let subjectId: string = ''; // Declare globally so it can be used in other functions
+let startTime: Date | null = null; // For storing the absolute start datetime of the task
 
 
 // variables for game setting 1
@@ -83,6 +85,14 @@ function resetSelectionBoxes() {
 }
 
 function addData(choiceMade: string) {
+    if (!startTime) {
+        console.error('Start time is not set.');
+        return;
+    }
+    // Calculate the relative time by subtracting the start time from the current time
+    const currentTime = new Date();
+    const relativeTime = (currentTime.getTime() - startTime.getTime()) / 1000; // Relative time in seconds
+
     results.push({
         stage: currentStage,
         round: round,
@@ -91,7 +101,8 @@ function addData(choiceMade: string) {
         reward: reward,
         points: points,
         rewardImage: rewardImage,
-        timestamp: new Date().toISOString() // Add timestamp here
+        relativeTime: relativeTime.toFixed(2), // Relative timestamp in seconds with 2 decimals
+        absoluteTime: currentTime.toISOString() // Optionally, save the current absolute timestamp as well
     });
 }
 
@@ -127,7 +138,7 @@ function chooseOption(optionChosen: string): void {
                 // Show Stage 2 Options, hide stage 1 display
                 document.getElementById('stage-1-main-instructions')!.style.display = "none";
                 document.getElementById('stage-2-main-instructions')!.style.display = "block";
-                // addData(optionChosen);
+
             } else { // currentStage === practiceStage1
                 // Switch practice stages
                 currentStage = "practiceStage2";
@@ -135,7 +146,7 @@ function chooseOption(optionChosen: string): void {
                 document.getElementById('stage-1-practice-instructions')!.style.display = "none";
                 document.getElementById('stage-2-practice-instructions')!.style.display = "block";
                 document.getElementById('stage-2-key-instruction')!.style.display = 'block'; // needs to be here otherwise first trial of stage 2 doesn't have key instruction
-                // addData(optionChosen);
+
             }
             // Show Stage 2 Options, hide stage 1 display (same for both main and practice)
             document.getElementById('stage-2-options')!.style.display = "block";
@@ -207,7 +218,7 @@ function chooseOption(optionChosen: string): void {
                         document.getElementById('stage-2-key-instruction')!.style.display = 'block'; // Show key instruction after reward display for practice trials
                     }
                     round++;
-                    // addData(optionChosen);
+
                     // Continue to next round or end the session
                     if (round <= totalRounds) { // continue to next round
                         document.getElementById('stage-1-options')!.style.display = "block";
@@ -290,6 +301,11 @@ function handleParticipantIDSubmit(event: Event) {
     }
 
     console.log('Subject ID:', subjectId); // Log subject ID or use it as needed
+
+    // Save the absolute start time of the task
+    startTime = new Date();
+    console.log('Task start time (absolute):', startTime.toISOString());
+
 
     // Hide intake screen and show the welcome screen
     document.getElementById('intake-screen')!.style.display = 'none';
@@ -421,6 +437,7 @@ function startMainStudy() {
     currentStage = "mainStage1"
 }
 
+// Add redirect links
 export function endTask() {
     saveResultsToCSV(results);
     document.getElementById('game-status')!.style.display = "block";
@@ -451,19 +468,26 @@ function saveResultsToCSV(results: {
     reward: number;
     points: number;
     rewardImage: string;
-    timestamp: string; // Add timestamp here
+    relativeTime: string;
+    absoluteTime: string;
 }[]): void {
     if (dataSaved) { return; } // If data has already been saved for this round, exit
 
-    const timestamp: string = new Date().toISOString().replace(/:/g, '-');
-    const filename: string = `data/two_step_task_results_${subjectId}_${timestamp}.csv`;
+    let formattedStartTime: string;
+    if (startTime) {
+        formattedStartTime = startTime.toISOString().replace(/:/g, '-');
+    } else {
+        console.log("This line should never be printed. If it is being printed, check timestamp saving in 'saveResultsToCSV' function")
+        formattedStartTime = new Date().toISOString().replace(/:/g, '-');
+    }
+    const filename: string = `data/two_step_task_results_${subjectId}_${formattedStartTime}.csv`;
 
     // Updated CSV header to include Timestamp
     const csvHeader = "SubjectID,Stage,Round,Choice,Outcome,Reward,TotalPoints,RewardImage,Timestamp";
 
     // Include the Timestamp in each row of the results
     const csvRows = results.map(result =>
-        `${subjectId},${result.stage},${result.round},${result.choice},${result.outcome},${result.reward},${result.points},${result.rewardImage},${result.timestamp}`
+        `${subjectId},${result.stage},${result.round},${result.choice},${result.outcome},${result.reward},${result.points},${result.rewardImage},${result.absoluteTime},${result.relativeTime}`
     ).join("\n");
 
     const csvContent = `data:text/csv;charset=utf-8,${csvHeader}\n${csvRows}`;
