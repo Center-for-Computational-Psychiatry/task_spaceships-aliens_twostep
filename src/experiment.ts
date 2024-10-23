@@ -28,6 +28,16 @@ const REWARD_2 = { points: 0, image: "reward-img-dirt", message: "You found dirt
 let subjectId: string = ''; // Declare globally so it can be used in other functions
 let startTime: Date | null = null; // For storing the absolute start datetime of the task
 
+function getAlienLikelihoods(trial: number) {
+    let trialIndex: number = trial - 1;
+    let aliens: string[] = ["A", "B", "C", "D"];
+    let likelihoods: number[] = [];
+    aliens.forEach(alien => {
+        likelihoods.push(stage2Options[alien].likelihoods[trialIndex]);
+    });
+    return likelihoods;
+}
+
 let results: {
     stage: string;
     round: number;
@@ -183,8 +193,8 @@ function chooseOption(optionChosen: string): void {
         const userChoice = stage2Options[optionChosen as keyof typeof stage2Options];
 
         if (userChoice) {
-            probabilityStage2 = userChoice.likelihoods;
-            const currentLikelihood = probabilityStage2[round - 1]; // pick the likelihood associated with this round (minus one for array index)
+            probabilityStage2 = getAlienLikelihoods(round); // this is for saving alien probabilities data
+            const currentLikelihood = userChoice.likelihoods[round - 1]; // pick the likelihood associated with this round (minus one for array index)
             // console.log("currentLikelihood: " + currentLikelihood)
 
             // select reward from user choice
