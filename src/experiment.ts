@@ -8,6 +8,7 @@ let points: number = 0;
 let currentStage: string = "intake"; // [intake, welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, mainStage1, mainStage2]
 let outcome: string;
 let reward: number = 0;
+let planetImage: string = "";
 let rewardImage: string = "";
 let dataSaved: boolean = false; // Track if data has already been saved for the task session
 let keyInputAllowed: boolean = true; // Flag to control input
@@ -34,6 +35,7 @@ let results: {
     outcome: string;
     reward: number;
     points: number;
+    planetImage: string;
     rewardImage: string;
     relativeTime: string;
     absoluteTime: string;
@@ -101,6 +103,7 @@ function addData(choiceMade: string = "") {
         outcome: outcome,
         reward: reward,
         points: points,
+        planetImage: planetImage,
         rewardImage: rewardImage,
         relativeTime: relativeTime.toFixed(2), // Relative timestamp in seconds with 2 decimals
         absoluteTime: currentTime.toISOString(), // Optionally, save the current absolute timestamp as well
@@ -163,9 +166,11 @@ function chooseOption(optionChosen: string): void {
             if (outcome === 'X') {
                 document.getElementById('planet-X-options')!.style.display = "block";
                 document.getElementById('planet-Y-options')!.style.display = "none";
+                planetImage = "planet_purple.png";
             } else { // Option Y
                 document.getElementById('planet-Y-options')!.style.display = "block";
                 document.getElementById('planet-X-options')!.style.display = "none";
+                planetImage = "planet_green.png";
             };
             addData() // log start of trial
             keyInputAllowed = true; // Re-allow keyboard input after intertrial interval ends
@@ -487,6 +492,7 @@ function saveResultsToCSV(results: {
     outcome: string;
     reward: number;
     points: number;
+    planetImage: string;
     rewardImage: string;
     relativeTime: string;
     absoluteTime: string;
@@ -508,11 +514,11 @@ function saveResultsToCSV(results: {
     const filename: string = `data/two_step_task_results_${subjectId}_${formattedStartTime}.csv`;
 
     // Updated CSV header to include Timestamp
-    const csvHeader = "SubjectID,Stage,Round,Choice,Outcome,Reward,TotalPoints,RewardImage,RelativeTime,AbsoluteTime,RewardDisplay,intertrialInterval1,intertrialInterval2,probabilityStage1,probabilityAlienGems";
+    const csvHeader = "SubjectID,Stage,Round,Choice,Outcome,Reward,TotalPoints,PlanetImage,RewardImage,RelativeTime,AbsoluteTime,RewardDisplay,intertrialInterval1,intertrialInterval2,probabilityStage1,probabilityAlienGems";
 
     // Include the Timestamp in each row of the results
     const csvRows = results.map(result =>
-        `${subjectId},${result.stage},${result.round},${result.choice},${result.outcome},${result.reward},${result.points},${result.rewardImage},${result.relativeTime},${result.absoluteTime},${result.rewardDisplayInterval},${result.intertrialInterval1},${result.intertrialInterval2},${result.probabilityStage1},${result.probabilityStage2}`
+        `${subjectId},${result.stage},${result.round},${result.choice},${result.outcome},${result.reward},${result.points},${result.planetImage},${result.rewardImage},${result.relativeTime},${result.absoluteTime},${result.rewardDisplayInterval},${result.intertrialInterval1},${result.intertrialInterval2},${result.probabilityStage1},${result.probabilityStage2}`
     ).join("\n");
 
     const csvContent = `data:text/csv;charset=utf-8,${csvHeader}\n${csvRows}`;
