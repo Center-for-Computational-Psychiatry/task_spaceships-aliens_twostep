@@ -33,7 +33,7 @@ function getAlienLikelihoods(trial: number) {
     let aliens: string[] = ["A", "B", "C", "D"];
     let likelihoods: number[] = [];
     aliens.forEach(alien => {
-        likelihoods.push(stage2Options[alien].likelihoods[trialIndex]);
+        likelihoods.push(stage2Options[alien as keyof typeof stage2Options].likelihoods[trialIndex]);
     });
     return likelihoods;
 }

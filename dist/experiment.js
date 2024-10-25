@@ -10,6 +10,7 @@ var points = 0;
 var currentStage = "intake"; // [intake, welcome, instructions1, instructions2, instructions3, practiceStage1, practiceStage2, instructionsFinal, mainStage1, mainStage2]
 var outcome;
 var reward = 0;
+var planetImage = "";
 var rewardImage = "";
 var dataSaved = false; // Track if data has already been saved for the task session
 var keyInputAllowed = true; // Flag to control input
@@ -28,6 +29,15 @@ var REWARD_1 = { points: 100, image: "reward-img-gem", message: "You found a gem
 var REWARD_2 = { points: 0, image: "reward-img-dirt", message: "You found dirt (no points)!" };
 var subjectId = ''; // Declare globally so it can be used in other functions
 var startTime = null; // For storing the absolute start datetime of the task
+function getAlienLikelihoods(trial) {
+    var trialIndex = trial - 1;
+    var aliens = ["A", "B", "C", "D"];
+    var likelihoods = [];
+    aliens.forEach(function (alien) {
+        likelihoods.push(stage2Options[alien].likelihoods[trialIndex]);
+    });
+    return likelihoods;
+}
 var results = [];
 // Initialize Google Sheets API for data saving
 // handleClientLoad();
@@ -80,6 +90,7 @@ function addData(choiceMade) {
         outcome: outcome,
         reward: reward,
         points: points,
+        planetImage: planetImage,
         rewardImage: rewardImage,
         relativeTime: relativeTime.toFixed(2), // Relative timestamp in seconds with 2 decimals
         absoluteTime: currentTime.toISOString(), // Optionally, save the current absolute timestamp as well
@@ -133,10 +144,12 @@ function chooseOption(optionChosen) {
             if (outcome === 'X') {
                 document.getElementById('planet-X-options').style.display = "block";
                 document.getElementById('planet-Y-options').style.display = "none";
+                planetImage = "planet_purple.png";
             }
             else { // Option Y
                 document.getElementById('planet-Y-options').style.display = "block";
                 document.getElementById('planet-X-options').style.display = "none";
+                planetImage = "planet_green.png";
             }
             ;
             addData(); // log start of trial
@@ -147,8 +160,8 @@ function chooseOption(optionChosen) {
         intertrialInterval2 = [400, 600, 800][Math.floor(Math.random() * 3)]; // 500, 1000, or 1500 millisecond
         var userChoice = stage2Options[optionChosen];
         if (userChoice) {
-            probabilityStage2 = userChoice.likelihoods;
-            var currentLikelihood = probabilityStage2[round - 1]; // pick the likelihood associated with this round (minus one for array index)
+            probabilityStage2 = getAlienLikelihoods(round); // this is for saving alien probabilities data
+            var currentLikelihood = userChoice.likelihoods[round - 1]; // pick the likelihood associated with this round (minus one for array index)
             // console.log("currentLikelihood: " + currentLikelihood)
             // select reward from user choice
             if (Math.random() < currentLikelihood) {
@@ -453,10 +466,10 @@ function saveResultsToCSV(results) {
     }
     var filename = "data/two_step_task_results_".concat(subjectId, "_").concat(formattedStartTime, ".csv");
     // Updated CSV header to include Timestamp
-    var csvHeader = "SubjectID,Stage,Round,Choice,Outcome,Reward,TotalPoints,RewardImage,RelativeTime,AbsoluteTime,RewardDisplay,intertrialInterval1,intertrialInterval2,probabilityStage1,probabilityAlienGems";
+    var csvHeader = "SubjectID,Stage,Round,Choice,Outcome,Reward,TotalPoints,PlanetImage,RewardImage,RelativeTime,AbsoluteTime,RewardDisplay,intertrialInterval1,intertrialInterval2,probabilityStage1,probabilityAlienGems";
     // Include the Timestamp in each row of the results
     var csvRows = results.map(function (result) {
-        return "".concat(subjectId, ",").concat(result.stage, ",").concat(result.round, ",").concat(result.choice, ",").concat(result.outcome, ",").concat(result.reward, ",").concat(result.points, ",").concat(result.rewardImage, ",").concat(result.relativeTime, ",").concat(result.absoluteTime, ",").concat(result.rewardDisplayInterval, ",").concat(result.intertrialInterval1, ",").concat(result.intertrialInterval2, ",").concat(result.probabilityStage1, ",").concat(result.probabilityStage2);
+        return "".concat(subjectId, ",").concat(result.stage, ",").concat(result.round, ",").concat(result.choice, ",").concat(result.outcome, ",").concat(result.reward, ",").concat(result.points, ",").concat(result.planetImage, ",").concat(result.rewardImage, ",").concat(result.relativeTime, ",").concat(result.absoluteTime, ",").concat(result.rewardDisplayInterval, ",").concat(result.intertrialInterval1, ",").concat(result.intertrialInterval2, ",").concat(result.probabilityStage1, ",").concat(result.probabilityStage2);
     }).join("\n");
     var csvContent = "data:text/csv;charset=utf-8,".concat(csvHeader, "\n").concat(csvRows);
     var encodedUri = encodeURI(csvContent);
