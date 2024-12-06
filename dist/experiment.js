@@ -43,8 +43,8 @@ var stage2Conditions = [
 var randomIndex = Math.floor(Math.random() * stage2Conditions.length);
 var stage2Options = stage2Conditions[randomIndex];
 var stage2ChosenCondition = randomIndex + 1;
-console.log("randomIndex " + randomIndex);
-console.log("stage2Options " + stage2Options);
+console.log("randomIndex ", randomIndex);
+console.log("stage2Options ", stage2Options);
 var REWARD_1 = { points: 100, image: "reward-img-gem", message: "You found a gem (+100 points)!" };
 var REWARD_2 = { points: 0, image: "reward-img-dirt", message: "You found dirt (no points)!" };
 var subjectId = ''; // Declare globally so it can be used in other functions

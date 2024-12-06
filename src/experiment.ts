@@ -42,8 +42,8 @@ const stage2Conditions = [
 const randomIndex = Math.floor(Math.random() * stage2Conditions.length);
 const stage2Options = stage2Conditions[randomIndex];
 const stage2ChosenCondition = randomIndex + 1;
-console.log("randomIndex " + randomIndex);
-console.log("stage2Options " + stage2Options);
+console.log("randomIndex ", randomIndex);
+console.log("stage2Options ", stage2Options);
 
 const REWARD_1 = { points: 100, image: "reward-img-gem", message: "You found a gem (+100 points)!" };
 const REWARD_2 = { points: 0, image: "reward-img-dirt", message: "You found dirt (no points)!" };
