@@ -1,12 +1,35 @@
+:root {
+  /* Layout */
+  --max-content-width: 900px;
+  --standard-height: 400px;
+  --stage-height: 500px;
+
+  /* Colors */
+  --background-color: pink;
+  --border-color: black;
+  --reward-message-color: midnightblue;
+
+  /* Typography */
+  --base-font-family: Verdana;
+  --base-font-size: 22px;
+
+  /* Spacing */
+  --standard-gap: 200px;
+  --standard-margin: 25px;
+  --alien-margin: 75px;
+  --border-radius: 20px;
+  --border-width: 10px;
+}
+
 html,
 body {
   height: 100%;
-  background: pink;
+  background: var(--background-color);
 }
 
 body {
   text-align: center;
-  max-width: 800px;
+  max-width: var(--max-content-width);
   margin-left: auto;
   margin-right: auto;
   padding: 0 20px;
@@ -18,16 +41,19 @@ body {
 h1,
 h2,
 p {
-  font-family: Verdana;
+  font-family: var(--base-font-family);
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 p {
-  font-size: 22px;
+  font-size: var(--base-font-size);
 }
 
 .selected {
-  border: 10px solid black;
-  border-radius: 20px;
+  border: var(--border-width) solid var(--border-color);
+  border-radius: var(--border-radius);
 }
 
 .demo-span {
@@ -35,7 +61,7 @@ p {
   justify-content: center;
   flex-wrap: wrap;
   gap: 10px;
-  max-width: 800px;
+  max-width: var(--max-content-width);
   margin-left: auto;
   margin-right: auto;
 }
@@ -50,11 +76,11 @@ p {
   height: 150px;
   width: auto;
   max-width: 250px;
-  margin-left: 25px;
-  margin-right: 25px;
+  margin-left: var(--standard-margin);
+  margin-right: var(--standard-margin);
 }
 
-/* Make all instruction screens take full width */
+/* Make all instruction screens centered */
 #intake-screen,
 #welcome-screen,
 #instructions-screen-1,
@@ -65,6 +91,7 @@ p {
 #instructions-final,
 #game-status {
   width: 100%;
+  text-align: center; /* Ensure all text is centered */
 }
 
 /* Special handling for Bootstrap container in intake screen */
@@ -82,7 +109,7 @@ p {
 /* Game display specific styles */
 #game-display {
   text-align: center;
-  max-width: 800px;
+  max-width: var(--max-content-width);
   margin-left: auto;
   margin-right: auto;
   padding-top: 100px;
@@ -90,7 +117,7 @@ p {
 
 #stage-1-options,
 #stage-2-options {
-  height: 500px;
+  height: var(--stage-height);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -99,27 +126,27 @@ p {
 }
 
 #rocket-container {
-  height: 400px;
+  height: var(--standard-height);
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 200px;
+  gap: var(--standard-gap);
 }
 
 .rocket-img {
-  height: 400px;
+  height: var(--standard-height);
   width: auto;
 }
 
 .planet-container {
   position: relative;
-  height: 400px;
+  height: var(--standard-height);
   margin: 0 auto;
 }
 
 #stage-1-options img:not(.rocket-img),
 .planet-img {
-  height: 400px;
+  height: var(--standard-height);
   width: auto;
   margin: 0 auto;
   display: block;
@@ -150,40 +177,11 @@ p {
 
 .alien-img {
   height: 200px;
-  margin: 0 75px;
+  margin: 0 var(--alien-margin);
 }
 
 #reward-message {
-  color: midnightblue;
+  color: var(--reward-message-color);
 }
 
-/* Base vertical centering for all instruction/intro screens */
-/* #intake-screen,
-#welcome-screen,
-#instructions-screen-1,
-#instructions-screen-2,
-#instructions-screen-3,
-#video-screen,
-#before-practice-screen,
-#instructions-final,
-#game-status {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 100vh;
-} */
-
-/* Override Bootstrap container specifics for intake screen */
-/* #intake-screen.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-} */
-
-/* #intake-screen .row {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  min-height: 100vh;
-} */
+/*# sourceMappingURL=styles.css.map */
