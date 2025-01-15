@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Two-Step Task</title>
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="styles.css">
     <script src="https://apis.google.com/js/api.js"></script>
     <script>
@@ -31,17 +33,23 @@
 
 
 <body>
-    <div id="intake-screen" style="display: block;">
-        <h1>Spaceships and Aliens</h1>
-        <br>
-        <form id="intake-form">
-            <label for="subject-id">
-                <p>Please enter your subject ID:</p>
-            </label>
-            <input type="text" id="subject-id" name="subject-id" required>
-            <button type="submit" id="participant-ID-submit-button">Submit</button>
-        </form>
-        <br>
+    <div id="intake-screen" class="container text-center" style="display: block;">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h1>Spaceships and Aliens</h1>
+                <br>
+                <form id="intake-form">
+                    <div class="mb-3">
+                        <label for="subject-id" class="form-label">
+                            <p>Please enter your subject ID:</p>
+                        </label>
+                        <input type="text" class="form-control mx-auto" style="max-width: 200px;" id="subject-id" name="subject-id" required>
+                        <button type="submit" class="btn btn-outline-secondary mt-3" id="participant-ID-submit-button">Submit</button>
+                    </div>
+                </form>
+                <br>
+            </div>
+        </div>
     </div>
     <div id="welcome-screen" style="display: none;">
         <h1>Welcome to the Spaceships and Aliens Game!</h1>
@@ -141,8 +149,8 @@
                 <img class="rocket-img" src="img/rocket_yellow.png" alt="Option X">
                 <img class="rocket-img" src="img/rocket_blue.png" alt="Option Y">
             </div>
-            <p id="stage-1-key-instruction"><i>Press LEFT ARROW for the rocket on the left. Press RIGHT ARROW for the
-                    rocket on the right.</i></p>
+            <div id="stage-1-key-instruction" class="mt-4"><p><i>Press LEFT ARROW for the rocket on the left. Press RIGHT ARROW for the
+                    rocket on the right.</i></p></div>
         </div>
         <div id="stage-2-options" style="display:none;">
             <div id="stage-2-practice-instructions">
@@ -165,15 +173,15 @@
                     <img class="alien-img" src="img/Stage2-alien-purple-B.png" alt="Option D">
                 </div>
             </div>
-            <p id="stage-2-key-instruction"><i>Press LEFT ARROW for the alien on the left. Press RIGHT ARROW for the
-                    alien on the right.</i></p>
+            <div id="stage-2-key-instruction" class="mt-4"><p><i>Press LEFT ARROW for the alien on the left. Press RIGHT ARROW for the
+                    alien on the right.</i></p></div>
             <div id="reward-container">
                 <img class="reward-img" id="reward-img-dirt" src="img/dirt.png" style="display:none">
                 <img class="reward-img" id="reward-img-gem" src="img/gem-emerald.png" style="display:none">
                 <h2 id="reward-message" style="display:none;"></h2>
             </div>
         </div>
-        <div id="task-bottom">
+        <div id="task-bottom" class="mt-4">
             <h2>Points: <span id="pointCounter">0</span></h2>
         </div>
     </div>

@@ -1,129 +1,189 @@
-.option {
-    width: 180px;
-    height: 150px;
-    display: inline-block;
-    margin-right: 10px;
+html,
+body {
+  height: 100%;
+  background: pink;
 }
 
 body {
-    background: pink;
-    text-align: center;
-    margin-left: 200px;
-    margin-right: 200px;
-    margin-top: 100px;
-    /* max-width: 1200px; */
-
-    /* gpt suggestions */
-    /* margin: 50px;
-    padding: 0 20px; */
+  text-align: center;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 20px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
 }
 
 h1,
 h2,
 p {
-    font-family: Verdana;
+  font-family: Verdana;
 }
 
 p {
-    font-size: 22px;
+  font-size: 22px;
 }
 
 .selected {
-    border: 10px solid black;
-    border-radius: 20px;
+  border: 10px solid black;
+  border-radius: 20px;
 }
 
 .demo-span {
-    /* gpt suggestions */
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .demo-img {
-    height: 300px;
-    width: auto;
-    /* margin-left: 10px;
-    margin-right: 10px;  */
-
-    /* gpt suggestions */
-    /* height: auto; */
-    /* width: 100%; */
-    /* max-width: 400px; */
-    margin: 10px;
+  height: 300px;
+  width: auto;
+  margin: 10px;
 }
 
 .demo-reward {
-    height: 150px;
-    width: auto;
-    max-width: 250px;
-    margin-left: 25px;
-    margin-right: 25px;
-
-    /* gpt suggestions */
-    /* height: auto;
-    width: 100%;
-    max-width: 150px;
-    margin: 10px; */
+  height: 150px;
+  width: auto;
+  max-width: 250px;
+  margin-left: 25px;
+  margin-right: 25px;
 }
 
+/* Make all instruction screens take full width */
+#intake-screen,
+#welcome-screen,
+#instructions-screen-1,
+#instructions-screen-2,
+#instructions-screen-3,
+#video-screen,
+#before-practice-screen,
+#instructions-final,
+#game-status {
+  width: 100%;
+}
+
+/* Special handling for Bootstrap container in intake screen */
+#intake-screen.container {
+  display: flex;
+  flex-direction: column;
+}
+
+#intake-screen .row {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* Game display specific styles */
 #game-display {
-    text-align: center;
+  text-align: center;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 100px;
 }
 
-#stage-1-options img {
-    height: 400px;
-    width: auto;
-    margin-top: 10px;
-    margin-left: 100px;
-    margin-right: 100px;
+#stage-1-options,
+#stage-2-options {
+  height: 500px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-/* #stage-2-options {
-    display: flex;
-    justify-content: center;
-    align-items: center; */
-/* } */
-
-#reward-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
+#rocket-container {
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 200px;
 }
 
-.reward-img {
-    height: 75px;
-    width: auto;
-    max-width: 125px
+.rocket-img {
+  height: 400px;
+  width: auto;
 }
 
 .planet-container {
-    position: relative;
+  position: relative;
+  height: 400px;
+  margin: 0 auto;
+}
+
+#stage-1-options img:not(.rocket-img),
+.planet-img {
+  height: 400px;
+  width: auto;
+  margin: 0 auto;
+  display: block;
+}
+
+#reward-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.reward-img {
+  height: 75px;
+  width: auto;
+  max-width: 125px;
 }
 
 .alien-container {
-    position: absolute;
-    bottom: 50px;
-    /* Adjust to move the aliens up or down on the planet */
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: center;
-}
-
-.planet-img {
-    height: 400px;
-    width: auto;
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .alien-img {
-    height: 200px;
-    margin: 0 75px;
-
+  height: 200px;
+  margin: 0 75px;
 }
 
 #reward-message {
-    color: midnightblue;
+  color: midnightblue;
 }
+
+/* Base vertical centering for all instruction/intro screens */
+/* #intake-screen,
+#welcome-screen,
+#instructions-screen-1,
+#instructions-screen-2,
+#instructions-screen-3,
+#video-screen,
+#before-practice-screen,
+#instructions-final,
+#game-status {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+} */
+
+/* Override Bootstrap container specifics for intake screen */
+/* #intake-screen.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+} */
+
+/* #intake-screen .row {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  min-height: 100vh;
+} */
