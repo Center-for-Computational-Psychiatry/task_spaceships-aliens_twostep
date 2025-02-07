@@ -6,12 +6,6 @@ The two-step task, or the "two-stage" task, is an experiment designed to assess 
 
 Participants are tasked with navigating a two-stage decision-making process involving choices between different options, with the goal of maximizing point accumulation through strategic selections.
 
-## Technical Details
-
-For data collection purposes, this game is designed to be run on Google Chrome browser **only**. Automated data download feature will not work on other browsers (e.g. Safari). 
-
-Data will be automatically downloaded to the user's local computer when exiting the screen/window/tab, or when the experiment is completed, whichever occurs first. 
-
 ## Experimental Design
 
 ### Overview
@@ -31,8 +25,23 @@ Participants will make 150 selections throughout the game, which are tracked to 
 LEFT ARROW key: Selects the left rocket. RIGHT ARROW key: Selects the right rocket.
 
 ### Stage 2: Alien Trader Selection
-**Objective:** Upon arriving at a planet, choose between two alien traders.
+**Objective:** Upon arriving at a planet, choose between two alien traders. 
 
-**Mechanics:** The alien traders offer either valuable gems or non-valuable dirt. The distribution of gems and dirt varies over time, introducing dynamic changes to the trading environment.
+**Probability Likelihoods:** In stage 2, the player's choices (A, B, C, or D) influence the likelihood of different outcomes. The stage2Options object defines these likelihoods using arrays of probabilities.
+
+**Rewards:** Players can either find a gem (+100 points) or dirt (0 points). 
+The alien traders offer either valuable gems or non-valuable dirt. The distribution of gems and dirt varies over time, introducing dynamic changes to the trading environment. 
 
 **Controls:** LEFT ARROW key: Selects the left alien trader. RIGHT ARROW key: Selects the right alien trader.
+
+## Getting Started
+
+For data collection: Visit the game linked in the project description.
+
+To modify game specifications: Please refer to the [WIKI](https://github.com/emberlzhang/task_spaceships-aliens_twostep/wiki) for making code modifications and deployment.
+
+## Technical Details
+
+For data collection purposes, this game is designed to be run on Google Chrome browser **only**. Automated data download feature will not work on other browsers (e.g. Safari). 
+
+Data will be automatically downloaded to the user's local computer when exiting the screen/window/tab, or when the experiment is completed, whichever occurs first. 
