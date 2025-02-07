@@ -6,6 +6,12 @@ The two-step task, or the "two-stage" task, is an experiment designed to assess 
 
 Participants are tasked with navigating a two-stage decision-making process involving choices between different options, with the goal of maximizing point accumulation through strategic selections.
 
+## Getting Started
+
+For data collection: Visit the game linked in the project description.
+
+To modify game specifications: Please refer to the [WIKI](https://github.com/Center-for-Computational-Psychiatry/task_spaceships-aliens_twostep/wiki) for making code modifications and deployment.
+
 ## Experimental Design
 
 ### Overview
@@ -33,12 +39,6 @@ LEFT ARROW key: Selects the left rocket. RIGHT ARROW key: Selects the right rock
 The alien traders offer either valuable gems or non-valuable dirt. The distribution of gems and dirt varies over time, introducing dynamic changes to the trading environment. 
 
 **Controls:** LEFT ARROW key: Selects the left alien trader. RIGHT ARROW key: Selects the right alien trader.
-
-## Getting Started
-
-For data collection: Visit the game linked in the project description.
-
-To modify game specifications: Please refer to the [WIKI](https://github.com/Center-for-Computational-Psychiatry/task_spaceships-aliens_twostep/wiki) for making code modifications and deployment.
 
 ## Technical Details
 
