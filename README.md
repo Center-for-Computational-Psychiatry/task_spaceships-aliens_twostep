@@ -6,6 +6,12 @@ The two-step task, or the "two-stage" task, is an experiment designed to assess 
 
 Participants are tasked with navigating a two-stage decision-making process involving choices between different options, with the goal of maximizing point accumulation through strategic selections.
 
+## Technical Details
+
+For data collection purposes, this game is designed to be run on Google Chrome browser **only**. Automated data download feature will not work on other browsers (e.g. Safari). 
+
+Data will be automatically downloaded to the user's local computer when exiting the screen/window/tab, or when the experiment is completed, whichever occurs first. 
+
 ## Experimental Design
 
 ### Overview
