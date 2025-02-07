@@ -38,7 +38,7 @@ The alien traders offer either valuable gems or non-valuable dirt. The distribut
 
 For data collection: Visit the game linked in the project description.
 
-To modify game specifications: Please refer to the [WIKI](https://github.com/Center-for-Computational-Psychiatry/task_spaceships-aliens_twostep/wiki)) for making code modifications and deployment.
+To modify game specifications: Please refer to the [WIKI](https://github.com/Center-for-Computational-Psychiatry/task_spaceships-aliens_twostep/wiki) for making code modifications and deployment.
 
 ## Technical Details
 
